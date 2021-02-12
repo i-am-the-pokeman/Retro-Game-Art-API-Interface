@@ -11,7 +11,8 @@ function createWindow() {
         protocol: "file:",
         slashes: true
     }));
-    win.webContents.openDevTools();
+    // uncomment to open dev tools on app start
+    //win.webContents.openDevTools();
 }
 electron_1.app.whenReady().then(createWindow);
 electron_1.app.on("activate", () => {
