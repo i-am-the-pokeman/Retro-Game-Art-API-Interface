@@ -16,7 +16,8 @@ function createWindow() {
     })
   );
 
-  win.webContents.openDevTools();
+  // uncomment this if you'd like the app to start with dev tools open 
+  //win.webContents.openDevTools();
 }
 
 app.whenReady().then(createWindow);
