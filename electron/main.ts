@@ -16,7 +16,8 @@ function createWindow() {
     })
   );
 
-  win.webContents.openDevTools();
+  // uncomment to open dev tools on app start
+  //win.webContents.openDevTools();
 }
 
 app.whenReady().then(createWindow);
