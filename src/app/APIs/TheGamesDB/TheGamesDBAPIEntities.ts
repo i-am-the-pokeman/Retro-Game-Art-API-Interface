@@ -1,4 +1,4 @@
-export const TheGamesDBBaseUrl = 'api.thegamesdb.net/';
+export const TheGamesDBBaseUrl = 'https://api.thegamesdb.net/';
 
 export interface GETPlatformsRequest {
     apikey: string;
