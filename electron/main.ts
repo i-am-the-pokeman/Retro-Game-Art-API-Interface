@@ -1,4 +1,4 @@
-import { app, BrowserWindow, ipcMain } from "electron";
+import { app, BrowserWindow, ipcMain, ipcRenderer } from "electron";
 import * as path from "path";
 import * as url from "url";
 import * as fs from "fs";
@@ -6,7 +6,14 @@ import * as fs from "fs";
 let win: BrowserWindow;
 
 function createWindow() {
-  win = new BrowserWindow({ width: 800, height: 600 });
+  win = new BrowserWindow(
+    {
+      webPreferences: {
+        nodeIntegration: true,
+      },
+      width: 800,
+      height: 600
+    });
 
   win.loadURL(
     url.format({ // TODO: Use function that isn't deprecated
@@ -17,9 +24,10 @@ function createWindow() {
   );
 
   // uncomment this if you'd like the app to start with dev tools open 
-  //win.webContents.openDevTools();
+  win.webContents.openDevTools();
 }
 
+// APP EVENTS
 app.whenReady().then(createWindow);
 
 app.on("activate", () => {
@@ -36,3 +44,13 @@ app.on('window-all-closed', () => {
     app.quit()
   }
 });
+// END APP EVENTS
+
+// IPC EVENTS
+ipcMain.on('download-image', (event, arg) => {
+  console.log('Message from UI:');
+  console.log(arg);
+
+  win.webContents.send('download-image', null)
+});
+// END IPC EVENTS
