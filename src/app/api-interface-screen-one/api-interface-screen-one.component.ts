@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { TheGamesDBAPIService } from '../APIs/TheGamesDB/TheGamesDBAPI.service';
 import { GETPlatformsRequest } from '../APIs/TheGamesDB/TheGamesDBAPIEntities';
 const ipc = window.require('electron').ipcRenderer;
@@ -10,25 +10,35 @@ const ipc = window.require('electron').ipcRenderer;
 })
 export class ApiInterfaceScreenOneComponent implements OnInit {
 
+  isDownloadButtonDisabled: boolean = false;
+
   constructor(
-    private theGamesDbAPIService: TheGamesDBAPIService
+    private theGamesDbAPIService: TheGamesDBAPIService,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
     // TODO: keep this uncommented until electron-store is implemented and I can make sure I don't use up my API limit
     //this.fetchPlatforms();
+  }
 
+  downloadImages() {
+    // Tell main thread to download image
+    this.isDownloadButtonDisabled = true;
     let testURL = 'https://hips.hearstapps.com/countryliving.cdnds.net/17/47/2048x1365/gallery-1511194376-cavachon-puppy-christmas.jpg';
     ipc.send('download-image', testURL);
 
+    // Get status of download (success/failure)
     ipc.on('download-image', (event: any, arg: any) => {
+      this.isDownloadButtonDisabled = false;
+      this.cdr.detectChanges();
       console.log('Message received from main thread.')
     });
   }
 
   fetchPlatforms() {
     let request: GETPlatformsRequest = {
-      apikey: 'fb1938f1103f7fd4c21f326a618183c3b928a2f3912082a432a706ef11b487c0'
+      apikey: ''
     };
 
     // TODO: don't store the API key in this file lol

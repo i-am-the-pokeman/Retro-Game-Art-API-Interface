@@ -1,7 +1,9 @@
-import { app, BrowserWindow, ipcMain, ipcRenderer } from "electron";
+import { app, BrowserWindow, ipcMain } from "electron";
 import * as path from "path";
 import * as url from "url";
 import * as fs from "fs";
+
+const { download } = require('electron-dl');
 
 let win: BrowserWindow;
 
@@ -17,7 +19,7 @@ function createWindow() {
 
   win.loadURL(
     url.format({ // TODO: Use function that isn't deprecated
-      pathname: path.join(__dirname, `/../../dist/retro-game-art-api-interface/index.html`), // TODO: why is the dist file retro-game-art-api-interface??
+      pathname: path.join(__dirname, `/../../dist/retro-game-art-api-interface/index.html`),
       protocol: "file:",
       slashes: true
     })
@@ -47,10 +49,16 @@ app.on('window-all-closed', () => {
 // END APP EVENTS
 
 // IPC EVENTS
-ipcMain.on('download-image', (event, arg) => {
+ipcMain.on('download-image', async (event, arg) => {
   console.log('Message from UI:');
   console.log(arg);
 
-  win.webContents.send('download-image', null)
+  let options = {
+    openFolderWhenDone: true
+  }
+  await download(win, arg, options);
+
+  // TODO: send status of download back to UI
+  win.webContents.send('download-image', null);
 });
 // END IPC EVENTS
