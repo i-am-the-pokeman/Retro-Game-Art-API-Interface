@@ -5,6 +5,9 @@ import * as fs from "fs";
 
 const { download } = require('electron-dl');
 
+const Store = require('electron-store');
+Store.initRenderer();
+
 let win: BrowserWindow;
 
 function createWindow() {

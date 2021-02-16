@@ -22,6 +22,7 @@
     "@angular/router": "~11.1.2",
     "electron": "^11.2.3",
     "electron-dl": "^3.0.3",
+    "electron-store": "^7.0.2",
     "rxjs": "~6.6.0",
     "tslib": "^2.0.0",
     "zone.js": "~0.11.3"

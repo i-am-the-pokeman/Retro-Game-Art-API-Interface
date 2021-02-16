@@ -3,6 +3,9 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { GETPlatformsRequest, TheGamesDBBaseUrl } from './TheGamesDBAPIEntities';
 import { tap } from 'rxjs/operators';
 import { APIUtils } from '../API-utils';
+import { of } from 'rxjs';
+const Store = window.require('electron-store');
+const electronStore = new Store({accessPropertiesByDotNotation: false});
 
 @Injectable()
 export class TheGamesDBAPIService {
@@ -16,15 +19,15 @@ export class TheGamesDBAPIService {
   
     let url = APIUtils.buildUrlWithQueryParams(TheGamesDBBaseUrl + 'v1/Platforms', params);
 
-    // TODO: if in cache, pull from cache
-
-    return this.http.get(url)
-            .pipe(
-              tap(() => {
-                // TODO: add to store
-                // key = url
-                // value = res
-              })
-            );
+    if (electronStore.has(url)) {
+      return of(electronStore.get(url));
+    } else {
+      return this.http.get(url)
+              .pipe(
+                tap((response) => {
+                  electronStore.set(`${url}`, response);
+                })
+              );
+    }
   }
 }
