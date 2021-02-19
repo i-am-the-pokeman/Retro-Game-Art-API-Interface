@@ -1,6 +1,9 @@
 <mat-card>
     <mat-card-title>Game Selection</mat-card-title>
     <mat-card-content [formGroup]="formGroup">
+        <!-- TODO: add triangle icon to indicate dropdown -->
+        <!-- TODO: add required asterisk -->
+        <!-- TODO: make colors better -->
         <mat-form-field appearance="fill">
             <mat-label>Select Platform</mat-label>
             <input type="text"
@@ -17,6 +20,8 @@
                 </mat-option>
             </mat-autocomplete>
         </mat-form-field>
+
+        <!-- TODO: make a material button -->
         <button (click)="fetchGamesByPlatformIdAndPopulateDropdown()">Fetch da data</button>
     </mat-card-content>
 </mat-card>
