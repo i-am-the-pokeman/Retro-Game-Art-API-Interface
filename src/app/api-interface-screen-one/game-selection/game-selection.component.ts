@@ -18,10 +18,9 @@ export class GameSelectionComponent implements OnInit {
   // TODO: don't store the API key in this file lol
   readonly apikey: string = '';
 
-  // TODO: rename all platformsDropdownValues to platformDropdownValues
   // TODO: rename all DropdownValues to DropdownOptions
-  platformsDropdownValues: DropdownValue[] = [];
-  filteredPlatformsDropdownValues: Observable<DropdownValue[]> = new Observable<DropdownValue[]>();
+  platformDropdownValues: DropdownValue[] = [];
+  filteredPlatformDropdownValues: Observable<DropdownValue[]> = new Observable<DropdownValue[]>();
 
   formGroup = GameSelectionFormConfig.getFormGroup();
   readonly formConfigDataMap = GameSelectionFormConfig.getFormConfigDataMap();
@@ -36,8 +35,8 @@ export class GameSelectionComponent implements OnInit {
 
   ngOnInit() {
     this.fetchPlatformsAndPopulateDropdown();
-    this.filteredPlatformsDropdownValues
-      = AngularMaterialAutocompleteUtils.GetFilteredAutoCompleteOptions$(this.formGroup.controls[GameSelectionControlName.Platform], this.platformsDropdownValues);
+    this.filteredPlatformDropdownValues
+      = AngularMaterialAutocompleteUtils.GetFilteredAutoCompleteOptions$(this.formGroup.controls[GameSelectionControlName.Platform], this.platformDropdownValues);
   }
 
   fetchPlatformsAndPopulateDropdown() {
@@ -48,7 +47,7 @@ export class GameSelectionComponent implements OnInit {
     return this.theGamesDbAPIService.getAllPlatforms(request)
             .subscribe((response: GETPlatformsResponse) => {
               if (response?.data?.count) {
-                this.platformsDropdownValues
+                this.platformDropdownValues
                   = TheGamesDBAPIFormMapper.mapPlatformsToDropdownValues(
                                               Object.keys(response.data.platforms)
                                                       .map(key => response.data.platforms[key])
