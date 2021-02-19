@@ -1,15 +1,22 @@
 <mat-card>
     <mat-card-title>Game Selection</mat-card-title>
-    <mat-card-content>
-        <span>
-            <mat-card>
-                <mat-card-title>Platform</mat-card-title>
-            </mat-card>
-        </span>
-        <span>
-            <mat-card>
-                <mat-card-title>Platform</mat-card-title>
-            </mat-card>
-        </span>
+    <mat-card-content [formGroup]="formGroup">
+        <mat-form-field appearance="fill">
+            <mat-label>Select Platform</mat-label>
+            <input type="text"
+                        placeholder="Pick one"
+                        aria-label="Platform"
+                        matInput
+                        formControlName="{{GameSelectionControlName.Platform}}"
+                        [matAutocomplete]="platform_autocomplete">
+            <mat-autocomplete #platform_autocomplete
+                                [displayWith]="AngularMaterialAutocompleteUtils.getDropdownValueText">
+                <mat-option *ngFor="let option of platformsDropdownValues"
+                            [value]="option">
+                    {{option.Text}}
+                </mat-option>
+            </mat-autocomplete>
+        </mat-form-field>
+        <button (click)="fetchGamesByPlatformIdAndPopulateDropdown()">Fetch da data</button>
     </mat-card-content>
 </mat-card>

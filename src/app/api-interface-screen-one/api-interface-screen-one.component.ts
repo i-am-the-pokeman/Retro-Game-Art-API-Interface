@@ -12,19 +12,13 @@ const ipc = window.require('electron').ipcRenderer;
 })
 export class ApiInterfaceScreenOneComponent implements OnInit {
 
-  platformsDropdownValues: DropdownValue[] = [];
   isDownloadButtonDisabled: boolean = false;
 
-  // TODO: don't store the API key in this file lol
-  readonly apikey: string = '';
-
   constructor(
-    private theGamesDbAPIService: TheGamesDBAPIService,
     private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit(): void {
-    this.fetchPlatformsAndPopulateDropdown();
   }
 
   downloadImages() {
@@ -40,36 +34,4 @@ export class ApiInterfaceScreenOneComponent implements OnInit {
       console.log('Message received from main thread.')
     });
   }
-
-  fetchPlatformsAndPopulateDropdown() {
-    let request: GETPlatformsRequest = {
-      apikey: this.apikey
-    };
-
-    return this.theGamesDbAPIService.getAllPlatforms(request)
-            .subscribe((response: GETPlatformsResponse) => {
-              if (response?.data?.count) {
-                this.platformsDropdownValues
-                  = TheGamesDBAPIFormMapper.mapPlatformsToDropdownValues(
-                                              Object.keys(response.data.platforms)
-                                                      .map(key => response.data.platforms[key])
-                                            );
-              }
-            });
-  }
-
-  fetchGamesByPlatformIdAndPopulateDropdown() {
-    let request: GETGamesByPlatformIdRequest = {
-      apikey: this.apikey,
-      id: '1' // TODO: populate this based on the selection in the platforms dropdown
-    }
-    return this.theGamesDbAPIService.getGamesByPlatformId(request)
-            .subscribe((response: GETGamesByPlatformIdResponse) => {
-              // TODO: add drodpown and convert res to dropdown data
-              console.log(response);
-            });
-  }
-
-
-
 }
