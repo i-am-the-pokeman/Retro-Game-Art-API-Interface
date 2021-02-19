@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Observable } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 import { TheGamesDBAPIService } from 'src/app/APIs/TheGamesDB/TheGamesDBAPI.service';
 import { GETGamesByPlatformIdRequest, GETGamesByPlatformIdResponse, GETPlatformsRequest, GETPlatformsResponse } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIEntities';
 import { AngularMaterialAutocompleteUtils } from 'src/app/shared/forms/angular-material-autocomplete-utils';
@@ -16,7 +18,10 @@ export class GameSelectionComponent implements OnInit {
   // TODO: don't store the API key in this file lol
   readonly apikey: string = '';
 
+  // TODO: rename all platformsDropdownValues to platformDropdownValues
+  // TODO: rename all DropdownValues to DropdownOptions
   platformsDropdownValues: DropdownValue[] = [];
+  filteredPlatformsDropdownValues: Observable<DropdownValue[]> = new Observable<DropdownValue[]>();
 
   formGroup = GameSelectionFormConfig.getFormGroup();
   readonly formConfigDataMap = GameSelectionFormConfig.getFormConfigDataMap();
@@ -31,6 +36,7 @@ export class GameSelectionComponent implements OnInit {
 
   ngOnInit() {
     this.fetchPlatformsAndPopulateDropdown();
+    this.handlePlatformAutoCompleteFilter();
   }
 
   fetchPlatformsAndPopulateDropdown() {
@@ -63,5 +69,21 @@ export class GameSelectionComponent implements OnInit {
           console.log(response);
         });
     }
+  }
+
+  // TODO: move some of this to AngularMaterialAutocompleteUtils and split into "pure" functions
+  private handlePlatformAutoCompleteFilter() {
+    this.filteredPlatformsDropdownValues
+     = this.formGroup.controls[GameSelectionControlName.Platform].valueChanges
+        .pipe(
+          startWith(''),
+          map(value => typeof value === 'string' ? value : value.Text),
+          map(text => text ? this.filter(text) : this.platformsDropdownValues.slice())
+        )
+  }
+  // TODO: rename
+  private filter(text: string): DropdownValue[] {
+    const filterValue = text.toLowerCase();
+    return this.platformsDropdownValues.filter(option => option.Text.toLowerCase().indexOf(filterValue) >= 0);
   }
 }

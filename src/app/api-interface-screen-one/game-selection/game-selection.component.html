@@ -11,7 +11,7 @@
                         [matAutocomplete]="platform_autocomplete">
             <mat-autocomplete #platform_autocomplete
                                 [displayWith]="AngularMaterialAutocompleteUtils.getDropdownValueText">
-                <mat-option *ngFor="let option of platformsDropdownValues"
+                <mat-option *ngFor="let option of filteredPlatformsDropdownValues | async"
                             [value]="option">
                     {{option.Text}}
                 </mat-option>
