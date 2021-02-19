@@ -7,8 +7,8 @@ export class APIUtils {
         if (params.keys().length) {
             stringifiedParams = '?'
             stringifiedParams += params.keys()
-                                        .map((key) => key + '=' + params.get(key))
-                                        .join('');
+                                        ?.map((key) => key + '=' + params.get(key))
+                                        ?.join('&');
         }
         return mainUrl += stringifiedParams;
     }
