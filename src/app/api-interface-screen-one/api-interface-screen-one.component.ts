@@ -1,16 +1,22 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import { TheGamesDBAPIService } from '../APIs/TheGamesDB/TheGamesDBAPI.service';
-import { GETPlatformsRequest } from '../APIs/TheGamesDB/TheGamesDBAPIEntities';
+import { GETGamesByPlatformIdRequest, GETGamesByPlatformIdResponse, GETPlatformsRequest, GETPlatformsResponse } from '../APIs/TheGamesDB/TheGamesDBAPIEntities';
+import { DropdownValue } from '../shared/forms/entities';
+import { TheGamesDBAPIFormMapper } from '../shared/forms/TheGamesDBAPIFormMapper';
 const ipc = window.require('electron').ipcRenderer;
 
 @Component({
   selector: 'api-interface-screen-one',
   templateUrl: './api-interface-screen-one.component.html',
-  styleUrls: ['./api-interface-screen-one.component.less']
+  styleUrls: ['./api-interface-screen-one.component.less', '../shared/styles/spacing.less']
 })
 export class ApiInterfaceScreenOneComponent implements OnInit {
 
+  platformsDropdownValues: DropdownValue[] = [];
   isDownloadButtonDisabled: boolean = false;
+
+  // TODO: don't store the API key in this file lol
+  readonly apikey: string = '';
 
   constructor(
     private theGamesDbAPIService: TheGamesDBAPIService,
@@ -18,8 +24,7 @@ export class ApiInterfaceScreenOneComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    // TODO: keep this uncommented until electron-store is implemented and I can make sure I don't use up my API limit
-    //this.fetchPlatforms();
+    this.fetchPlatformsAndPopulateDropdown();
   }
 
   downloadImages() {
@@ -36,14 +41,35 @@ export class ApiInterfaceScreenOneComponent implements OnInit {
     });
   }
 
-  fetchPlatforms() {
+  fetchPlatformsAndPopulateDropdown() {
     let request: GETPlatformsRequest = {
-      apikey: ''
+      apikey: this.apikey
     };
 
-    // TODO: don't store the API key in this file lol
-    this.theGamesDbAPIService.getAllPlatforms(request)
-      .subscribe(x => console.log(x));
+    return this.theGamesDbAPIService.getAllPlatforms(request)
+            .subscribe((response: GETPlatformsResponse) => {
+              if (response?.data?.count) {
+                this.platformsDropdownValues
+                  = TheGamesDBAPIFormMapper.mapPlatformsToDropdownValues(
+                                              Object.keys(response.data.platforms)
+                                                      .map(key => response.data.platforms[key])
+                                            );
+              }
+            });
   }
+
+  fetchGamesByPlatformIdAndPopulateDropdown() {
+    let request: GETGamesByPlatformIdRequest = {
+      apikey: this.apikey,
+      id: '1' // TODO: populate this based on the selection in the platforms dropdown
+    }
+    return this.theGamesDbAPIService.getGamesByPlatformId(request)
+            .subscribe((response: GETGamesByPlatformIdResponse) => {
+              // TODO: add drodpown and convert res to dropdown data
+              console.log(response);
+            });
+  }
+
+
 
 }

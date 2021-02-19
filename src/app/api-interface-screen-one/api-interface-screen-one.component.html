@@ -1,8 +1,17 @@
-<button (click)="downloadImages()"
+<!-- TODO: Uncomment the following to test API and Image Downloading -->
+<!-- <button (click)="downloadImages()"
         [disabled]="isDownloadButtonDisabled">
     Download Puppy Image
 </button>
 
 <button (click)="fetchPlatforms()">
     Test GamesDB (careful!!)
+</button> -->
+
+<button (click)="fetchGamesByPlatformIdAndPopulateDropdown()">
+    Hi Hannah
 </button>
+
+<div class="margin-lg">
+    <game-selection></game-selection>
+</div>
