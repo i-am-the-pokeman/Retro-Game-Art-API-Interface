@@ -8,7 +8,7 @@ const ipc = window.require('electron').ipcRenderer;
 @Component({
   selector: 'api-interface-screen-one',
   templateUrl: './api-interface-screen-one.component.html',
-  styleUrls: ['./api-interface-screen-one.component.less', '../shared/styles/spacing.less']
+  styleUrls: ['./api-interface-screen-one.component.less']
 })
 export class ApiInterfaceScreenOneComponent implements OnInit {
 
