@@ -36,7 +36,8 @@ export class GameSelectionComponent implements OnInit {
 
   ngOnInit() {
     this.fetchPlatformsAndPopulateDropdown();
-    this.handlePlatformAutoCompleteFilter();
+    this.filteredPlatformsDropdownValues
+      = AngularMaterialAutocompleteUtils.GetFilteredAutoCompleteOptions$(this.formGroup.controls[GameSelectionControlName.Platform], this.platformsDropdownValues);
   }
 
   fetchPlatformsAndPopulateDropdown() {
@@ -69,21 +70,5 @@ export class GameSelectionComponent implements OnInit {
           console.log(response);
         });
     }
-  }
-
-  // TODO: move some of this to AngularMaterialAutocompleteUtils and split into "pure" functions
-  private handlePlatformAutoCompleteFilter() {
-    this.filteredPlatformsDropdownValues
-     = this.formGroup.controls[GameSelectionControlName.Platform].valueChanges
-        .pipe(
-          startWith(''),
-          map(value => typeof value === 'string' ? value : value.Text),
-          map(text => text ? this.filter(text) : this.platformsDropdownValues.slice())
-        )
-  }
-  // TODO: rename
-  private filter(text: string): DropdownValue[] {
-    const filterValue = text.toLowerCase();
-    return this.platformsDropdownValues.filter(option => option.Text.toLowerCase().indexOf(filterValue) >= 0);
   }
 }
