@@ -1,6 +1,6 @@
 import { ValidatorFn } from "@angular/forms";
 
-export interface DropdownValue {
+export interface DropdownOption {
     Text: string;
     Value: any;
 }

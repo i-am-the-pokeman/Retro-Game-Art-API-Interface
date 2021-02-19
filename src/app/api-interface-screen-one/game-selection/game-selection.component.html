@@ -10,8 +10,8 @@
                         formControlName="{{GameSelectionControlName.Platform}}"
                         [matAutocomplete]="platform_autocomplete">
             <mat-autocomplete #platform_autocomplete
-                                [displayWith]="AngularMaterialAutocompleteUtils.getDropdownValueText">
-                <mat-option *ngFor="let option of filteredPlatformDropdownValues | async"
+                                [displayWith]="AngularMaterialAutocompleteUtils.getDropdownOptionText">
+                <mat-option *ngFor="let option of filteredPlatformDropdownOptions | async"
                             [value]="option">
                     {{option.Text}}
                 </mat-option>

@@ -4,7 +4,7 @@ import { map, startWith } from 'rxjs/operators';
 import { TheGamesDBAPIService } from 'src/app/APIs/TheGamesDB/TheGamesDBAPI.service';
 import { GETGamesByPlatformIdRequest, GETGamesByPlatformIdResponse, GETPlatformsRequest, GETPlatformsResponse } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIEntities';
 import { AngularMaterialAutocompleteUtils } from 'src/app/shared/forms/angular-material-autocomplete-utils';
-import { DropdownValue } from 'src/app/shared/forms/entities';
+import { DropdownOption } from 'src/app/shared/forms/entities';
 import { TheGamesDBAPIFormMapper } from 'src/app/shared/forms/TheGamesDBAPIFormMapper';
 import { GameSelectionControlName, GameSelectionFormConfig } from './form-config';
 
@@ -18,9 +18,8 @@ export class GameSelectionComponent implements OnInit {
   // TODO: don't store the API key in this file lol
   readonly apikey: string = '';
 
-  // TODO: rename all DropdownValues to DropdownOptions
-  platformDropdownValues: DropdownValue[] = [];
-  filteredPlatformDropdownValues: Observable<DropdownValue[]> = new Observable<DropdownValue[]>();
+  platformDropdownOptions: DropdownOption[] = [];
+  filteredPlatformDropdownOptions: Observable<DropdownOption[]> = new Observable<DropdownOption[]>();
 
   formGroup = GameSelectionFormConfig.getFormGroup();
   readonly formConfigDataMap = GameSelectionFormConfig.getFormConfigDataMap();
@@ -35,8 +34,8 @@ export class GameSelectionComponent implements OnInit {
 
   ngOnInit() {
     this.fetchPlatformsAndPopulateDropdown();
-    this.filteredPlatformDropdownValues
-      = AngularMaterialAutocompleteUtils.GetFilteredAutoCompleteOptions$(this.formGroup.controls[GameSelectionControlName.Platform], this.platformDropdownValues);
+    this.filteredPlatformDropdownOptions
+      = AngularMaterialAutocompleteUtils.GetFilteredAutoCompleteOptions$(this.formGroup.controls[GameSelectionControlName.Platform], this.platformDropdownOptions);
   }
 
   fetchPlatformsAndPopulateDropdown() {
@@ -47,8 +46,8 @@ export class GameSelectionComponent implements OnInit {
     return this.theGamesDbAPIService.getAllPlatforms(request)
             .subscribe((response: GETPlatformsResponse) => {
               if (response?.data?.count) {
-                this.platformDropdownValues
-                  = TheGamesDBAPIFormMapper.mapPlatformsToDropdownValues(
+                this.platformDropdownOptions
+                  = TheGamesDBAPIFormMapper.mapPlatformsToDropdownOptions(
                                               Object.keys(response.data.platforms)
                                                       .map(key => response.data.platforms[key])
                                             );

@@ -1,8 +1,4 @@
 import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
-import { TheGamesDBAPIService } from '../APIs/TheGamesDB/TheGamesDBAPI.service';
-import { GETGamesByPlatformIdRequest, GETGamesByPlatformIdResponse, GETPlatformsRequest, GETPlatformsResponse } from '../APIs/TheGamesDB/TheGamesDBAPIEntities';
-import { DropdownValue } from '../shared/forms/entities';
-import { TheGamesDBAPIFormMapper } from '../shared/forms/TheGamesDBAPIFormMapper';
 const ipc = window.require('electron').ipcRenderer;
 
 @Component({
@@ -14,9 +10,7 @@ export class ApiInterfaceScreenOneComponent implements OnInit {
 
   isDownloadButtonDisabled: boolean = false;
 
-  constructor(
-    private cdr: ChangeDetectorRef
-  ) { }
+  constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit(): void {
   }
