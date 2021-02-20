@@ -13,7 +13,33 @@
 </button> -->
 
 <div class="margin-sm">
-  <game-selection class="margin-sm"></game-selection>
-  <image-selection class="margin-sm"></image-selection>
-  <download-selection class="margin-sm"></download-selection>
+  <mat-vertical-stepper [linear]="true">
+    <!--  -->
+    <mat-step [stepControl]="gameSelectionComponent.formGroup"
+              [label]="'Select a Game'">
+      <game-selection class="margin-sm"></game-selection>
+
+      <div>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
+    <!--  -->
+    <mat-step [label]="'Select Image Types'">
+      <image-selection class="margin-sm"></image-selection>
+
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button matStepperNext>Next</button>
+      </div>
+    </mat-step>
+    <!--  -->
+    <mat-step [label]="'Download Images'">
+      <download-selection class="margin-sm"></download-selection>
+
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+      </div>
+    </mat-step>
+    <!--  -->
+  </mat-vertical-stepper>
 </div>
