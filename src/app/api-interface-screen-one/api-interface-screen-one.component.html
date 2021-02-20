@@ -18,21 +18,24 @@
       <!--  -->
       <mat-step [stepControl]="gameSelectionComponent.formGroup"
                 [label]="'Select a Game'">
-        <div class="padding-sm"></div>
-        <game-selection></game-selection>
-        <next-back-stepper-buttons [showNext]="true"></next-back-stepper-buttons>
+        <div class="padding-sm-top">
+          <game-selection></game-selection>
+          <next-back-stepper-buttons [showNext]="true"></next-back-stepper-buttons>
+        </div>
       </mat-step>
       <!--  -->
       <mat-step [label]="'Select Image Types'">
-        <div class="padding-sm"></div>
-        <image-selection></image-selection>
-        <next-back-stepper-buttons [showBack]="true" [showNext]="true"></next-back-stepper-buttons>
+        <div class="padding-sm-top">
+          <image-selection></image-selection>
+          <next-back-stepper-buttons [showBack]="true" [showNext]="true"></next-back-stepper-buttons>
+        </div>
       </mat-step>
       <!--  -->
       <mat-step [label]="'Download Images'">
-        <div class="padding-sm"></div>
-        <download-selection></download-selection>
-        <next-back-stepper-buttons [showBack]="true"></next-back-stepper-buttons>
+        <div class="padding-sm-top">
+          <download-selection></download-selection>
+          <next-back-stepper-buttons [showBack]="true"></next-back-stepper-buttons>
+        </div>
       </mat-step>
       <!--  -->
     </mat-vertical-stepper>
