@@ -20,45 +20,19 @@
                 [label]="'Select a Game'">
         <div class="padding-sm"></div>
         <game-selection></game-selection>
-        <!-- TODO: turn back/next buttons in to reusable component -->
-        <div class="padding-lg-top">
-          <button mat-raised-button
-                  matStepperNext
-                  [color]="'accent'">
-            Next
-          </button>
-        </div>
+        <next-back-stepper-buttons [showNext]="true"></next-back-stepper-buttons>
       </mat-step>
       <!--  -->
       <mat-step [label]="'Select Image Types'">
         <div class="padding-sm"></div>
         <image-selection></image-selection>
-        <div class="padding-lg-top">
-          <button mat-raised-button
-                  matStepperPrevious
-                  [color]="'accent'">
-            Back
-          </button>
-          <span class="margin-sm-left">
-            <button mat-raised-button
-                    matStepperNext
-                    [color]="'accent'">
-              Next
-            </button>
-          </span>
-        </div>
+        <next-back-stepper-buttons [showBack]="true" [showNext]="true"></next-back-stepper-buttons>
       </mat-step>
       <!--  -->
       <mat-step [label]="'Download Images'">
         <div class="padding-sm"></div>
         <download-selection></download-selection>
-        <div class="padding-lg-top">
-          <button mat-raised-button
-                  matStepperPrevious
-                  [color]="'accent'">
-            Back
-          </button>
-        </div>
+        <next-back-stepper-buttons [showBack]="true"></next-back-stepper-buttons>
       </mat-step>
       <!--  -->
     </mat-vertical-stepper>

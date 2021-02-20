@@ -1,0 +1,16 @@
+<div class="padding-lg-top">
+  <button *ngIf="showBack"
+          mat-raised-button
+          matStepperPrevious
+          [color]="'accent'">
+    Back
+  </button>
+  <span *ngIf="showNext"
+        class="margin-sm-left">
+    <button mat-raised-button
+            matStepperNext
+            [color]="'accent'">
+      Next
+    </button>
+  </span>
+</div>

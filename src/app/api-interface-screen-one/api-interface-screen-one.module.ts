@@ -8,12 +8,14 @@ import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { NextBackStepperButtonsModule } from '../shared/components/next-back-stepper-buttons/next-back-stepper-buttons.module';
 
 @NgModule({
   imports: [
     GameSelectionModule,
     ImageSelectionModule,
     DownloadSelectionModule,
+    NextBackStepperButtonsModule,
     MatStepperModule,
     MatButtonModule,
     MatCardModule,
