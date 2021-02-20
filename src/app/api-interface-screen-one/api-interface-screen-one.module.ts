@@ -6,6 +6,7 @@ import { GameSelectionModule } from './game-selection/game-selection.module';
 import { ImageSelectionModule } from './image-selection/image-selection.module';
 import { MatStepperModule } from '@angular/material/stepper';
 import { MatButtonModule } from '@angular/material/button';
+import { MatCardModule } from '@angular/material/card';
 
 @NgModule({
   imports: [
@@ -13,7 +14,8 @@ import { MatButtonModule } from '@angular/material/button';
     ImageSelectionModule,
     DownloadSelectionModule,
     MatStepperModule,
-    MatButtonModule
+    MatButtonModule,
+    MatCardModule
   ],
   declarations: [
     ApiInterfaceScreenOneComponent,
