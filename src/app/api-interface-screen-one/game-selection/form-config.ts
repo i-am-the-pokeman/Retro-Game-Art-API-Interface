@@ -11,12 +11,20 @@ export class GameSelectionFormConfig {
         let formGroup = new FormGroup({});
 
         let gameSelectionFormConfigData = this.getFormConfigData();
+        
+        // Initialize form controls
         gameSelectionFormConfigData.forEach(formConfig => {
             formGroup.addControl(
                 formConfig.ControlName,
                 new FormControl(formConfig.DefaultValue, formConfig.Validators)
             );
         });
+        // Disable any form controls that should start disabled
+        gameSelectionFormConfigData.forEach(formConfig => {
+          if (formConfig.DisabledByDefault) {
+            formGroup.controls[formConfig.ControlName].disable();
+          }
+        })
 
         return formGroup;
     }
@@ -44,7 +52,8 @@ export class GameSelectionFormConfig {
                 DefaultValue: null,
                 Label: 'Game',
                 Validators: [Validators.required],
-                ErrorMessages: {}
+                ErrorMessages: {},
+                DisabledByDefault: true
             }
         ]
     }

@@ -11,8 +11,9 @@ export interface FormInputData {
     DependantOnControlsConfig?: DependantOnControlsConfig;
     Label: string;
     HintText?: string;
-    Validators?: ValidatorFn[]
-    ErrorMessages: any
+    Validators?: ValidatorFn[];
+    ErrorMessages: any;
+    DisabledByDefault?: boolean;
 }
 
 /**

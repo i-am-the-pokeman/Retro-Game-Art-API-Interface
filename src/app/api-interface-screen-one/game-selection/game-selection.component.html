@@ -1,28 +1,50 @@
 <mat-card>
-    <mat-card-title>Game Selection</mat-card-title>
-    <mat-card-content [formGroup]="formGroup">
-        <!-- TODO: add triangle icon to indicate dropdown -->
-        <!-- TODO: add required asterisk -->
-        <!-- TODO: make colors better -->
-        <mat-form-field appearance="fill"
-                        [color]="'accent'">
-            <mat-label>Select Platform</mat-label>
-            <input type="text"
-                    placeholder="Pick one"
-                    aria-label="Platform"
-                    matInput
-                    formControlName="{{GameSelectionControlName.Platform}}"
-                    [matAutocomplete]="platform_autocomplete">
-            <mat-autocomplete #platform_autocomplete
-                                [displayWith]="AngularMaterialAutocompleteUtils.getDropdownOptionText">
-                <mat-option *ngFor="let option of filteredPlatformDropdownOptions | async"
-                            [value]="option">
-                    {{option.Text}}
-                </mat-option>
-            </mat-autocomplete>
-        </mat-form-field>
+	<mat-card-title>
+		<mat-icon>looks_one</mat-icon>
+		Game Selection
+	</mat-card-title>
 
-        <!-- TODO: make a material button -->
-        <button (click)="fetchGamesByPlatformIdAndPopulateDropdown()">Fetch da data</button>
-    </mat-card-content>
+  <!-- TODO: add a form reset button (and don't forget to reset the disableByDefualt controls to be disabled) -->
+	<mat-card-content [formGroup]="formGroup">
+    <!-- TODO: Add a "clear text" button at the suffix of every autocomplete field -->
+    <mat-form-field appearance="fill"
+                    [color]="'accent'"
+                    class="autocomplete-width padding-lg-right">
+      <mat-label>Find Platform</mat-label>
+      <input type="text"
+              placeholder="Start typing..."
+              aria-label="Platform"
+              matInput
+              formControlName="{{GameSelectionControlName.Platform}}"
+              required
+              [matAutocomplete]="platform_autocomplete">
+      <mat-autocomplete #platform_autocomplete
+                        [displayWith]="AngularMaterialAutocompleteUtils.getDropdownOptionText">
+        <mat-option *ngFor="let option of filteredPlatformDropdownOptions | async"
+                    [value]="option">
+            {{option.Text}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill"
+                    [color]="'accent'"
+                    class="autocomplete-width">
+      <mat-label>Find Game</mat-label>
+      <input type="text"
+              placeholder="Start typing..."
+              aria-label="Game"
+              matInput
+              formControlName="{{GameSelectionControlName.Game}}"
+              required
+              [matAutocomplete]="game_autocomplete">
+      <mat-autocomplete #game_autocomplete
+                        [displayWith]="AngularMaterialAutocompleteUtils.getDropdownOptionText">
+        <mat-option *ngFor="let option of filteredGameDropdownOptions | async"
+                    [value]="option">
+          {{option.Text}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+	</mat-card-content>
 </mat-card>

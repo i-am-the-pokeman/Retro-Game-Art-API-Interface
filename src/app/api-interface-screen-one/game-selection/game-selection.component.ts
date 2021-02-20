@@ -16,10 +16,13 @@ import { GameSelectionControlName, GameSelectionFormConfig } from './form-config
 export class GameSelectionComponent implements OnInit {
 
   // TODO: don't store the API key in this file lol
-  readonly apikey: string = '';
+  readonly apikey: string = 'fb1938f1103f7fd4c21f326a618183c3b928a2f3912082a432a706ef11b487c0';
 
   platformDropdownOptions: DropdownOption[] = [];
   filteredPlatformDropdownOptions: Observable<DropdownOption[]> = new Observable<DropdownOption[]>();
+
+  gamesDropdownOptions: DropdownOption[] = [];
+  filteredGameDropdownOptions: Observable<DropdownOption[]> = new Observable<DropdownOption[]>();
 
   formGroup = GameSelectionFormConfig.getFormGroup();
   readonly formConfigDataMap = GameSelectionFormConfig.getFormConfigDataMap();
@@ -33,26 +36,30 @@ export class GameSelectionComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    // Fetch initial set of domain data
     this.fetchPlatformsAndPopulateDropdown();
-    this.filteredPlatformDropdownOptions
-      = AngularMaterialAutocompleteUtils.GetFilteredAutoCompleteOptions$(this.formGroup.controls[GameSelectionControlName.Platform], this.platformDropdownOptions);
+
+    // Form events
+    this.formGroup.controls[GameSelectionControlName.Platform].valueChanges
+      .subscribe(() => {
+        this.fetchGamesByPlatformIdAndPopulateDropdown();
+      });
   }
 
+  // API Actions + Side Effects
   fetchPlatformsAndPopulateDropdown() {
     let request: GETPlatformsRequest = {
       apikey: this.apikey
     };
 
-    return this.theGamesDbAPIService.getAllPlatforms(request)
-            .subscribe((response: GETPlatformsResponse) => {
-              if (response?.data?.count) {
-                this.platformDropdownOptions
-                  = TheGamesDBAPIFormMapper.mapPlatformsToDropdownOptions(
-                                              Object.keys(response.data.platforms)
-                                                      .map(key => response.data.platforms[key])
-                                            );
-              }
-            });
+    this.theGamesDbAPIService.getAllPlatforms(request)
+      .subscribe((response: GETPlatformsResponse) => {
+        if (response?.data?.count) {
+          this.platformDropdownOptions = TheGamesDBAPIFormMapper.MapPlatformsDictionaryToDropdownOptions(response.data.platforms);
+          this.filteredPlatformDropdownOptions
+            = AngularMaterialAutocompleteUtils.GetFilteredAutoCompleteOptions$(this.formGroup.controls[GameSelectionControlName.Platform], this.platformDropdownOptions);
+        }
+      });
   }
 
   fetchGamesByPlatformIdAndPopulateDropdown() {
@@ -64,9 +71,22 @@ export class GameSelectionComponent implements OnInit {
       }
       this.theGamesDbAPIService.getGamesByPlatformId(request)
         .subscribe((response: GETGamesByPlatformIdResponse) => {
-          // TODO: add drodpown and convert res to dropdown data
-          console.log(response);
+          if (response?.data?.count) {
+            // clear dependant control TODO: do this in a data driven way
+            this.formGroup.controls[GameSelectionControlName.Game].setValue({});
+            // enable dependant control TODO: do this in a data driven way
+            this.formGroup.controls[GameSelectionControlName.Game].enable();
+
+            this.gamesDropdownOptions = TheGamesDBAPIFormMapper.MapGamesDictionaryToDrodpownOptions(response.data.games);
+            // TODO: should I be concerned that a new observable is opened every time you switch the platform control's value?
+            this.filteredGameDropdownOptions
+               = AngularMaterialAutocompleteUtils.GetFilteredAutoCompleteOptions$(this.formGroup.controls[GameSelectionControlName.Game], this.gamesDropdownOptions);
+            console.log(this.gamesDropdownOptions);
+
+            // TODO: make newly enabled form input ripple
+          }
         });
     }
   }
+  // END API Actions + Side Effects
 }

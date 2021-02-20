@@ -41,7 +41,7 @@ export interface GETGamesByGameIdResponse extends BaseApiResponse {
 }
 export interface GetGamesData {
     count: number;
-    data: Game[];
+    games: Game[];
 }
 
 // --
