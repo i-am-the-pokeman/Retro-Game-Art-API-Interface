@@ -73,7 +73,9 @@ export class GameSelectionComponent implements OnInit {
         .subscribe((response: GETGamesByPlatformIdResponse) => {
           if (response?.data?.count) {
             // clear dependant control TODO: do this in a data driven way
-            this.formGroup.controls[GameSelectionControlName.Game].setValue({});
+            if (!this.formGroup.controls[GameSelectionControlName.Game].pristine) {
+              this.formGroup.controls[GameSelectionControlName.Game].reset();
+            }
             // enable dependant control TODO: do this in a data driven way
             this.formGroup.controls[GameSelectionControlName.Game].enable();
 
