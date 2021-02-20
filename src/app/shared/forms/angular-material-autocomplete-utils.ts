@@ -16,7 +16,7 @@ export class AngularMaterialAutocompleteUtils {
         return formControl.valueChanges                                         
                 .pipe(
                     startWith(''),
-                    map(value => typeof value === 'string' ? value : value.Text),
+                    map(value => typeof value === 'string' ? value : value?.Text),
                     map(text => text ? this.filter(text, dropdownOptions) : dropdownOptions.slice())
                 )
     }
