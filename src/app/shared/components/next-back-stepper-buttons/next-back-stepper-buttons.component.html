@@ -6,7 +6,7 @@
     Back
   </button>
   <span *ngIf="showNext"
-        class="margin-sm-left">
+        [ngClass]="{'margin-sm-left': showBack}">
     <button mat-raised-button
             matStepperNext
             [color]="'accent'">
