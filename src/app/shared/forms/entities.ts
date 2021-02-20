@@ -5,6 +5,7 @@ export interface DropdownOption {
     Value: any;
 }
 
+// TODO: make an object for ux items
 export interface FormInputData {
     ControlName: string;
     DefaultValue: any;
@@ -14,6 +15,7 @@ export interface FormInputData {
     Validators?: ValidatorFn[];
     ErrorMessages: any;
     DisabledByDefault?: boolean;
+    PlaceholderText?: string;
 }
 
 /**

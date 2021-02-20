@@ -3,9 +3,9 @@
   <!-- TODO: Add a "clear text" button at the suffix of every autocomplete field -->
   <mat-form-field appearance="fill"
                   class="autocomplete-width padding-lg-right">
-    <mat-label>Find Platform</mat-label>
+    <mat-label>{{formConfigDataMap.get(GameSelectionControlName.Platform)?.Label}}</mat-label>
     <input type="text"
-            placeholder="Start typing..."
+            placeholder="{{formConfigDataMap.get(GameSelectionControlName.Platform)?.PlaceholderText}}"
             aria-label="Platform"
             matInput
             formControlName="{{GameSelectionControlName.Platform}}"
@@ -22,9 +22,9 @@
 
   <mat-form-field appearance="fill"
                   class="autocomplete-width">
-    <mat-label>Find Game</mat-label>
+    <mat-label>{{formConfigDataMap.get(GameSelectionControlName.Game)?.Label}}</mat-label>
     <input type="text"
-            placeholder="Start typing..."
+            placeholder="{{formConfigDataMap.get(GameSelectionControlName.Game)?.PlaceholderText}}"
             aria-label="Game"
             matInput
             formControlName="{{GameSelectionControlName.Game}}"

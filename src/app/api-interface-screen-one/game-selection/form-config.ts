@@ -43,17 +43,19 @@ export class GameSelectionFormConfig {
             {
                 ControlName: GameSelectionControlName.Platform,
                 DefaultValue: null,
-                Label: 'Platform',
+                Label: 'Find Platform',
                 Validators: [Validators.required],
-                ErrorMessages: {}
+                ErrorMessages: { required: 'Please select a Platform.' },
+                PlaceholderText: 'Start typing...'
             },
             {
                 ControlName: GameSelectionControlName.Game,
                 DefaultValue: null,
-                Label: 'Game',
+                Label: 'Find Game',
                 Validators: [Validators.required],
-                ErrorMessages: {},
-                DisabledByDefault: true
+                ErrorMessages: { required: 'Please select a Platform.' },
+                DisabledByDefault: true,
+                PlaceholderText: 'Start typing...'
             }
         ]
     }
