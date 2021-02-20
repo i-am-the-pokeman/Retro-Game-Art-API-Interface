@@ -12,38 +12,55 @@
     Hi Hannah
 </button> -->
 
-<mat-card>
+<mat-card class="margin-lg">
   <mat-card-content>
-    <div class="margin-sm">
-      <mat-vertical-stepper [linear]="true">
-        <!--  -->
-        <mat-step [stepControl]="gameSelectionComponent.formGroup"
-                  [label]="'Select a Game'">
-          <game-selection class="margin-sm"></game-selection>
-
-          <div>
-            <button mat-button matStepperNext>Next</button>
-          </div>
-        </mat-step>
-        <!--  -->
-        <mat-step [label]="'Select Image Types'">
-          <image-selection class="margin-sm"></image-selection>
-
-          <div>
-            <button mat-button matStepperPrevious>Back</button>
-            <button mat-button matStepperNext>Next</button>
-          </div>
-        </mat-step>
-        <!--  -->
-        <mat-step [label]="'Download Images'">
-          <download-selection class="margin-sm"></download-selection>
-
-          <div>
-            <button mat-button matStepperPrevious>Back</button>
-          </div>
-        </mat-step>
-        <!--  -->
-      </mat-vertical-stepper>
-    </div>
+    <mat-vertical-stepper [linear]="true">
+      <!--  -->
+      <mat-step [stepControl]="gameSelectionComponent.formGroup"
+                [label]="'Select a Game'">
+        <div class="padding-sm"></div>
+        <game-selection></game-selection>
+        <!-- TODO: turn back/next buttons in to reusable component -->
+        <div class="padding-lg-top">
+          <button mat-raised-button
+                  matStepperNext
+                  [color]="'accent'">
+            Next
+          </button>
+        </div>
+      </mat-step>
+      <!--  -->
+      <mat-step [label]="'Select Image Types'">
+        <div class="padding-sm"></div>
+        <image-selection></image-selection>
+        <div class="padding-lg-top">
+          <button mat-raised-button
+                  matStepperPrevious
+                  [color]="'accent'">
+            Back
+          </button>
+          <span class="margin-sm-left">
+            <button mat-raised-button
+                    matStepperNext
+                    [color]="'accent'">
+              Next
+            </button>
+          </span>
+        </div>
+      </mat-step>
+      <!--  -->
+      <mat-step [label]="'Download Images'">
+        <div class="padding-sm"></div>
+        <download-selection></download-selection>
+        <div class="padding-lg-top">
+          <button mat-raised-button
+                  matStepperPrevious
+                  [color]="'accent'">
+            Back
+          </button>
+        </div>
+      </mat-step>
+      <!--  -->
+    </mat-vertical-stepper>
   </mat-card-content>
 </mat-card>

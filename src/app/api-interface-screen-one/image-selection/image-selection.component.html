@@ -1,6 +1,35 @@
-<mat-card>
-	<mat-card-title>
-		<mat-icon>looks_two</mat-icon>
-		Image Selection
-	</mat-card-title>
-</mat-card>
+<mat-grid-list cols="2" rowHeight="100px" [gutterSize]="'10px'">
+  <mat-grid-tile>
+    <mat-form-field appearance="fill"
+                    class="dropdown-width"
+                    [style.margin]="0">
+      <mat-label>Icon Image Type Selection</mat-label>
+      <mat-select>
+        <!-- TODO: display the possible image types for selected game -->
+        <mat-option></mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- TODO: Put a image preview here for selected thumbnail image type -->
+  </mat-grid-tile>
+
+  <mat-divider [vertical]="true" [inset]="true"></mat-divider>
+
+  <mat-grid-tile>
+    <mat-form-field appearance="fill"
+                    class="dropdown-width">
+      <mat-label>Banner Image Type Selection</mat-label>
+      <mat-select>
+        <!-- TODO: display the possible image types for selected game -->
+        <mat-option></mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- TODO: Put a image preview here for selected banner image type -->
+  </mat-grid-tile>
+</mat-grid-list>
+
+<div class="padding-sm-bottom">
+  <button mat-raised-button
+          [color]="'primary'">
+    Fetch Previews
+  </button>
+</div>
