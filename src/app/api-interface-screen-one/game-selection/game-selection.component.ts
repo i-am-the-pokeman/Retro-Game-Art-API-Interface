@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TheGamesDBAPIService } from 'src/app/APIs/TheGamesDB/TheGamesDBAPI.service';
 import { GETGamesByPlatformIdRequest, GETGamesByPlatformIdResponse, GETPlatformsRequest, GETPlatformsResponse } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIEntities';
@@ -13,6 +13,7 @@ import { GameSelectionControlName, GameSelectionFormConfig } from './form-config
   styleUrls: ['./game-selection.component.less']
 })
 export class GameSelectionComponent implements OnInit {
+  @Output() gameSelected = new EventEmitter<number>();
 
   // TODO: don't store the API key in this file lol
   readonly apikey: string = 'fb1938f1103f7fd4c21f326a618183c3b928a2f3912082a432a706ef11b487c0';
@@ -42,6 +43,13 @@ export class GameSelectionComponent implements OnInit {
     this.formGroup.controls[GameSelectionControlName.Platform].valueChanges
       .subscribe(() => {
         this.fetchGamesByPlatformIdAndPopulateDropdown();
+      });
+
+    this.formGroup.controls[GameSelectionControlName.Game].valueChanges
+      .subscribe((value) => {
+        if (!!value?.Value) {
+          this.gameSelected.emit(value?.Value);
+        }
       });
   }
 

@@ -1,5 +1,6 @@
 import { FormControl, FormGroup, Validators } from "@angular/forms";
 import { FormInputData } from "src/app/shared/forms/entities";
+import { FormConfigUtils } from "src/app/shared/forms/form-config.utils";
 
 export enum GameSelectionControlName {
     Platform = 'platform',
@@ -8,34 +9,11 @@ export enum GameSelectionControlName {
 
 export class GameSelectionFormConfig {
     public static getFormGroup(): FormGroup {
-        let formGroup = new FormGroup({});
-
-        let gameSelectionFormConfigData = this.getFormConfigData();
-        
-        // Initialize form controls
-        gameSelectionFormConfigData.forEach(formConfig => {
-            formGroup.addControl(
-                formConfig.ControlName,
-                new FormControl(formConfig.DefaultValue, formConfig.Validators)
-            );
-        });
-        // Disable any form controls that should start disabled
-        gameSelectionFormConfigData.forEach(formConfig => {
-          if (formConfig.DisabledByDefault) {
-            formGroup.controls[formConfig.ControlName].disable();
-          }
-        })
-
-        return formGroup;
+      return FormConfigUtils.getFormGroup(this.getFormConfigData());
     }
 
     public static getFormConfigDataMap(): Map<string, FormInputData> {
-        let formConfigData = this.getFormConfigData();
-        let formConfigDataMap = new Map();
-        formConfigData.forEach((data) => {
-            formConfigDataMap.set(data.ControlName, data);
-        });
-        return formConfigDataMap;
+        return FormConfigUtils.getFormConfigDataMap(this.getFormConfigData());
     }
 
     public static getFormConfigData(): FormInputData[] {

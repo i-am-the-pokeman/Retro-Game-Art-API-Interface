@@ -19,21 +19,24 @@
       <mat-step [stepControl]="gameSelectionComponent.formGroup"
                 [label]="'Select a Game'">
         <div class="padding-sm-top">
-          <game-selection></game-selection>
+          <game-selection (gameSelected)="setGameSelectionId($event)">
+          </game-selection>
           <next-back-stepper-buttons [showNext]="true"></next-back-stepper-buttons>
         </div>
       </mat-step>
       <!--  -->
       <mat-step [label]="'Select Image Types'">
         <div class="padding-sm-top">
-          <image-selection></image-selection>
+          <image-selection [gameSelectionId]="gameSelectionId"
+                            (imagesSelected)="setImageSelectionUrls($event)">
+          </image-selection>
           <next-back-stepper-buttons [showBack]="true" [showNext]="true"></next-back-stepper-buttons>
         </div>
       </mat-step>
       <!--  -->
       <mat-step [label]="'Download Images'">
         <div class="padding-sm-top">
-          <download-selection></download-selection>
+          <download-selection [imageSelectionUrls]="imageSelectionUrls"></download-selection>
           <next-back-stepper-buttons [showBack]="true"></next-back-stepper-buttons>
         </div>
       </mat-step>

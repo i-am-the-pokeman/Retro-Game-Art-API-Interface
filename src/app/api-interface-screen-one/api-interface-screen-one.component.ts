@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { DownloadSelectionComponent } from './download-selection/download-selection.component';
 import { GameSelectionComponent } from './game-selection/game-selection.component';
+import { ImageSelectionUrls } from './image-selection/entities';
 import { ImageSelectionComponent } from './image-selection/image-selection.component';
 const ipc = window.require('electron').ipcRenderer;
 
@@ -15,12 +16,23 @@ export class ApiInterfaceScreenOneComponent implements OnInit {
   @ViewChild(ImageSelectionComponent) imageSelectionComponent: ImageSelectionComponent;
   @ViewChild(DownloadSelectionComponent) downloadSelectionComponent: DownloadSelectionComponent;
 
+  gameSelectionId: number;
+  imageSelectionUrls: ImageSelectionUrls;
+
   // TODO: move to download-selection component
   isDownloadButtonDisabled: boolean = false;
 
   constructor(private cdr: ChangeDetectorRef) { }
 
   ngOnInit() {}
+
+  setGameSelectionId(gameSelectionId: number) {
+    this.gameSelectionId = gameSelectionId;
+  }
+
+  setImageSelectionUrls(imageSelections: ImageSelectionUrls) {
+    this.imageSelectionUrls = Object.assign({}, imageSelections);
+  }
 
   // TODO: move to download-selection component
   downloadImages() {
