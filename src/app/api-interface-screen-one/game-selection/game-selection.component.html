@@ -4,14 +4,15 @@
         <!-- TODO: add triangle icon to indicate dropdown -->
         <!-- TODO: add required asterisk -->
         <!-- TODO: make colors better -->
-        <mat-form-field appearance="fill">
+        <mat-form-field appearance="fill"
+                        [color]="'accent'">
             <mat-label>Select Platform</mat-label>
             <input type="text"
-                        placeholder="Pick one"
-                        aria-label="Platform"
-                        matInput
-                        formControlName="{{GameSelectionControlName.Platform}}"
-                        [matAutocomplete]="platform_autocomplete">
+                    placeholder="Pick one"
+                    aria-label="Platform"
+                    matInput
+                    formControlName="{{GameSelectionControlName.Platform}}"
+                    [matAutocomplete]="platform_autocomplete">
             <mat-autocomplete #platform_autocomplete
                                 [displayWith]="AngularMaterialAutocompleteUtils.getDropdownOptionText">
                 <mat-option *ngFor="let option of filteredPlatformDropdownOptions | async"
