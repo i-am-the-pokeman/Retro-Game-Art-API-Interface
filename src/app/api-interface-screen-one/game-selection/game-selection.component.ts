@@ -2,6 +2,7 @@ import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Observable } from 'rxjs';
 import { TheGamesDBAPIService } from 'src/app/APIs/TheGamesDB/TheGamesDBAPI.service';
 import { GETGamesByPlatformIdRequest, GETGamesByPlatformIdResponse, GETPlatformsRequest, GETPlatformsResponse } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIEntities';
+import { TheGamesDBAPIKey } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIKey';
 import { AngularMaterialAutocompleteUtils } from 'src/app/shared/forms/angular-material-autocomplete-utils';
 import { DropdownOption } from 'src/app/shared/forms/entities';
 import { TheGamesDBAPIFormMapper } from 'src/app/shared/forms/TheGamesDBAPIFormMapper';
@@ -14,9 +15,6 @@ import { GameSelectionControlName, GameSelectionFormConfig } from './form-config
 })
 export class GameSelectionComponent implements OnInit {
   @Output() gameSelected = new EventEmitter<number>();
-
-  // TODO: don't store the API key in this file lol
-  readonly apikey: string = '';
 
   platformDropdownOptions: DropdownOption[] = [];
   filteredPlatformDropdownOptions: Observable<DropdownOption[]> = new Observable<DropdownOption[]>();
@@ -56,7 +54,7 @@ export class GameSelectionComponent implements OnInit {
   // API Actions + Side Effects
   fetchPlatformsAndPopulateDropdown() {
     let request: GETPlatformsRequest = {
-      apikey: this.apikey
+      apikey: TheGamesDBAPIKey
     };
 
     this.theGamesDbAPIService.getAllPlatforms(request)
@@ -73,7 +71,7 @@ export class GameSelectionComponent implements OnInit {
     let platformId = this.formGroup.controls[GameSelectionControlName.Platform].value?.Value;
     if (!!platformId) {
       let request: GETGamesByPlatformIdRequest = {
-        apikey: this.apikey,
+        apikey: TheGamesDBAPIKey,
         id: platformId
       }
       this.theGamesDbAPIService.getGamesByPlatformId(request)
