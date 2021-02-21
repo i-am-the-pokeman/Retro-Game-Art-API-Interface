@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
-import { GETGamesByPlatformIdRequest, GETGamesByPlatformIdResponse, GETPlatformsRequest, GETPlatformsResponse, TheGamesDBBaseUrl } from './TheGamesDBAPIEntities';
+import { GETGameImagesByGameIdRequest, GETGameImagesByGameIdResponse, GETGamesByPlatformIdRequest, GETGamesByPlatformIdResponse, GETPlatformsRequest, GETPlatformsResponse, TheGamesDBBaseUrl } from './TheGamesDBAPIEntities';
 import { tap } from 'rxjs/operators';
 import { APIUtils } from '../API-utils';
 import { Observable, of } from 'rxjs';
@@ -42,6 +42,25 @@ export class TheGamesDBAPIService {
       return of(electronStore.get(url));
     } else {
       return this.http.get<GETGamesByPlatformIdResponse>(url)
+              .pipe(
+                tap((response) => {
+                  electronStore.set(`${url}`, response);
+                })
+              );
+    }
+  }
+
+  getGameImagesByGameIdRequest(request: GETGameImagesByGameIdRequest): Observable<GETGameImagesByGameIdResponse> {
+    let params = new HttpParams();
+    params = params.append('apikey', request.apikey);
+    params = params.append('games_id', request.games_id);
+
+    let url = APIUtils.buildUrlWithQueryParams(TheGamesDBBaseUrl + 'v1/Games/Images', params);
+
+    if (electronStore.has(url)) {
+      return of(electronStore.get(url));
+    } else {
+      return this.http.get<GETGameImagesByGameIdResponse>(url)
               .pipe(
                 tap((response) => {
                   electronStore.set(`${url}`, response);
