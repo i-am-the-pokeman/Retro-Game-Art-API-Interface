@@ -16,7 +16,7 @@ export class GameSelectionComponent implements OnInit {
   @Output() gameSelected = new EventEmitter<number>();
 
   // TODO: don't store the API key in this file lol
-  readonly apikey: string = 'fb1938f1103f7fd4c21f326a618183c3b928a2f3912082a432a706ef11b487c0';
+  readonly apikey: string = '';
 
   platformDropdownOptions: DropdownOption[] = [];
   filteredPlatformDropdownOptions: Observable<DropdownOption[]> = new Observable<DropdownOption[]>();
