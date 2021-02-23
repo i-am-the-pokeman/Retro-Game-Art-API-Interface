@@ -20,7 +20,7 @@ export interface GetPlatformsData {
   platforms: PlatformsDictionary;
 }
 export interface PlatformsDictionary {
-    [key: string]: Platform;
+  [key: string]: Platform;
 }
 
 // ---
@@ -37,26 +37,41 @@ export interface GETGamesByPlatformIdResponse extends GETGamesByGameIdResponse {
 // --
 
 export interface GETGamesByGameIdResponse extends BaseApiResponse {
-    data: GetGamesData;
+  data: GetGamesData;
 }
 export interface GetGamesData {
-    count: number;
-    games: Game[];
+  count: number;
+  games: GamesDictionary;
+}
+export interface GamesDictionary {
+  [key: string]: Game;
 }
 
 // --
 
 export interface GETGameImagesByGameIdRequest {
-    apikey: string;
-    games_id: string;   
+  apikey: string;
+  games_id: string;   
 }
 export interface GETGameImagesByGameIdResponse extends BaseApiResponse {
-    data: GetGameImagesData
+  data: GetGameImagesData
 }
 export interface GetGameImagesData {
-    count: number;
-    base_url: ImageBaseUrlMeta;
-    images: GameImage[];
+  count: number;
+  base_url: ImageBaseUrlMeta;
+  images: GamesImagesDictionary;
+}
+export interface GamesImagesDictionary {
+  [key: string]: GameImage[];
+}
+
+export enum ImageTypes {
+  fanart = 'fanart',
+  banner = 'banner',
+  boxart = 'boxart',
+  screenshot = 'screenshot',
+  clearlogo = 'clearlogo',
+  titlescreen = 'titlescreen'
 }
 
 // END DTOs
@@ -97,19 +112,19 @@ export interface Game {
 }
 
 export interface ImageBaseUrlMeta {
-    original: string;
-    small: string;
-    thumb: string;
-    cropped_center_thumb: string;
-    medium: string;
-    large: string;
+  original: string;
+  small: string;
+  thumb: string;
+  cropped_center_thumb: string;
+  medium: string;
+  large: string;
 }
 
 export interface GameImage {
-    id: number;
-    type: string;
-    side: string;
-    filename: string;
-    resolution: string;
+  id: number;
+  type: string;
+  side: string;
+  filename: string;
+  resolution: string;
 }
 // END Common Models

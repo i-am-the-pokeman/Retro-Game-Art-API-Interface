@@ -2,7 +2,7 @@
 <div [formGroup]="formGroup">
   <!-- TODO: Add a "clear text" button at the suffix of every autocomplete field -->
   <mat-form-field appearance="fill"
-                  class="autocomplete-width padding-lg-right">
+                  class="autocomplete-width padding-sm-bottom">
     <mat-label>{{formConfigDataMap.get(GameSelectionControlName.Platform)?.Label}}</mat-label>
     <input type="text"
             placeholder="{{formConfigDataMap.get(GameSelectionControlName.Platform)?.PlaceholderText}}"
@@ -18,6 +18,10 @@
           {{option.Text}}
       </mat-option>
     </mat-autocomplete>
+    <!-- TODO: find a way to loop through formConfigData in case of multiple errors -->
+    <mat-error *ngIf="formGroup.controls[GameSelectionControlName.Platform].hasError('required')">
+      {{formConfigDataMap.get(GameSelectionControlName.Platform)?.ErrorMessages?.required}}
+    </mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="fill"
@@ -37,5 +41,9 @@
         {{option.Text}}
       </mat-option>
     </mat-autocomplete>
+    <!-- TODO: find a way to loop through formConfigData in case of multiple errors -->
+    <mat-error *ngIf="formGroup.controls[GameSelectionControlName.Game].hasError('required')">
+      {{formConfigDataMap.get(GameSelectionControlName.Game)?.ErrorMessages?.required}}
+    </mat-error>
   </mat-form-field>
 </div>

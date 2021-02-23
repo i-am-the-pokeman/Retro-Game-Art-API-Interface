@@ -1,4 +1,4 @@
 export interface ImageSelectionUrls {
-  thumbnailURL: string;
+  iconURL: string;
   bannerURL: string;
 }

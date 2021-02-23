@@ -12,4 +12,8 @@ export class APIUtils {
         }
         return mainUrl += stringifiedParams;
     }
+
+    public static buildFileUrl(baseUrl: string = '', filename: string = ''): string {
+      return baseUrl + filename;
+    }
 }

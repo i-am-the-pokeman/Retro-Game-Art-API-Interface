@@ -1,9 +1,13 @@
-import { FormControl, FormGroup } from "@angular/forms";
+import { FormControl, FormGroup, ValidatorFn } from "@angular/forms";
 import { FormInputData } from "./entities";
 
 export class FormConfigUtils {
-  public static getFormGroup(formConfigData: FormInputData[]): FormGroup {
+  public static getFormGroup(formConfigData: FormInputData[], formGroupValidatorFn?: any): FormGroup {
     let formGroup = new FormGroup({});
+
+    if (formGroupValidatorFn) {
+      formGroup.setValidators(formGroupValidatorFn);
+    }
     
     // Initialize form controls
     formConfigData.forEach(formConfig => {

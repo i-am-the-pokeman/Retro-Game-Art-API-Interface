@@ -12,9 +12,10 @@ const ipc = window.require('electron').ipcRenderer;
 })
 export class ApiInterfaceScreenOneComponent implements OnInit {
 
+  // TODO: create a new injectable service that initializes these formGroups and makes them available so we don't have to ViewChild
   @ViewChild(GameSelectionComponent, { static: true }) gameSelectionComponent: GameSelectionComponent;
-  @ViewChild(ImageSelectionComponent) imageSelectionComponent: ImageSelectionComponent;
-  @ViewChild(DownloadSelectionComponent) downloadSelectionComponent: DownloadSelectionComponent;
+  @ViewChild(ImageSelectionComponent, { static: true }) imageSelectionComponent: ImageSelectionComponent;
+  @ViewChild(DownloadSelectionComponent, { static: true }) downloadSelectionComponent: DownloadSelectionComponent;
 
   gameSelectionId: number;
   imageSelectionUrls: ImageSelectionUrls;

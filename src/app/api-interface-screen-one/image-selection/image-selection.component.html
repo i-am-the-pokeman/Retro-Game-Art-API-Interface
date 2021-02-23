@@ -1,35 +1,53 @@
-<mat-grid-list cols="2" rowHeight="60px" [gutterSize]="'10px'">
-  <mat-grid-tile>
-    <mat-form-field appearance="fill"
-                    class="dropdown-width"
-                    [style.margin]="0">
-      <mat-label>Icon Image Type Selection</mat-label>
-      <mat-select>
-        <!-- TODO: display the possible image types for selected game -->
-        <mat-option></mat-option>
-      </mat-select>
-    </mat-form-field>
-    <!-- TODO: Put a image preview here for selected thumbnail image type -->
-  </mat-grid-tile>
+<div [formGroup]="formGroup">  
+  <mat-grid-list cols="2" rowHeight="300px" [gutterSize]="'10px'">
+    <!-- Icon Form  + Image Preview -->
+    <mat-grid-tile>
+      <!-- Form -->
+      <mat-form-field appearance="fill"
+                      class="dropdown-width">
+        <mat-label>{{formConfigDataMap.get(GameImageTypeSelectionControlName.Icon)?.Label}}</mat-label>
+        <mat-select formControlName="{{GameImageTypeSelectionControlName.Icon}}">
+          <mat-option *ngFor="let option of gameImageTypeDropdownOptions"
+                      [value]="option">
+            {{option.Text}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formGroup.hasError('atLeastOneRequired')">oi wut tha fuk u doin, mate?</mat-error>
+      </mat-form-field>
+      <!-- Image Preview -->
+      <div *ngIf="!selectedIconUrl"
+            class="image-preview-placeholder">
+      </div>
+      <div *ngIf="selectedIconUrl">
+        <img src="{{selectedIconUrl}}"
+              alt="selected icon image"
+              class="image-preview">
+      </div>
+    </mat-grid-tile>
 
-  <mat-divider [vertical]="true" [inset]="true"></mat-divider>
-
-  <mat-grid-tile>
-    <mat-form-field appearance="fill"
-                    class="dropdown-width">
-      <mat-label>Banner Image Type Selection</mat-label>
-      <mat-select>
-        <!-- TODO: display the possible image types for selected game -->
-        <mat-option></mat-option>
-      </mat-select>
-    </mat-form-field>
-    <!-- TODO: Put a image preview here for selected banner image type -->
-  </mat-grid-tile>
-</mat-grid-list>
-
-<div class="padding-sm-bottom">
-  <button mat-flat-button
-          [color]="'accent'">
-    Fetch Previews
-  </button>
+    <!-- Banner Form + Image Preview-->
+    <mat-grid-tile>
+      <!-- Form -->
+      <mat-form-field appearance="fill"
+                      class="dropdown-width">
+        <mat-label>{{formConfigDataMap.get(GameImageTypeSelectionControlName.Banner)?.Label}}</mat-label>
+        <mat-select formControlName="{{GameImageTypeSelectionControlName.Banner}}">
+          <mat-option *ngFor="let option of gameImageTypeDropdownOptions"
+                      [value]="option">
+            {{option.Text}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="formGroup.hasError('atLeastOneRequired')">oi wut tha fuk u doin, mate?</mat-error>
+      </mat-form-field>
+      <!-- Image Preview -->
+        <div *ngIf="!selectedBannerUrl"
+              class="image-preview-placeholder">
+        </div>
+        <div *ngIf="selectedBannerUrl">
+          <img src="{{selectedBannerUrl}}"
+                alt="selected banner image"
+                class="image-preview">
+        </div>
+    </mat-grid-tile>
+  </mat-grid-list>
 </div>

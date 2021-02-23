@@ -17,7 +17,8 @@
         </div>
       </mat-step>
       <!--  -->
-      <mat-step [label]="'Select Image Types'">
+      <mat-step [stepControl]="imageSelectionComponent.formGroup"
+                [label]="'Select Image Types'">
         <div class="padding-sm-top">
           <image-selection [gameSelectionId]="gameSelectionId"
                             (imagesSelected)="setImageSelectionUrls($event)">
