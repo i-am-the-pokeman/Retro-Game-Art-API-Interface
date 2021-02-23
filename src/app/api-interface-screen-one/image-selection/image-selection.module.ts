@@ -7,6 +7,7 @@ import { ImageSelectionComponent } from './image-selection.component';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDividerModule } from '@angular/material/divider';
+import { ErrorMessageModule } from 'src/app/shared/components/error-message/error-message.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { MatDividerModule } from '@angular/material/divider';
     MatSelectModule,
     MatButtonModule,
     MatGridListModule,
-    MatDividerModule
+    MatDividerModule,
+    ErrorMessageModule
   ],
   declarations: [
     ImageSelectionComponent,
