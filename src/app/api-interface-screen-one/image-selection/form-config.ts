@@ -1,4 +1,5 @@
 import { FormGroup, Validators } from "@angular/forms";
+import { CustomFormValidators } from "src/app/shared/forms/custom-form-validators";
 import { FormInputData } from "src/app/shared/forms/entities";
 import { FormConfigUtils } from "src/app/shared/forms/form-config.utils";
 
@@ -9,7 +10,7 @@ export enum GameImageTypeSelectionControlName {
 
 export class GameImageTypeSelectionFormConfig {
     public static getFormGroup(): FormGroup {
-      return FormConfigUtils.getFormGroup(this.getFormConfigData(), this.atLeastOneRequired);
+      return FormConfigUtils.getFormGroup(this.getFormConfigData(), CustomFormValidators.atLeastOneRequired);
     }
 
     public static getFormConfigDataMap(): Map<string, FormInputData> {
@@ -35,23 +36,5 @@ export class GameImageTypeSelectionFormConfig {
             PlaceholderText: 'Select image type...'
         }
       ]
-    }
-    
-    private static atLeastOneRequired(controlGroup: FormGroup): {[key: string]: any} | null {
-      let controls = controlGroup.controls;
-      if (controls) {
-        let populatedControl = Object.keys(controls).find(key => {
-          console.log(controls[key].value);
-          return !!controls[key].value
-        });
-        if (!populatedControl) {
-          return {
-            atLeastOneRequired: {
-              text: 'At least one selection is required.'
-            }
-          }
-        }
-      }
-      return null;
     }
 }
