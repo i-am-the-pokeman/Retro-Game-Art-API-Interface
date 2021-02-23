@@ -12,7 +12,6 @@
             {{option.Text}}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="formGroup.hasError('atLeastOneRequired')">oi wut tha fuk u doin, mate?</mat-error>
       </mat-form-field>
       <!-- Image Preview -->
       <div *ngIf="!selectedIconUrl"
@@ -37,7 +36,6 @@
             {{option.Text}}
           </mat-option>
         </mat-select>
-        <mat-error *ngIf="formGroup.hasError('atLeastOneRequired')">oi wut tha fuk u doin, mate?</mat-error>
       </mat-form-field>
       <!-- Image Preview -->
         <div *ngIf="!selectedBannerUrl"
