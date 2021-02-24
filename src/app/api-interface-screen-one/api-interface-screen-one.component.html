@@ -1,9 +1,3 @@
-<!-- TODO: Uncomment the following to test API and Image Downloading -->
-<!-- <button (click)="downloadImages()"
-        [disabled]="isDownloadButtonDisabled">
-    Download Puppy Image
-</button> -->
-
 <mat-card class="margin-lg">
   <mat-card-content>
     <mat-vertical-stepper [linear]="true">
@@ -18,19 +12,12 @@
       </mat-step>
       <!--  -->
       <mat-step [stepControl]="imageSelectionComponent.formGroup"
-                [label]="'Select Image Types'">
+                [label]="'Select & Download Images'">
         <div class="padding-sm-top">
           <image-selection [gameSelectionId]="gameSelectionId"
-                            (imagesSelected)="setImageSelectionUrls($event)">
+                            (imagesSelected)="setImageSelectionUrls($event)"
+                            (downloadButtonClicked)="downloadImages()">
           </image-selection>
-          <next-back-stepper-buttons [showBack]="true" [showNext]="true"></next-back-stepper-buttons>
-        </div>
-      </mat-step>
-      <!--  -->
-      <mat-step [label]="'Download Images'">
-        <div class="padding-sm-top">
-          <download-selection [imageSelectionUrls]="imageSelectionUrls"></download-selection>
-          <next-back-stepper-buttons [showBack]="true"></next-back-stepper-buttons>
         </div>
       </mat-step>
       <!--  -->

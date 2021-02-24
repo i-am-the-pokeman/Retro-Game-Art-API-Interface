@@ -50,7 +50,10 @@
       </div>
     </mat-grid-tile>
   </mat-grid-list>
-
-  <!-- TODO: determine this programtically for reusability -->
-  <!-- <error-message [message]="'u wot mate?'"></error-message> -->
 </div>
+<button mat-raised-button
+        color="primary"
+        [disabled]="isDownloadButtonDisabled"
+        (click)="onDownloadClicked()">
+        Download Images
+</button>

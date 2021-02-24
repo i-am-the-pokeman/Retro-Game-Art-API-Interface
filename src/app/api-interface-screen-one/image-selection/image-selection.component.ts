@@ -35,11 +35,14 @@ export class ImageSelectionComponent implements OnInit {
   }
   private _gameSelectionId: number;
 
-  @Output() imagesSelected = new EventEmitter<ImageSelectionUrls>();
+  @Output() imagesSelected = new EventEmitter<ImageSelectionUrls>()
+  @Output() downloadButtonClicked = new EventEmitter<any>();
 
   selectedIconUrl: string = '';
   selectedBannerUrl: string = '';
   private imageUrlBases: ImageBaseUrlMeta;
+
+  isDownloadButtonDisabled: boolean = true;
 
   constructor(private theGamesDbAPIService: TheGamesDBAPIService) { }
 
@@ -48,6 +51,7 @@ export class ImageSelectionComponent implements OnInit {
     this.formGroup.controls[GameImageTypeSelectionControlName.Icon].valueChanges
       .subscribe((gameImageSelection: DropdownOption) => {
         if (gameImageSelection) {
+          this.isDownloadButtonDisabled = false;
           this.selectedIconUrl = APIUtils.buildFileUrl(this.imageUrlBases.thumb, gameImageSelection?.Value?.filename);
           this.imagesSelected.emit({iconURL: this.selectedIconUrl, bannerURL: this.selectedBannerUrl});
         }
@@ -55,12 +59,14 @@ export class ImageSelectionComponent implements OnInit {
     this.formGroup.controls[GameImageTypeSelectionControlName.Banner].valueChanges
       .subscribe((gameImageSelection: DropdownOption) => {
         if (gameImageSelection) {
+          this.isDownloadButtonDisabled = false;
           this.selectedBannerUrl = APIUtils.buildFileUrl(this.imageUrlBases.thumb, gameImageSelection?.Value?.filename);
           this.imagesSelected.emit({iconURL: this.selectedIconUrl, bannerURL: this.selectedBannerUrl});
         }
       });
   }
 
+  // TODO: we gotta split this function up
   // API Actions and Side Effects
   fetchGamesByPlatformIdAndPopulateDropdown() {
     if (!!this.gameSelectionId) {
@@ -72,6 +78,7 @@ export class ImageSelectionComponent implements OnInit {
         .subscribe((response: GETGameImagesByGameIdResponse) => {
           if (response?.data?.count) {
             // TODO: find data driven way to do this
+
             // Enable controls + reset controls that have been touched
             if (!this.formGroup.controls[GameImageTypeSelectionControlName.Icon].pristine) {
               this.formGroup.controls[GameImageTypeSelectionControlName.Icon].reset();
@@ -83,6 +90,9 @@ export class ImageSelectionComponent implements OnInit {
             }
             this.formGroup.controls[GameImageTypeSelectionControlName.Banner].enable();
             this.selectedBannerUrl = '';
+
+            // Disable download button until a selection is made
+            this.isDownloadButtonDisabled = true;
 
             // Populate Dropdowns based on what's available for the game
             this.gameImageTypeDropdownOptions
@@ -101,6 +111,11 @@ export class ImageSelectionComponent implements OnInit {
           }
         });
     }
+  }
+
+  onDownloadClicked() {
+    this.isDownloadButtonDisabled = true;
+    this.downloadButtonClicked.emit();
   }
 
   private handleNoImageTypesAvailable() {
