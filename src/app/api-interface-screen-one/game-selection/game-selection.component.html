@@ -12,7 +12,7 @@
             required
             [matAutocomplete]="platform_autocomplete">
     <mat-autocomplete #platform_autocomplete
-                      [displayWith]="AngularMaterialAutocompleteUtils.getDropdownOptionText">
+                      [displayWith]="AngularMaterialAutocompleteUtils.GetDropdownOptionText">
       <mat-option *ngFor="let option of filteredPlatformDropdownOptions | async"
                   [value]="option">
           {{option.Text}}
@@ -35,7 +35,7 @@
             required
             [matAutocomplete]="game_autocomplete">
     <mat-autocomplete #game_autocomplete
-                      [displayWith]="AngularMaterialAutocompleteUtils.getDropdownOptionText">
+                      [displayWith]="AngularMaterialAutocompleteUtils.GetDropdownOptionText">
       <mat-option *ngFor="let option of filteredGameDropdownOptions | async"
                   [value]="option">
         {{option.Text}}

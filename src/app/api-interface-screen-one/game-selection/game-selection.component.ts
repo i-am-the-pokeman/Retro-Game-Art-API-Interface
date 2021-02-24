@@ -91,7 +91,6 @@ export class GameSelectionComponent implements OnInit {
             this.filteredGameDropdownOptions
                = AngularMaterialAutocompleteUtils.GetFilteredAutoCompleteOptions$(this.formGroup.controls[GameSelectionControlName.Game], this.gamesDropdownOptions);
 
-            // TODO: make newly enabled form input ripple
           }
         });
     }

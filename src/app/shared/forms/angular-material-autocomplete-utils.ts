@@ -4,9 +4,8 @@ import { map, startWith } from "rxjs/operators";
 import { DropdownOption } from "./entities";
 
 export class AngularMaterialAutocompleteUtils {
-    // TODO: make function name start with capitol letter
     /** Used to display the dropdownOption's Text property in the autocomplete input via the [displayWith] input */
-    public static getDropdownOptionText(dropdownOption: DropdownOption): string {
+    public static GetDropdownOptionText(dropdownOption: DropdownOption): string {
         return dropdownOption?.Text;
     }
 

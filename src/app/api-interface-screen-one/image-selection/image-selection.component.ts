@@ -25,7 +25,6 @@ export class ImageSelectionComponent implements OnInit {
   // Reveal to template
   readonly GameImageTypeSelectionControlName = GameImageTypeSelectionControlName;
 
-  // TODO: on changes, make API call for image urls
   @Input()
   get gameSelectionId(): number { return this._gameSelectionId; }
   set gameSelectionId(id: number ) {
