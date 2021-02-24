@@ -17,8 +17,9 @@
       <div *ngIf="!selectedIconUrl"
             class="image-preview-placeholder">
       </div>
-      <div *ngIf="selectedIconUrl">
-        <img src="{{selectedIconUrl}}"
+      <div class="image-preview-container">
+        <img *ngIf="selectedIconUrl"
+              src="{{selectedIconUrl}}"
               alt="selected icon image"
               class="image-preview">
       </div>
@@ -38,14 +39,18 @@
         </mat-select>
       </mat-form-field>
       <!-- Image Preview -->
-        <div *ngIf="!selectedBannerUrl"
-              class="image-preview-placeholder">
-        </div>
-        <div *ngIf="selectedBannerUrl">
-          <img src="{{selectedBannerUrl}}"
-                alt="selected banner image"
-                class="image-preview">
-        </div>
+      <div *ngIf="!selectedBannerUrl"
+            class="image-preview-placeholder">
+      </div>
+      <div class="image-preview-container">
+        <img *ngIf="selectedBannerUrl"
+              src="{{selectedBannerUrl}}"
+              alt="selected banner image"
+              class="image-preview">
+      </div>
     </mat-grid-tile>
   </mat-grid-list>
+
+  <!-- TODO: determine this programtically for reusability -->
+  <!-- <error-message [message]="'u wot mate?'"></error-message> -->
 </div>
