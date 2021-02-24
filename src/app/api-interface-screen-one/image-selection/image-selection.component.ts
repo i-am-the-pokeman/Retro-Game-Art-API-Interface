@@ -11,7 +11,7 @@ import { GameImageTypeSelectionControlName, GameImageTypeSelectionFormConfig } f
 @Component({
   selector: 'image-selection',
   templateUrl: './image-selection.component.html',
-  styleUrls: ['./image-selection.component.less'],
+  styleUrls: ['./image-selection.component.sass'],
   encapsulation: ViewEncapsulation.None
 })
 export class ImageSelectionComponent implements OnInit {
@@ -72,7 +72,6 @@ export class ImageSelectionComponent implements OnInit {
       this.theGamesDbAPIService.getGameImagesByGameIdRequest(request)
         .subscribe((response: GETGameImagesByGameIdResponse) => {
           if (response?.data?.count) {
-            console.log(response);
             // TODO: find data driven way to do this
             // Enable controls + reset controls that have been touched
             if (!this.formGroup.controls[GameImageTypeSelectionControlName.Icon].pristine) {

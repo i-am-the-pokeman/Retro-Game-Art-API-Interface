@@ -8,7 +8,6 @@ export class CustomFormValidators {
     let controls = formGroup.controls;
     if (controls) {
       let populatedControl = Object.keys(controls).find(key => {
-        console.log(controls[key].value);
         return !!controls[key].value
       });
       if (!populatedControl) {

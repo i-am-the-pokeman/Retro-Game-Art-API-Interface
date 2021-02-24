@@ -11,7 +11,7 @@ import { GameSelectionControlName, GameSelectionFormConfig } from './form-config
 @Component({
   selector: 'game-selection',
   templateUrl: './game-selection.component.html',
-  styleUrls: ['./game-selection.component.less']
+  styleUrls: ['./game-selection.component.sass']
 })
 export class GameSelectionComponent implements OnInit {
   @Output() gameSelected = new EventEmitter<number>();
@@ -78,7 +78,6 @@ export class GameSelectionComponent implements OnInit {
       this.theGamesDbAPIService.getGamesByPlatformId(request)
         .subscribe((response: GETGamesByPlatformIdResponse) => {
           if (response?.data?.count) {
-            console.log(response);
             // clear dependant control TODO: do this in a data driven way
             if (!this.formGroup.controls[GameSelectionControlName.Game].pristine) {
               this.formGroup.controls[GameSelectionControlName.Game].reset();
@@ -91,7 +90,6 @@ export class GameSelectionComponent implements OnInit {
             // TODO: should I be concerned that a new observable is opened every time you switch the platform control's value?
             this.filteredGameDropdownOptions
                = AngularMaterialAutocompleteUtils.GetFilteredAutoCompleteOptions$(this.formGroup.controls[GameSelectionControlName.Game], this.gamesDropdownOptions);
-            console.log(this.gamesDropdownOptions);
 
             // TODO: make newly enabled form input ripple
           }

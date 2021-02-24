@@ -4,7 +4,7 @@ import { ImageSelectionUrls } from '../image-selection/entities';
 @Component({
   selector: 'download-selection',
   templateUrl: './download-selection.component.html',
-  styleUrls: ['./download-selection.component.less']
+  styleUrls: ['./download-selection.component.sass']
 })
 export class DownloadSelectionComponent implements OnInit {
 
