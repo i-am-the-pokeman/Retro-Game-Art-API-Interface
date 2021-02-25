@@ -2,6 +2,7 @@
 <div [formGroup]="formGroup">
   <!-- TODO: Add a "clear text" button at the suffix of every autocomplete field -->
   <mat-form-field appearance="fill"
+                  color="accent"
                   class="autocomplete-width padding-sm-bottom">
     <mat-label>{{formConfigDataMap.get(GameSelectionControlName.Platform)?.Label}}</mat-label>
     <input type="text"
@@ -25,6 +26,7 @@
   </mat-form-field>
 
   <mat-form-field appearance="fill"
+                  color="accent"
                   class="autocomplete-width">
     <mat-label>{{formConfigDataMap.get(GameSelectionControlName.Game)?.Label}}</mat-label>
     <input type="text"
