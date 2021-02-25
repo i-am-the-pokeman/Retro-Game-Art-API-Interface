@@ -16,8 +16,8 @@ function createWindow() {
       webPreferences: {
         nodeIntegration: true,
       },
-      width: 800,
-      height: 600
+      width: 1020,
+      height: 720
     });
 
   win.loadURL(
@@ -27,6 +27,7 @@ function createWindow() {
       slashes: true
     })
   );
+  win.setMenuBarVisibility(false);
 
   // uncomment this if you'd like the app to start with dev tools open 
   win.webContents.openDevTools();
