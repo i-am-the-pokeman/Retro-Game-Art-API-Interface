@@ -31,7 +31,7 @@ export class ImageSelectionComponent implements OnInit {
     this._gameSelectionId = id;
     
     // Fetch Initial set of domain data
-    this.fetchGamesByPlatformIdAndPopulateDropdown();
+    this.fetchGamesImagesAndPopulateDropdown();
   }
   private _gameSelectionId: number;
 
@@ -68,7 +68,7 @@ export class ImageSelectionComponent implements OnInit {
 
   // TODO: we gotta split this function up
   // API Actions and Side Effects
-  fetchGamesByPlatformIdAndPopulateDropdown() {
+  fetchGamesImagesAndPopulateDropdown() {
     if (!!this.gameSelectionId) {
       let request: GETGameImagesByGameIdRequest = {
         apikey: TheGamesDBAPIKey,
