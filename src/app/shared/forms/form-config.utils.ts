@@ -1,4 +1,4 @@
-import { FormControl, FormGroup, ValidatorFn } from "@angular/forms";
+import { FormControl, FormGroup } from "@angular/forms";
 import { FormInputData } from "./entities";
 
 export class FormConfigUtils {

@@ -1,5 +1,4 @@
-import { FormGroup, Validators } from "@angular/forms";
-import { CustomFormValidators } from "src/app/shared/forms/custom-form-validators";
+import { FormGroup } from "@angular/forms";
 import { FormInputData } from "src/app/shared/forms/entities";
 import { FormConfigUtils } from "src/app/shared/forms/form-config.utils";
 
@@ -10,7 +9,7 @@ export enum GameImageTypeSelectionControlName {
 
 export class GameImageTypeSelectionFormConfig {
     public static getFormGroup(): FormGroup {
-      return FormConfigUtils.getFormGroup(this.getFormConfigData(), CustomFormValidators.atLeastOneRequired);
+      return FormConfigUtils.getFormGroup(this.getFormConfigData());
     }
 
     public static getFormConfigDataMap(): Map<string, FormInputData> {
