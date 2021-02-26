@@ -53,9 +53,15 @@
     </mat-grid-tile>
   </mat-grid-list>
 </div>
-<button mat-raised-button
-        color="primary"
-        [disabled]="isDownloadButtonDisabled"
-        (click)="onDownloadClicked()">
-        Download Images
-</button>
+
+<disabled-element-tooltip [text]="'Please select an image.'"
+                          [isChildDisabled]="isDownloadButtonDisabled"
+                          [tooltipPosition]="'right'">
+  <button mat-raised-button
+          color="primary"
+          [disabled]="isDownloadButtonDisabled"
+          (click)="onDownloadClicked()">
+    <mat-icon>arrow_circle_down</mat-icon>
+    Download Images
+  </button>
+</disabled-element-tooltip>
