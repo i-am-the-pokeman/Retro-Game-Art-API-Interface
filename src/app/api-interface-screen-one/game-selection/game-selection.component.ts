@@ -5,8 +5,9 @@ import { GETGamesByPlatformIdRequest, GETGamesByPlatformIdResponse, GETPlatforms
 import { TheGamesDBAPIKey } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIKey';
 import { AngularMaterialAutocompleteUtils } from 'src/app/shared/forms/angular-material-autocomplete-utils';
 import { DropdownOption } from 'src/app/shared/forms/entities';
+import { FormConfigUtils } from 'src/app/shared/forms/form-config.utils';
 import { TheGamesDBAPIFormMapper } from 'src/app/shared/forms/TheGamesDBAPIFormMapper';
-import { GameSelectionControlName, GameSelectionFormConfig } from './game-selection-form-data';
+import { GameSelectionControlName, GameSelectionFormConfig } from '../services/form-data/game-selection-form-data';
 
 @Component({
   selector: 'game-selection',
@@ -23,8 +24,8 @@ export class GameSelectionComponent implements OnInit {
   filteredGameDropdownOptions: Observable<DropdownOption[]> = new Observable<DropdownOption[]>();
 
   // TODO: we NEED to prevent the user from going to the next step when they provide incorrect values (ex: 'a', '123', etc.)
-  formGroup = GameSelectionFormConfig.getFormGroup();
-  readonly formConfigDataMap = GameSelectionFormConfig.getFormConfigDataMap();
+  readonly formConfigDataMap = FormConfigUtils.getFormConfigDataMap(GameSelectionFormConfig.getFormConfigData());
+  formGroup = FormConfigUtils.getNewFormGroup(GameSelectionFormConfig.getFormConfigData());
 
   // Reveal to template
   readonly GameSelectionControlName = GameSelectionControlName;

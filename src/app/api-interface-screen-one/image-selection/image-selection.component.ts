@@ -6,7 +6,8 @@ import { TheGamesDBAPIKey } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIKey';
 import { DropdownOption } from 'src/app/shared/forms/entities';
 import { TheGamesDBAPIFormMapper } from 'src/app/shared/forms/TheGamesDBAPIFormMapper';
 import { ImageSelectionResults } from './entities';
-import { GameImageTypeSelectionControlName, GameImageTypeSelectionFormConfig } from './image-selection-form-data';
+import { GameImageTypeSelectionControlName, GameImageTypeSelectionFormConfig } from '../services/form-data/image-selection-form-data';
+import { FormConfigUtils } from 'src/app/shared/forms/form-config.utils';
 
 @Component({
   selector: 'image-selection',
@@ -19,8 +20,8 @@ export class ImageSelectionComponent implements OnInit {
   readonly allowedImageTypes: string[] = [ImageTypes.banner, ImageTypes.boxart, ImageTypes.clearlogo, ImageTypes.screenshot, ImageTypes.titlescreen];
   gameImageTypeDropdownOptions: DropdownOption[];
 
-  formGroup = GameImageTypeSelectionFormConfig.getFormGroup();
-  readonly formConfigDataMap = GameImageTypeSelectionFormConfig.getFormConfigDataMap();
+  readonly formConfigDataMap = FormConfigUtils.getFormConfigDataMap(GameImageTypeSelectionFormConfig.getFormConfigData());
+  formGroup = FormConfigUtils.getNewFormGroup(GameImageTypeSelectionFormConfig.getFormConfigData());
 
   // Reveal to template
   readonly GameImageTypeSelectionControlName = GameImageTypeSelectionControlName;

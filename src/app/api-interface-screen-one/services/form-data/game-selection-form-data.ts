@@ -8,13 +8,6 @@ export enum GameSelectionControlName {
 }
 
 export class GameSelectionFormConfig {
-    public static getFormGroup(): FormGroup {
-      return FormConfigUtils.getFormGroup(this.getFormConfigData());
-    }
-
-    public static getFormConfigDataMap(): Map<string, FormInputData> {
-        return FormConfigUtils.getFormConfigDataMap(this.getFormConfigData());
-    }
 
     public static getFormConfigData(): FormInputData[] {
         return [
