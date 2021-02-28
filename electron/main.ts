@@ -53,14 +53,24 @@ app.on('window-all-closed', () => {
 // END APP EVENTS
 
 // IPC EVENTS
-ipcMain.on('download-image', async (event, arg) => {
+ipcMain.on('download-image', async (event, url, filename) => {
   console.log('Message from UI:');
-  console.log(arg);
-
+ 
   let options = {
-    openFolderWhenDone: true
+    openFolderWhenDone: true,
+    filename: filename
   }
-  await download(win, arg, options);
+  await download(win, url, options);
+
+  // TODO: send status of download back to UI
+  win.webContents.send('download-image', null);
+});
+
+ipcMain.on('download-images', async (event, filesToDownload) => {
+  console.log(filesToDownload);
+  for (const file of filesToDownload) {
+    await download(win, file.url, {saveAs: false, showBadge: false, filename: file.filename})
+  }
 
   // TODO: send status of download back to UI
   win.webContents.send('download-image', null);

@@ -6,7 +6,7 @@ import { TheGamesDBAPIKey } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIKey';
 import { AngularMaterialAutocompleteUtils } from 'src/app/shared/forms/angular-material-autocomplete-utils';
 import { DropdownOption } from 'src/app/shared/forms/entities';
 import { TheGamesDBAPIFormMapper } from 'src/app/shared/forms/TheGamesDBAPIFormMapper';
-import { GameSelectionControlName, GameSelectionFormConfig } from './form-config';
+import { GameSelectionControlName, GameSelectionFormConfig } from './game-selection-form-data';
 
 @Component({
   selector: 'game-selection',

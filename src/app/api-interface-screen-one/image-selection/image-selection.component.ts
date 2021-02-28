@@ -5,8 +5,8 @@ import { GETGameImagesByGameIdRequest, GETGameImagesByGameIdResponse, ImageBaseU
 import { TheGamesDBAPIKey } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIKey';
 import { DropdownOption } from 'src/app/shared/forms/entities';
 import { TheGamesDBAPIFormMapper } from 'src/app/shared/forms/TheGamesDBAPIFormMapper';
-import { ImageSelectionUrls } from './entities';
-import { GameImageTypeSelectionControlName, GameImageTypeSelectionFormConfig } from './form-config';
+import { ImageSelectionResults } from './entities';
+import { GameImageTypeSelectionControlName, GameImageTypeSelectionFormConfig } from './image-selection-form-data';
 
 @Component({
   selector: 'image-selection',
@@ -35,12 +35,12 @@ export class ImageSelectionComponent implements OnInit {
   }
   private _gameSelectionId: number;
 
-  @Output() imagesSelected = new EventEmitter<ImageSelectionUrls>()
+  @Output() imagesSelected = new EventEmitter<ImageSelectionResults>()
   @Output() downloadButtonClicked = new EventEmitter<any>();
 
-  selectedIconUrl: string = '';
-  selectedBannerUrl: string = '';
-  private imageUrlBases: ImageBaseUrlMeta;
+  private baseImageUrls: ImageBaseUrlMeta;
+  selectedIconUrl: string;
+  selectedBannerUrl: string;
 
   isDownloadButtonDisabled: boolean = true;
 
@@ -51,17 +51,35 @@ export class ImageSelectionComponent implements OnInit {
     this.formGroup.controls[GameImageTypeSelectionControlName.Icon].valueChanges
       .subscribe((gameImageSelection: DropdownOption) => {
         if (gameImageSelection) {
+          // Update UI
           this.isDownloadButtonDisabled = false;
-          this.selectedIconUrl = APIUtils.buildFileUrl(this.imageUrlBases.thumb, gameImageSelection?.Value?.filename);
-          this.imagesSelected.emit({iconURL: this.selectedIconUrl, bannerURL: this.selectedBannerUrl});
+          this.selectedIconUrl
+            = APIUtils.buildFileUrl(this.baseImageUrls.thumb, gameImageSelection?.Value?.filename);
+
+          // Send Selections to parent
+          let results = {
+            icon: gameImageSelection?.Value,
+            banner: this.formGroup.get(GameImageTypeSelectionControlName.Banner).value?.Value,
+            baseImageUrls: this.baseImageUrls
+          }
+          this.imagesSelected.emit(results);
         }
       });
     this.formGroup.controls[GameImageTypeSelectionControlName.Banner].valueChanges
       .subscribe((gameImageSelection: DropdownOption) => {
         if (gameImageSelection) {
+          // Update UI
           this.isDownloadButtonDisabled = false;
-          this.selectedBannerUrl = APIUtils.buildFileUrl(this.imageUrlBases.thumb, gameImageSelection?.Value?.filename);
-          this.imagesSelected.emit({iconURL: this.selectedIconUrl, bannerURL: this.selectedBannerUrl});
+          this.selectedBannerUrl
+            = APIUtils.buildFileUrl(this.baseImageUrls.thumb, gameImageSelection?.Value?.filename);
+
+          // Send Selections to parent
+          let results = {
+            icon: this.formGroup.get(GameImageTypeSelectionControlName.Icon).value?.Value,
+            banner: gameImageSelection?.Value,
+            baseImageUrls: this.baseImageUrls
+          }
+          this.imagesSelected.emit(results);
         }
       });
   }
@@ -98,14 +116,13 @@ export class ImageSelectionComponent implements OnInit {
             this.gameImageTypeDropdownOptions
               = TheGamesDBAPIFormMapper.MapGameImagesDictionaryToImageTypeDropdownOptions(response.data.images)
                                        .filter((dropdownOption) => this.allowedImageTypes.includes(dropdownOption.Value.type));
-            
             // Handle no available valid images
             if (!this.gameImageTypeDropdownOptions.length) {
               this.handleNoImageTypesAvailable();
             }
 
             // store imageUrlBases
-            this.imageUrlBases = response.data?.base_url;
+            this.baseImageUrls = response.data?.base_url;
           } else {
             this.handleNoImageTypesAvailable();
           }
