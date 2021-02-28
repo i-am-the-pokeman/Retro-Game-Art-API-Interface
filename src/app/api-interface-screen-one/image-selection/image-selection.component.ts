@@ -107,9 +107,9 @@ export class ImageSelectionComponent implements OnInit {
 
   private resetGameImageSelection() {
     // Reset Form
-    if (this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon)?.pristine)
+    if (!this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon)?.pristine)
       this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).reset();
-    if (this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner)?.pristine)
+    if (!this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner)?.pristine)
       this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).reset();
 
     // Reset previews
