@@ -32,6 +32,7 @@ export class ImageSelectionComponent implements OnInit {
     this._gameSelectionId = id;
     
     // Fetch Initial set of domain data
+    this.resetGameImageSelection();
     this.fetchGamesImagesAndPopulateDropdown();
   }
   private _gameSelectionId: number;
@@ -56,9 +57,6 @@ export class ImageSelectionComponent implements OnInit {
           this.isDownloadButtonDisabled = false;
           this.selectedIconUrl
             = APIUtils.buildFileUrl(this.baseImageUrls.thumb, gameImageSelection?.Value?.filename);
-          
-          // TODO: is there a way to remove this emitter?
-          this.baseImageUrlsUpdated.emit(this.baseImageUrls);
         }
       });
     this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).valueChanges
@@ -68,14 +66,10 @@ export class ImageSelectionComponent implements OnInit {
           this.isDownloadButtonDisabled = false;
           this.selectedBannerUrl
             = APIUtils.buildFileUrl(this.baseImageUrls.thumb, gameImageSelection?.Value?.filename);
-
-          // TODO: is there a way to remove this emitter?
-          this.baseImageUrlsUpdated.emit(this.baseImageUrls);
         }
       });
   }
 
-  // TODO: we gotta split this function up
   // API Actions and Side Effects
   fetchGamesImagesAndPopulateDropdown() {
     if (!!this.gameSelectionId) {
@@ -86,19 +80,7 @@ export class ImageSelectionComponent implements OnInit {
       this.theGamesDbAPIService.getGameImagesByGameIdRequest(request)
         .subscribe((response: GETGameImagesByGameIdResponse) => {
           if (response?.data?.count) {
-            // TODO: find data driven way to do this
-
-            // Enable controls + reset controls that have been touched
-            if (!this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).pristine) {
-              this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).reset();
-            }
-            this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).enable();
-            this.selectedIconUrl = '';
-            if (!this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).pristine) {
-              this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).reset();
-            }
-            this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).enable();
-            this.selectedBannerUrl = '';
+            this.enableGameImageSelection();
 
             // Disable download button until a selection is made
             this.isDownloadButtonDisabled = true;
@@ -114,6 +96,8 @@ export class ImageSelectionComponent implements OnInit {
 
             // store imageUrlBases
             this.baseImageUrls = response.data?.base_url;
+            // TODO: is there a way to remove this emitter?
+            this.baseImageUrlsUpdated.emit(this.baseImageUrls);
           } else {
             this.handleNoImageTypesAvailable();
           }
@@ -121,9 +105,21 @@ export class ImageSelectionComponent implements OnInit {
     }
   }
 
-  onDownloadClicked() {
-    this.isDownloadButtonDisabled = true;
-    this.downloadButtonClicked.emit();
+  private resetGameImageSelection() {
+    // Reset Form
+    if (this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon)?.pristine)
+      this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).reset();
+    if (this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner)?.pristine)
+      this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).reset();
+
+    // Reset previews
+    this.selectedIconUrl = '';
+    this.selectedBannerUrl = '';
+  }
+
+  private enableGameImageSelection() {
+    this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).enable();
+    this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).enable();
   }
 
   private handleNoImageTypesAvailable() {
@@ -132,4 +128,8 @@ export class ImageSelectionComponent implements OnInit {
     // TODO: display error dialog
   }
 
+  onDownloadClicked() {
+    this.isDownloadButtonDisabled = true;
+    this.downloadButtonClicked.emit();
+  }
 }

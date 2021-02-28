@@ -2,6 +2,7 @@ import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { APIUtils } from '../APIs/API-utils';
 import { GameImage, ImageBaseUrlMeta } from '../APIs/TheGamesDB/TheGamesDBAPIEntities';
+import { DropdownOption } from '../shared/forms/entities';
 import { ApiInterfaceGroupName, ApiInterfaceScreenOneFormService } from './services/api-interface-screen-one-form.service';
 import { GameSelectionControlName } from './services/form-data/game-selection-form-data';
 import { GameImageTypeSelectionControlName } from './services/form-data/image-selection-form-data';
@@ -27,7 +28,7 @@ export class ApiInterfaceScreenOneComponent implements OnInit {
   ngOnInit() {
     this.formGroup.get(ApiInterfaceGroupName.GameSelection)
                   .get(GameSelectionControlName.Game).valueChanges
-      .subscribe((value) => {
+      .subscribe((value: DropdownOption) => {
         if (!!value?.Value) {
           this.gameSelectionId = value.Value;
         }

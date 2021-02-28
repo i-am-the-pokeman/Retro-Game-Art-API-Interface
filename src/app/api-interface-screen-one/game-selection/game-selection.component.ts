@@ -41,6 +41,7 @@ export class GameSelectionComponent implements OnInit {
     // Form events
     this.gameSelectionFormGroup.get(GameSelectionControlName.Platform).valueChanges
       .subscribe(() => {
+        this.resetGameSelection();
         this.fetchGamesByPlatformIdAndPopulateDropdown();
       });
   }
@@ -71,22 +72,32 @@ export class GameSelectionComponent implements OnInit {
       this.theGamesDbAPIService.getGamesByPlatformId(request)
         .subscribe((response: GETGamesByPlatformIdResponse) => {
           if (response?.data?.count) {
-            // clear dependant control TODO: do this in a data driven way
-            if (!this.gameSelectionFormGroup.get(GameSelectionControlName.Game).pristine) {
-              this.gameSelectionFormGroup.get(GameSelectionControlName.Game).reset();
-            }
-            // enable dependant control TODO: do this in a data driven way
-            this.gameSelectionFormGroup.get(GameSelectionControlName.Game).enable();
-
+            this.enableGameSelection();
 
             this.gamesDropdownOptions = TheGamesDBAPIFormMapper.MapGamesDictionaryToGameDrodpownOptions(response.data.games);
             // TODO: should I be concerned that a new observable is opened every time you switch the platform control's value?
             this.filteredGameDropdownOptions
                = AngularMaterialAutocompleteUtils.GetFilteredAutoCompleteOptions$(this.gameSelectionFormGroup.get(GameSelectionControlName.Game), this.gamesDropdownOptions);
 
+          } else {
+            this.handleNoGamesAvailable();
           }
         });
     }
+  }
+
+  private resetGameSelection() {
+    if (!this.gameSelectionFormGroup.get(GameSelectionControlName.Game).pristine) {
+      this.gameSelectionFormGroup.get(GameSelectionControlName.Game).reset();
+    }
+  }
+
+  private enableGameSelection() {
+    this.gameSelectionFormGroup.get(GameSelectionControlName.Game).enable();
+  }
+
+  private handleNoGamesAvailable() {
+    this.gameSelectionFormGroup.get(GameSelectionControlName.Game).disable();
   }
   // END API Actions + Side Effects
 }
