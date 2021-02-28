@@ -1,5 +1,5 @@
 <!-- TODO: add a form reset button (and don't forget to reset the disableByDefualt controls to be disabled) -->
-<div [formGroup]="formGroup">
+<div [formGroup]="gameSelectionFormGroup">
   <!-- TODO: Add a "clear text" button at the suffix of every autocomplete field -->
   <mat-form-field appearance="fill"
                   color="accent"
@@ -20,7 +20,7 @@
       </mat-option>
     </mat-autocomplete>
     <!-- TODO: find a way to loop through formConfigData in case of multiple errors -->
-    <mat-error *ngIf="formGroup.controls[GameSelectionControlName.Platform].hasError('required')">
+    <mat-error *ngIf="gameSelectionFormGroup.get(GameSelectionControlName.Platform).hasError('required')">
       {{formConfigDataMap.get(GameSelectionControlName.Platform)?.ErrorMessages?.required}}
     </mat-error>
   </mat-form-field>
@@ -44,7 +44,7 @@
       </mat-option>
     </mat-autocomplete>
     <!-- TODO: find a way to loop through formConfigData in case of multiple errors -->
-    <mat-error *ngIf="formGroup.controls[GameSelectionControlName.Game].hasError('required')">
+    <mat-error *ngIf="gameSelectionFormGroup.get(GameSelectionControlName.Game).hasError('required')">
       {{formConfigDataMap.get(GameSelectionControlName.Game)?.ErrorMessages?.required}}
     </mat-error>
   </mat-form-field>

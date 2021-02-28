@@ -2,10 +2,10 @@
   <mat-card-content>
     <mat-vertical-stepper [linear]="true">
       <!--  -->
-      <mat-step [stepControl]="gameSelectionComponent.formGroup"
+      <mat-step [stepControl]="getGameSelectionFormGroup()"
                 [label]="'Select a Game'">
         <div class="padding-sm-top">
-          <game-selection (gameSelected)="setGameSelectionId($event)">
+          <game-selection [gameSelectionFormGroup]="getGameSelectionFormGroup()">
           </game-selection>
           <next-back-stepper-buttons [showNext]="true"></next-back-stepper-buttons>
         </div>
@@ -13,8 +13,9 @@
       <!--  -->
       <mat-step [label]="'Select & Download Images'">
         <div class="padding-sm-top">
-          <image-selection [gameSelectionId]="gameSelectionId"
-                            (imagesSelected)="setImageSelectionUrls($event)"
+          <image-selection [imageSelectionFormGroup]="getImageTypeSelectionFormGroup()"
+                            [gameSelectionId]="gameSelectionId"
+                            (baseImageUrlsUpdated)="setImageSelectionUrls($event)"
                             (downloadButtonClicked)="downloadImages()">
           </image-selection>
         </div>

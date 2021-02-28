@@ -19,7 +19,7 @@ export class FormConfigUtils {
     // Disable any form controls that should start disabled
     formConfigData.forEach(formConfig => {
       if (formConfig.DisabledByDefault) {
-        formGroup.controls[formConfig.ControlName].disable();
+        formGroup.get(formConfig.ControlName).disable();
       }
     })
 

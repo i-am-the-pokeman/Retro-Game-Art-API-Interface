@@ -5,9 +5,9 @@ import { GETGameImagesByGameIdRequest, GETGameImagesByGameIdResponse, ImageBaseU
 import { TheGamesDBAPIKey } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIKey';
 import { DropdownOption } from 'src/app/shared/forms/entities';
 import { TheGamesDBAPIFormMapper } from 'src/app/shared/forms/TheGamesDBAPIFormMapper';
-import { ImageSelectionResults } from './entities';
 import { GameImageTypeSelectionControlName, GameImageTypeSelectionFormConfig } from '../services/form-data/image-selection-form-data';
 import { FormConfigUtils } from 'src/app/shared/forms/form-config.utils';
+import { FormGroup } from '@angular/forms';
 
 @Component({
   selector: 'image-selection',
@@ -17,11 +17,11 @@ import { FormConfigUtils } from 'src/app/shared/forms/form-config.utils';
 })
 export class ImageSelectionComponent implements OnInit {
 
+  @Input() imageSelectionFormGroup: FormGroup;
+  readonly formConfigDataMap = FormConfigUtils.getFormConfigDataMap(GameImageTypeSelectionFormConfig.getFormConfigData());
+
   readonly allowedImageTypes: string[] = [ImageTypes.banner, ImageTypes.boxart, ImageTypes.clearlogo, ImageTypes.screenshot, ImageTypes.titlescreen];
   gameImageTypeDropdownOptions: DropdownOption[];
-
-  readonly formConfigDataMap = FormConfigUtils.getFormConfigDataMap(GameImageTypeSelectionFormConfig.getFormConfigData());
-  formGroup = FormConfigUtils.getNewFormGroup(GameImageTypeSelectionFormConfig.getFormConfigData());
 
   // Reveal to template
   readonly GameImageTypeSelectionControlName = GameImageTypeSelectionControlName;
@@ -36,7 +36,7 @@ export class ImageSelectionComponent implements OnInit {
   }
   private _gameSelectionId: number;
 
-  @Output() imagesSelected = new EventEmitter<ImageSelectionResults>()
+  @Output() baseImageUrlsUpdated = new EventEmitter<ImageBaseUrlMeta>()
   @Output() downloadButtonClicked = new EventEmitter<any>();
 
   private baseImageUrls: ImageBaseUrlMeta;
@@ -49,24 +49,19 @@ export class ImageSelectionComponent implements OnInit {
 
   ngOnInit() {
     // Form events
-    this.formGroup.controls[GameImageTypeSelectionControlName.Icon].valueChanges
+    this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).valueChanges
       .subscribe((gameImageSelection: DropdownOption) => {
         if (gameImageSelection) {
           // Update UI
           this.isDownloadButtonDisabled = false;
           this.selectedIconUrl
             = APIUtils.buildFileUrl(this.baseImageUrls.thumb, gameImageSelection?.Value?.filename);
-
-          // Send Selections to parent
-          let results = {
-            icon: gameImageSelection?.Value,
-            banner: this.formGroup.get(GameImageTypeSelectionControlName.Banner).value?.Value,
-            baseImageUrls: this.baseImageUrls
-          }
-          this.imagesSelected.emit(results);
+          
+          // TODO: is there a way to remove this emitter?
+          this.baseImageUrlsUpdated.emit(this.baseImageUrls);
         }
       });
-    this.formGroup.controls[GameImageTypeSelectionControlName.Banner].valueChanges
+    this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).valueChanges
       .subscribe((gameImageSelection: DropdownOption) => {
         if (gameImageSelection) {
           // Update UI
@@ -74,13 +69,8 @@ export class ImageSelectionComponent implements OnInit {
           this.selectedBannerUrl
             = APIUtils.buildFileUrl(this.baseImageUrls.thumb, gameImageSelection?.Value?.filename);
 
-          // Send Selections to parent
-          let results = {
-            icon: this.formGroup.get(GameImageTypeSelectionControlName.Icon).value?.Value,
-            banner: gameImageSelection?.Value,
-            baseImageUrls: this.baseImageUrls
-          }
-          this.imagesSelected.emit(results);
+          // TODO: is there a way to remove this emitter?
+          this.baseImageUrlsUpdated.emit(this.baseImageUrls);
         }
       });
   }
@@ -99,15 +89,15 @@ export class ImageSelectionComponent implements OnInit {
             // TODO: find data driven way to do this
 
             // Enable controls + reset controls that have been touched
-            if (!this.formGroup.controls[GameImageTypeSelectionControlName.Icon].pristine) {
-              this.formGroup.controls[GameImageTypeSelectionControlName.Icon].reset();
+            if (!this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).pristine) {
+              this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).reset();
             }
-            this.formGroup.controls[GameImageTypeSelectionControlName.Icon].enable();
+            this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).enable();
             this.selectedIconUrl = '';
-            if (!this.formGroup.controls[GameImageTypeSelectionControlName.Banner].pristine) {
-              this.formGroup.controls[GameImageTypeSelectionControlName.Banner].reset();
+            if (!this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).pristine) {
+              this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).reset();
             }
-            this.formGroup.controls[GameImageTypeSelectionControlName.Banner].enable();
+            this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).enable();
             this.selectedBannerUrl = '';
 
             // Disable download button until a selection is made
@@ -137,8 +127,8 @@ export class ImageSelectionComponent implements OnInit {
   }
 
   private handleNoImageTypesAvailable() {
-    this.formGroup.controls[GameImageTypeSelectionControlName.Icon].disable();
-    this.formGroup.controls[GameImageTypeSelectionControlName.Banner].disable();
+    this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).disable();
+    this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).disable();
     // TODO: display error dialog
   }
 

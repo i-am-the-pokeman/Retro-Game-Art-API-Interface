@@ -1,4 +1,5 @@
-import { Component, EventEmitter, OnInit, Output } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { TheGamesDBAPIService } from 'src/app/APIs/TheGamesDB/TheGamesDBAPI.service';
 import { GETGamesByPlatformIdRequest, GETGamesByPlatformIdResponse, GETPlatformsRequest, GETPlatformsResponse } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIEntities';
@@ -15,17 +16,15 @@ import { GameSelectionControlName, GameSelectionFormConfig } from '../services/f
   styleUrls: ['./game-selection.component.sass']
 })
 export class GameSelectionComponent implements OnInit {
-  @Output() gameSelected = new EventEmitter<number>();
+  @Input() gameSelectionFormGroup: FormGroup;
+  // TODO: we NEED to prevent the user from going to the next step when they provide incorrect values (ex: 'a', '123', etc.)
+  readonly formConfigDataMap = FormConfigUtils.getFormConfigDataMap(GameSelectionFormConfig.getFormConfigData());
 
   platformDropdownOptions: DropdownOption[] = [];
   filteredPlatformDropdownOptions: Observable<DropdownOption[]> = new Observable<DropdownOption[]>();
 
   gamesDropdownOptions: DropdownOption[] = [];
   filteredGameDropdownOptions: Observable<DropdownOption[]> = new Observable<DropdownOption[]>();
-
-  // TODO: we NEED to prevent the user from going to the next step when they provide incorrect values (ex: 'a', '123', etc.)
-  readonly formConfigDataMap = FormConfigUtils.getFormConfigDataMap(GameSelectionFormConfig.getFormConfigData());
-  formGroup = FormConfigUtils.getNewFormGroup(GameSelectionFormConfig.getFormConfigData());
 
   // Reveal to template
   readonly GameSelectionControlName = GameSelectionControlName;
@@ -40,16 +39,9 @@ export class GameSelectionComponent implements OnInit {
     this.fetchPlatformsAndPopulateDropdown();
 
     // Form events
-    this.formGroup.controls[GameSelectionControlName.Platform].valueChanges
+    this.gameSelectionFormGroup.get(GameSelectionControlName.Platform).valueChanges
       .subscribe(() => {
         this.fetchGamesByPlatformIdAndPopulateDropdown();
-      });
-
-    this.formGroup.controls[GameSelectionControlName.Game].valueChanges
-      .subscribe((value) => {
-        if (!!value?.Value) {
-          this.gameSelected.emit(value?.Value);
-        }
       });
   }
 
@@ -64,13 +56,13 @@ export class GameSelectionComponent implements OnInit {
         if (response?.data?.count) {
           this.platformDropdownOptions = TheGamesDBAPIFormMapper.MapPlatformsDictionaryToPlatformDropdownOptions(response.data.platforms);
           this.filteredPlatformDropdownOptions
-            = AngularMaterialAutocompleteUtils.GetFilteredAutoCompleteOptions$(this.formGroup.controls[GameSelectionControlName.Platform], this.platformDropdownOptions);
+            = AngularMaterialAutocompleteUtils.GetFilteredAutoCompleteOptions$(this.gameSelectionFormGroup.get(GameSelectionControlName.Platform), this.platformDropdownOptions);
         }
       });
   }
 
   fetchGamesByPlatformIdAndPopulateDropdown() {
-    let platformId = this.formGroup.controls[GameSelectionControlName.Platform].value?.Value;
+    let platformId = this.gameSelectionFormGroup.get(GameSelectionControlName.Platform).value?.Value;
     if (!!platformId) {
       let request: GETGamesByPlatformIdRequest = {
         apikey: TheGamesDBAPIKey,
@@ -80,17 +72,17 @@ export class GameSelectionComponent implements OnInit {
         .subscribe((response: GETGamesByPlatformIdResponse) => {
           if (response?.data?.count) {
             // clear dependant control TODO: do this in a data driven way
-            if (!this.formGroup.controls[GameSelectionControlName.Game].pristine) {
-              this.formGroup.controls[GameSelectionControlName.Game].reset();
+            if (!this.gameSelectionFormGroup.get(GameSelectionControlName.Game).pristine) {
+              this.gameSelectionFormGroup.get(GameSelectionControlName.Game).reset();
             }
             // enable dependant control TODO: do this in a data driven way
-            this.formGroup.controls[GameSelectionControlName.Game].enable();
+            this.gameSelectionFormGroup.get(GameSelectionControlName.Game).enable();
 
 
             this.gamesDropdownOptions = TheGamesDBAPIFormMapper.MapGamesDictionaryToGameDrodpownOptions(response.data.games);
             // TODO: should I be concerned that a new observable is opened every time you switch the platform control's value?
             this.filteredGameDropdownOptions
-               = AngularMaterialAutocompleteUtils.GetFilteredAutoCompleteOptions$(this.formGroup.controls[GameSelectionControlName.Game], this.gamesDropdownOptions);
+               = AngularMaterialAutocompleteUtils.GetFilteredAutoCompleteOptions$(this.gameSelectionFormGroup.get(GameSelectionControlName.Game), this.gamesDropdownOptions);
 
           }
         });

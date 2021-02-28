@@ -1,8 +1,10 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { FormGroup } from '@angular/forms';
 import { APIUtils } from '../APIs/API-utils';
-import { GameSelectionComponent } from './game-selection/game-selection.component';
-import { ImageSelectionResults } from './image-selection/entities';
-import { ImageSelectionComponent } from './image-selection/image-selection.component';
+import { GameImage, ImageBaseUrlMeta } from '../APIs/TheGamesDB/TheGamesDBAPIEntities';
+import { ApiInterfaceGroupName, ApiInterfaceScreenOneFormService } from './services/api-interface-screen-one-form.service';
+import { GameSelectionControlName } from './services/form-data/game-selection-form-data';
+import { GameImageTypeSelectionControlName } from './services/form-data/image-selection-form-data';
 const ipc = window.require('electron').ipcRenderer;
 
 @Component({
@@ -10,49 +12,65 @@ const ipc = window.require('electron').ipcRenderer;
   templateUrl: './api-interface-screen-one.component.html',
   styleUrls: ['./api-interface-screen-one.component.sass']
 })
-export class ApiInterfaceScreenOneComponent {
+export class ApiInterfaceScreenOneComponent implements OnInit {
 
-  // TODO: create a new injectable service that initializes these formGroups and makes them available so we don't have to ViewChild
-  @ViewChild(GameSelectionComponent, { static: true }) gameSelectionComponent: GameSelectionComponent;
-  @ViewChild(ImageSelectionComponent, { static: true }) imageSelectionComponent: ImageSelectionComponent;
+  formGroup = ApiInterfaceScreenOneFormService.getNewFormGroup();
 
   // TODO: emit game selection instead of number
   gameSelectionId: number;
-  imageSelectionResults: ImageSelectionResults;
+  imageBaseUrls: ImageBaseUrlMeta;
+
+  ApiInterfaceGroupName = ApiInterfaceGroupName;
 
   constructor(private cdr: ChangeDetectorRef) { }
 
-  setGameSelectionId(gameSelectionId: number) {
-    this.gameSelectionId = gameSelectionId;
+  ngOnInit() {
+    this.formGroup.get(ApiInterfaceGroupName.GameSelection)
+                  .get(GameSelectionControlName.Game).valueChanges
+      .subscribe((value) => {
+        if (!!value?.Value) {
+          this.gameSelectionId = value.Value;
+        }
+      });
   }
 
-  setImageSelectionUrls(imageSelections: ImageSelectionResults) {
-    this.imageSelectionResults = Object.assign({}, imageSelections);
+  // Note: Angular will throw a TypeError in the template if these aren't cast as a FormGroup
+  getGameSelectionFormGroup(): FormGroup { return this.formGroup.get(ApiInterfaceGroupName.GameSelection) as FormGroup; }
+  getImageTypeSelectionFormGroup(): FormGroup { return this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection) as FormGroup; }
+
+  setImageSelectionUrls(imageBaseUrls: ImageBaseUrlMeta) {
+    this.imageBaseUrls = Object.assign({}, imageBaseUrls);
   }
 
   downloadImages() {
     // Tell main thread to download image
     let filesToDownload = [];
-    if (this.imageSelectionResults?.icon?.id) {
+    let iconGameImage: GameImage = this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection)
+                                                  .get(GameImageTypeSelectionControlName.Icon)
+                                                  ?.value?.Value;
+    let bannerGameImage: GameImage = this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection)
+                                                    .get(GameImageTypeSelectionControlName.Banner)
+                                                    ?.value?.Value;
+    if (iconGameImage?.id) {
       let url
-        = APIUtils.buildFileUrl(this.imageSelectionResults.baseImageUrls.thumb, this.imageSelectionResults.icon.filename)
+        = APIUtils.buildFileUrl(this.imageBaseUrls.thumb, iconGameImage.filename)
       // TODO: make a util for filename builder
       let filenameSplit
-        = this.imageSelectionResults.icon.filename.split('/');
+        = iconGameImage.filename.split('/');
       let filename = filenameSplit[filenameSplit.length - 1];
-      if (this.imageSelectionResults.icon.side) {
-        filename = this.imageSelectionResults.icon.side + '-' + filename;
+      if (iconGameImage.side) {
+        filename = iconGameImage.side + '-' + filename;
       }
       filesToDownload.push({url: url, filename: filename}) // TODO: type this you jackwagon
     }
-    if (this.imageSelectionResults?.banner?.id) {
+    if (bannerGameImage?.id) {
       let url
-        = APIUtils.buildFileUrl(this.imageSelectionResults.baseImageUrls.thumb, this.imageSelectionResults.banner.filename)
+        = APIUtils.buildFileUrl(this.imageBaseUrls.thumb, bannerGameImage.filename)
       let filenameSplit
-        = this.imageSelectionResults.banner.filename.split('/');
+        = bannerGameImage.filename.split('/');
       let filename = filenameSplit[filenameSplit.length - 1];
-      if (this.imageSelectionResults.banner.side) {
-        filename = this.imageSelectionResults.banner.side + '-' + filename;
+      if (bannerGameImage.side) {
+        filename = bannerGameImage.side + '-' + filename;
       }
       filesToDownload.push({url: url, filename: filename})
     }
