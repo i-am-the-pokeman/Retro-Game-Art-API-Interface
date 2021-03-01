@@ -2,7 +2,7 @@ import { TitleCasePipe } from "@angular/common";
 import { Injectable } from "@angular/core";
 import { Game, GameImage, GamesDictionary, GamesImagesDictionary, Platform, PlatformsDictionary } from "src/app/APIs/TheGamesDB/TheGamesDBAPIEntities";
 import { DictionaryUtils } from "src/app/shared/utils/dictionary-utils";
-import { DropdownOption } from "../../shared/forms/entities";
+import { DropdownOption } from "../../shared/form-helpers/entities";
 
 @Injectable()
 export class TheGamesDBAPIFormMapper {

@@ -3,7 +3,7 @@ import { FormGroup } from '@angular/forms';
 import { APIUtils } from '../APIs/API-utils';
 import { GameImageFilenameUtils } from '../APIs/TheGamesDB/GameImageFilenameUtils';
 import { GameImage, ImageBaseUrlMeta } from '../APIs/TheGamesDB/TheGamesDBAPIEntities';
-import { DropdownOption } from '../shared/forms/entities';
+import { DropdownOption } from '../shared/form-helpers/entities';
 import { ApiInterfaceGroupName, ApiInterfaceScreenOneFormService } from './services/api-interface-screen-one-form.service';
 import { GameSelectionControlName } from './services/form-data/game-selection-form-data';
 import { GameImageTypeSelectionControlName } from './services/form-data/image-selection-form-data';

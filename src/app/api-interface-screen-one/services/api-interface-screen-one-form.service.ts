@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { FormGroup } from "@angular/forms";
-import { FormConfigUtils } from "src/app/shared/forms/form-config.utils";
+import { FormConfigUtils } from "src/app/shared/form-helpers/form-config.utils";
 import { GameSelectionFormConfig } from "./form-data/game-selection-form-data";
 import { GameImageTypeSelectionFormConfig } from "./form-data/image-selection-form-data";
 

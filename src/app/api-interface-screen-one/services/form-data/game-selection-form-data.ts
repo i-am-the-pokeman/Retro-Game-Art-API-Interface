@@ -1,6 +1,5 @@
-import { FormGroup, Validators } from "@angular/forms";
-import { FormInputData } from "src/app/shared/forms/entities";
-import { FormConfigUtils } from "src/app/shared/forms/form-config.utils";
+import { Validators } from "@angular/forms";
+import { FormInputData } from "src/app/shared/form-helpers/entities";
 
 export enum GameSelectionControlName {
     Platform = 'platform',

@@ -4,9 +4,9 @@ import { Observable } from 'rxjs';
 import { TheGamesDBAPIService } from 'src/app/APIs/TheGamesDB/TheGamesDBAPI.service';
 import { GETGamesByPlatformIdRequest, GETGamesByPlatformIdResponse, GETPlatformsRequest, GETPlatformsResponse } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIEntities';
 import { TheGamesDBAPIKey } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIKey';
-import { AngularMaterialAutocompleteUtils } from 'src/app/shared/forms/angular-material-autocomplete-utils';
-import { DropdownOption } from 'src/app/shared/forms/entities';
-import { FormConfigUtils } from 'src/app/shared/forms/form-config.utils';
+import { AngularMaterialAutocompleteUtils } from 'src/app/shared/form-helpers/angular-material-autocomplete-utils';
+import { DropdownOption } from 'src/app/shared/form-helpers/entities';
+import { FormConfigUtils } from 'src/app/shared/form-helpers/form-config.utils';
 import { TheGamesDBAPIFormMapper } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIFormMapper';
 import { GameSelectionControlName, GameSelectionFormConfig } from '../services/form-data/game-selection-form-data';
 

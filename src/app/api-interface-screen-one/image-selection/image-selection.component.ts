@@ -3,10 +3,10 @@ import { APIUtils } from 'src/app/APIs/API-utils';
 import { TheGamesDBAPIService } from 'src/app/APIs/TheGamesDB/TheGamesDBAPI.service';
 import { GETGameImagesByGameIdRequest, GETGameImagesByGameIdResponse, ImageBaseUrlMeta, ImageTypes } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIEntities';
 import { TheGamesDBAPIKey } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIKey';
-import { DropdownOption } from 'src/app/shared/forms/entities';
+import { DropdownOption } from 'src/app/shared/form-helpers/entities';
 import { TheGamesDBAPIFormMapper } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIFormMapper';
 import { GameImageTypeSelectionControlName, GameImageTypeSelectionFormConfig } from '../services/form-data/image-selection-form-data';
-import { FormConfigUtils } from 'src/app/shared/forms/form-config.utils';
+import { FormConfigUtils } from 'src/app/shared/form-helpers/form-config.utils';
 import { FormGroup } from '@angular/forms';
 
 @Component({
