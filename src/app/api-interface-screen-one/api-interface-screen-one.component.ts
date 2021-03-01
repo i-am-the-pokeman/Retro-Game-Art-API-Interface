@@ -1,6 +1,7 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { APIUtils } from '../APIs/API-utils';
+import { GameImageFilenameUtils } from '../APIs/TheGamesDB/GameImageFilenameUtils';
 import { GameImage, ImageBaseUrlMeta } from '../APIs/TheGamesDB/TheGamesDBAPIEntities';
 import { DropdownOption } from '../shared/forms/entities';
 import { ApiInterfaceGroupName, ApiInterfaceScreenOneFormService } from './services/api-interface-screen-one-form.service';
@@ -53,24 +54,12 @@ export class ApiInterfaceScreenOneComponent implements OnInit {
                                                     ?.value?.Value;
     if (iconGameImage?.id) {
       let url = APIUtils.buildFileUrl(this.imageBaseUrls.thumb, iconGameImage.filename)
-      // TODO: make a util for filename builder
-      let filenameSplit
-        = iconGameImage.filename.split('/');
-      let filename = filenameSplit[filenameSplit.length - 1];
-      if (iconGameImage.side) {
-        filename = iconGameImage.side + '-' + filename;
-      }
-      filename = 'banner_' + filename;
+      let filename = GameImageFilenameUtils.buildNewFileName('icon', iconGameImage.filename, iconGameImage.side);
       filesToDownload.push({url: url, filename: filename}) // TODO: type this you jackwagon
     }
     if (bannerGameImage?.id) {
       let url = APIUtils.buildFileUrl(this.imageBaseUrls.thumb, bannerGameImage.filename)
-      let filenameSplit = bannerGameImage.filename.split('/');
-      let filename = filenameSplit[filenameSplit.length - 1];
-      if (bannerGameImage.side) {
-        filename = bannerGameImage.side + '-' + filename;
-      }
-      filename = 'icon_' + filename;
+      let filename = GameImageFilenameUtils.buildNewFileName('banner', bannerGameImage.filename, bannerGameImage.side);
       filesToDownload.push({url: url, filename: filename})
     }
     ipc.send('download-images', filesToDownload)
