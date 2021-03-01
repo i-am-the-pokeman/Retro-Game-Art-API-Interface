@@ -49,14 +49,49 @@ export class TheGamesDBAPIFormMapper {
                                             Text: this.mapGameImageToImageTypeDropdownText(gameImage),
                                             Value: gameImage
                                           })
-                            );
+                            )
+                        .sort((a, b) => this.sortByGameImageTypePriority(a.Value, b.Value));
     }
     private static mapGameImageToImageTypeDropdownText(gameImage: GameImage) {
-      let type = this.TitleCasePipe.transform(gameImage.type);
+      let type = (this.GameImageTypeDisplayValueMap.has(gameImage.type))
+                  ? this.GameImageTypeDisplayValueMap.get(gameImage.type)
+                  : this.TitleCasePipe.transform(gameImage.type);
       let side = this.TitleCasePipe.transform(gameImage.side);
       return (side?.length)
               ? type + ' (' + side + ')'
               : type;
+    }
+    private static GameImageTypeDisplayValueMap = new Map<string, string>([
+      ['fanart', 'Fan Art'],
+      ['banner', 'Banner'],
+      ['boxart', 'Box Art'],
+      ['screenshot', 'Screenshot'],
+      ['clearlogo', 'Clear Logo'],
+      ['titlescreen', 'Title Screen']
+    ]);
+    private static GameImageTypePriorityMap = new Map<string, number>([
+      ['boxart', 1],
+      ['titlescreen', 2],
+      ['clearlogo', 3],
+      ['screenshot', 4],
+      ['banner', 5],
+      ['fanart', 6]
+    ]);
+    private static GameImageTypeSidePriorityMap = new Map<string, number>([
+      ['front', 1],
+      ['back', 2],
+    ]);
+    private static sortByGameImageTypePriority(a: GameImage, b: GameImage): number {
+      return (this.GameImageTypePriorityMap.get(a.type) > this.GameImageTypePriorityMap.get(b.type))
+              ? 1
+              : this.GameImageTypePriorityMap.get(a.type) === this.GameImageTypePriorityMap.get(b.type)
+                ? this.sortByGameImageTypeSidePriority(a, b)
+                : -1;
+    }
+    private static sortByGameImageTypeSidePriority (a: GameImage, b: GameImage): number {
+      return (this.GameImageTypeSidePriorityMap.get(a.side) > this.GameImageTypeSidePriorityMap.get(b.side))
+              ? 1
+              : -1;
     }
 
     // TODO: move this somewhere generic...
