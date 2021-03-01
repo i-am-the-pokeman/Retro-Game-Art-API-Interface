@@ -1,51 +1,14 @@
 <!-- TODO: add a form reset button (and don't forget to reset the disableByDefualt controls to be disabled) -->
 <div [formGroup]="gameSelectionFormGroup">
-  <!-- TODO: Add a "clear text" button at the suffix of every autocomplete field -->
-  <mat-form-field appearance="fill"
-                  color="accent"
-                  class="autocomplete-width padding-sm-bottom">
-    <mat-label>{{formConfigDataMap.get(GameSelectionControlName.Platform)?.Label}}</mat-label>
-    <input type="text"
-            placeholder="{{formConfigDataMap.get(GameSelectionControlName.Platform)?.PlaceholderText}}"
-            aria-label="Platform"
-            matInput
-            formControlName="{{GameSelectionControlName.Platform}}"
-            required
-            [matAutocomplete]="platform_autocomplete">
-    <mat-autocomplete #platform_autocomplete
-                      [displayWith]="AngularMaterialAutocompleteUtils.GetDropdownOptionText">
-      <mat-option *ngFor="let option of filteredPlatformDropdownOptions | async"
-                  [value]="option">
-          {{option.Text}}
-      </mat-option>
-    </mat-autocomplete>
-    <!-- TODO: find a way to loop through formConfigData in case of multiple errors -->
-    <mat-error *ngIf="gameSelectionFormGroup.get(GameSelectionControlName.Platform).hasError('required')">
-      {{formConfigDataMap.get(GameSelectionControlName.Platform)?.ErrorMessages?.required}}
-    </mat-error>
-  </mat-form-field>
+    <div class="padding-sm-bottom">
+      <easy-autocomplete [autocompleteFormControl]="getPlatformFormControl()"
+                          [formInputData]="formConfigDataMap.get(GameSelectionControlName.Platform)"
+                          [dropdownOptions]="platformDropdownOptions">
+      </easy-autocomplete>
+    </div>
 
-  <mat-form-field appearance="fill"
-                  color="accent"
-                  class="autocomplete-width">
-    <mat-label>{{formConfigDataMap.get(GameSelectionControlName.Game)?.Label}}</mat-label>
-    <input type="text"
-            placeholder="{{formConfigDataMap.get(GameSelectionControlName.Game)?.PlaceholderText}}"
-            aria-label="Game"
-            matInput
-            formControlName="{{GameSelectionControlName.Game}}"
-            required
-            [matAutocomplete]="game_autocomplete">
-    <mat-autocomplete #game_autocomplete
-                      [displayWith]="AngularMaterialAutocompleteUtils.GetDropdownOptionText">
-      <mat-option *ngFor="let option of filteredGameDropdownOptions | async"
-                  [value]="option">
-        {{option.Text}}
-      </mat-option>
-    </mat-autocomplete>
-    <!-- TODO: find a way to loop through formConfigData in case of multiple errors -->
-    <mat-error *ngIf="gameSelectionFormGroup.get(GameSelectionControlName.Game).hasError('required')">
-      {{formConfigDataMap.get(GameSelectionControlName.Game)?.ErrorMessages?.required}}
-    </mat-error>
-  </mat-form-field>
+    <easy-autocomplete [autocompleteFormControl]="getGameFormControl()"
+                        [formInputData]="formConfigDataMap.get(GameSelectionControlName.Game)"
+                        [dropdownOptions]="gamesDropdownOptions">
+    </easy-autocomplete>
 </div>

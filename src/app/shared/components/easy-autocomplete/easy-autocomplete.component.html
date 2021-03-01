@@ -1,0 +1,23 @@
+<mat-form-field appearance="fill"
+                color="accent"
+                class="autocomplete-width">
+  <mat-label>{{formInputData?.Label}}</mat-label>
+  <input type="text"
+          placeholder="{{formInputData?.PlaceholderText}}"
+          aria-label="Platform"
+          matInput
+          [formControl]="autocompleteFormControl"
+          required
+          [matAutocomplete]="autocomplete">
+  <mat-autocomplete #autocomplete
+                    [displayWith]="AngularMaterialAutocompleteUtils.GetDropdownOptionText">
+    <mat-option *ngFor="let option of filteredDropdownOptions | async"
+                [value]="option">
+        {{option.Text}}
+    </mat-option>
+  </mat-autocomplete>
+  <!-- TODO: find a way to loop through formConfigData in case of multiple errors -->
+  <mat-error *ngIf="autocompleteFormControl?.hasError('required')">
+    {{formInputData?.ErrorMessages?.required}}
+  </mat-error>
+</mat-form-field>

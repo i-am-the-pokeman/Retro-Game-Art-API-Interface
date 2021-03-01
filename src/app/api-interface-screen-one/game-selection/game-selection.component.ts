@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { TheGamesDBAPIService } from 'src/app/APIs/TheGamesDB/TheGamesDBAPI.service';
 import { GETGamesByPlatformIdRequest, GETGamesByPlatformIdResponse, GETPlatformsRequest, GETPlatformsResponse } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIEntities';
@@ -21,10 +21,7 @@ export class GameSelectionComponent implements OnInit {
   readonly formConfigDataMap = FormConfigUtils.getFormConfigDataMap(GameSelectionFormConfig.getFormConfigData());
 
   platformDropdownOptions: DropdownOption[] = [];
-  filteredPlatformDropdownOptions: Observable<DropdownOption[]> = new Observable<DropdownOption[]>();
-
   gamesDropdownOptions: DropdownOption[] = [];
-  filteredGameDropdownOptions: Observable<DropdownOption[]> = new Observable<DropdownOption[]>();
 
   // Reveal to template
   readonly GameSelectionControlName = GameSelectionControlName;
@@ -46,6 +43,10 @@ export class GameSelectionComponent implements OnInit {
       });
   }
 
+  // Note: Angular will throw a TypeError in the template if these aren't cast as a FormControl
+  getPlatformFormControl(): FormControl { return this.gameSelectionFormGroup.get(GameSelectionControlName.Platform) as FormControl };
+  getGameFormControl(): FormControl { return this.gameSelectionFormGroup.get(GameSelectionControlName.Game) as FormControl };
+
   // API Actions + Side Effects
   fetchPlatformsAndPopulateDropdown() {
     let request: GETPlatformsRequest = {
@@ -56,8 +57,6 @@ export class GameSelectionComponent implements OnInit {
       .subscribe((response: GETPlatformsResponse) => {
         if (response?.data?.count) {
           this.platformDropdownOptions = TheGamesDBAPIFormMapper.MapPlatformsDictionaryToPlatformDropdownOptions(response.data.platforms);
-          this.filteredPlatformDropdownOptions
-            = AngularMaterialAutocompleteUtils.GetFilteredAutoCompleteOptions$(this.gameSelectionFormGroup.get(GameSelectionControlName.Platform), this.platformDropdownOptions);
         }
       });
   }
@@ -73,12 +72,7 @@ export class GameSelectionComponent implements OnInit {
         .subscribe((response: GETGamesByPlatformIdResponse) => {
           if (response?.data?.count) {
             this.enableGameSelection();
-
             this.gamesDropdownOptions = TheGamesDBAPIFormMapper.MapGamesDictionaryToGameDrodpownOptions(response.data.games);
-            // TODO: should I be concerned that a new observable is opened every time you switch the platform control's value?
-            this.filteredGameDropdownOptions
-               = AngularMaterialAutocompleteUtils.GetFilteredAutoCompleteOptions$(this.gameSelectionFormGroup.get(GameSelectionControlName.Game), this.gamesDropdownOptions);
-
           } else {
             this.handleNoGamesAvailable();
           }
