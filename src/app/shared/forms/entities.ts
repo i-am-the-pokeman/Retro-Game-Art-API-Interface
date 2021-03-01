@@ -24,6 +24,5 @@ export interface FormInputData {
 */
 // TODO: should I swap from "dependant ON controls" to " dependant controls"?
 export interface DependantOnControlsConfig {
-    // TODO: there's only one value here for now, but this can be expanded in the future
     DependantOnControls: string[];
 }

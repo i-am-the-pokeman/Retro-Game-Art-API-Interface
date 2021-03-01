@@ -13,7 +13,6 @@ export class TheGamesDBAPIService {
   constructor(private http: HttpClient) { }
 
   getAllPlatforms(request: GETPlatformsRequest): Observable<GETPlatformsResponse> {
-    // TODO: create a reusable way to generate GET requests with query params
     let params = new HttpParams();
     params = params.append('apikey', request.apikey);
   
