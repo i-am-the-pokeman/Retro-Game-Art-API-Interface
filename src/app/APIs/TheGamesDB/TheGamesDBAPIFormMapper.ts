@@ -8,7 +8,6 @@ export interface Dictionary {
   [key: number]: any;
 }
 
-// TODO: make functions generic
 @Injectable()
 export class TheGamesDBAPIFormMapper {
     private static TitleCasePipe = new TitleCasePipe();
