@@ -17,7 +17,6 @@ import { GameSelectionControlName, GameSelectionFormConfig } from '../services/f
 })
 export class GameSelectionComponent implements OnInit {
   @Input() gameSelectionFormGroup: FormGroup;
-  // TODO: we NEED to prevent the user from going to the next step when they provide incorrect values (ex: 'a', '123', etc.)
   readonly formConfigDataMap = FormConfigUtils.getFormConfigDataMap(GameSelectionFormConfig.getFormConfigData());
 
   platformDropdownOptions: DropdownOption[] = [];

@@ -16,8 +16,5 @@
         {{option.Text}}
     </mat-option>
   </mat-autocomplete>
-  <!-- TODO: find a way to loop through formConfigData in case of multiple errors -->
-  <mat-error *ngIf="autocompleteFormControl?.hasError('required')">
-    {{formInputData?.ErrorMessages?.required}}
-  </mat-error>
+  <mat-error *ngIf="autocompleteFormControl?.errors">{{errorMessage}}</mat-error>
 </mat-form-field>

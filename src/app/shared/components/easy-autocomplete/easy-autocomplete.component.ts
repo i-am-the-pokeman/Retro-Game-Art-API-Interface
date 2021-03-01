@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy } from '@angular/core';
+import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -10,7 +10,7 @@ import { DropdownOption, FormInputData } from '../../form-helpers/entities';
   templateUrl: './easy-autocomplete.component.html',
   styleUrls: ['./easy-autocomplete.component.sass']
 })
-export class EasyAutocompleteComponent implements OnDestroy {
+export class EasyAutocompleteComponent implements OnInit, OnDestroy {
 
   @Input() autocompleteFormControl: FormControl;
   @Input() formInputData: FormInputData;
@@ -28,13 +28,38 @@ export class EasyAutocompleteComponent implements OnDestroy {
   private _dropdownOptions: DropdownOption[] = [];
   filteredDropdownOptions: Observable<DropdownOption[]> = new Observable<DropdownOption[]>();
 
+  errorMessage: string = '';
+
   private stop$ = new Subject<any>();
 
   readonly AngularMaterialAutocompleteUtils = AngularMaterialAutocompleteUtils;
+
+  constructor(private cdr: ChangeDetectorRef) {}
   
+  ngOnInit() {
+    this.errorMessage = this.buildErrorMessage();
+    this.autocompleteFormControl.statusChanges
+      .pipe(takeUntil(this.stop$))
+      .subscribe((status) => {
+        console.log(status);
+        this.errorMessage = this.buildErrorMessage();
+      });
+  }
+
   ngOnDestroy() {
     this.stop$.next();
     this.stop$.complete();
+  }
+
+  buildErrorMessage(): string {
+    if (this.autocompleteFormControl.errors) {
+      return Object.keys(this.autocompleteFormControl?.errors)
+              .map((key: string) => this.formInputData.ErrorMessages[key])
+              .filter((errorText: string) => errorText?.length)
+              .join('. ');
+    } else {
+      return '';
+    }
   }
 
 }
