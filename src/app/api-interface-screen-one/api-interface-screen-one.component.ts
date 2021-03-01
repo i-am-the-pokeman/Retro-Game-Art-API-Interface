@@ -52,8 +52,7 @@ export class ApiInterfaceScreenOneComponent implements OnInit {
                                                     .get(GameImageTypeSelectionControlName.Banner)
                                                     ?.value?.Value;
     if (iconGameImage?.id) {
-      let url
-        = APIUtils.buildFileUrl(this.imageBaseUrls.thumb, iconGameImage.filename)
+      let url = APIUtils.buildFileUrl(this.imageBaseUrls.thumb, iconGameImage.filename)
       // TODO: make a util for filename builder
       let filenameSplit
         = iconGameImage.filename.split('/');
@@ -61,17 +60,17 @@ export class ApiInterfaceScreenOneComponent implements OnInit {
       if (iconGameImage.side) {
         filename = iconGameImage.side + '-' + filename;
       }
+      filename = 'banner_' + filename;
       filesToDownload.push({url: url, filename: filename}) // TODO: type this you jackwagon
     }
     if (bannerGameImage?.id) {
-      let url
-        = APIUtils.buildFileUrl(this.imageBaseUrls.thumb, bannerGameImage.filename)
-      let filenameSplit
-        = bannerGameImage.filename.split('/');
+      let url = APIUtils.buildFileUrl(this.imageBaseUrls.thumb, bannerGameImage.filename)
+      let filenameSplit = bannerGameImage.filename.split('/');
       let filename = filenameSplit[filenameSplit.length - 1];
       if (bannerGameImage.side) {
         filename = bannerGameImage.side + '-' + filename;
       }
+      filename = 'icon_' + filename;
       filesToDownload.push({url: url, filename: filename})
     }
     ipc.send('download-images', filesToDownload)
