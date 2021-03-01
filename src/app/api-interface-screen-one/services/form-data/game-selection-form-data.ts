@@ -1,4 +1,5 @@
-import { Validators } from "@angular/forms";
+import { ValidatorFn, Validators } from "@angular/forms";
+import { CustomFormValidators } from "src/app/shared/form-helpers/custom-form-validators";
 import { FormInputData } from "src/app/shared/form-helpers/entities";
 
 export enum GameSelectionControlName {
@@ -14,7 +15,7 @@ export class GameSelectionFormConfig {
                 ControlName: GameSelectionControlName.Platform,
                 DefaultValue: null,
                 Label: 'Find Platform',
-                Validators: [Validators.required],
+                Validators: [CustomFormValidators.autocompleteRequired as ValidatorFn],
                 ErrorMessages: { required: 'Please select a Platform.' },
                 PlaceholderText: 'Start typing...'
             },
@@ -22,7 +23,7 @@ export class GameSelectionFormConfig {
                 ControlName: GameSelectionControlName.Game,
                 DefaultValue: null,
                 Label: 'Find Game',
-                Validators: [Validators.required],
+                Validators: [CustomFormValidators.autocompleteRequired as ValidatorFn],
                 ErrorMessages: { required: 'Please select a Platform.' },
                 DisabledByDefault: true,
                 PlaceholderText: 'Start typing...'
