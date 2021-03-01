@@ -76,6 +76,8 @@ export class GameSelectionComponent implements OnInit {
             this.handleNoGamesAvailable();
           }
         });
+    } else {
+      this.handleNoGamesAvailable();
     }
   }
 
