@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -33,15 +33,13 @@ export class EasyAutocompleteComponent implements OnInit, OnDestroy {
   private stop$ = new Subject<any>();
 
   readonly AngularMaterialAutocompleteUtils = AngularMaterialAutocompleteUtils;
-
-  constructor(private cdr: ChangeDetectorRef) {}
   
   ngOnInit() {
+    // Note: we must initialize the error message here, because touching + blurring an input for the first time does not fire statusChanges
     this.errorMessage = this.buildErrorMessage();
     this.autocompleteFormControl.statusChanges
       .pipe(takeUntil(this.stop$))
-      .subscribe((status) => {
-        console.log(status);
+      .subscribe(() => {
         this.errorMessage = this.buildErrorMessage();
       });
   }
@@ -53,10 +51,12 @@ export class EasyAutocompleteComponent implements OnInit, OnDestroy {
 
   buildErrorMessage(): string {
     if (this.autocompleteFormControl.errors) {
-      return Object.keys(this.autocompleteFormControl?.errors)
-              .map((key: string) => this.formInputData.ErrorMessages[key])
-              .filter((errorText: string) => errorText?.length)
-              .join('. ');
+      let message =  Object.keys(this.autocompleteFormControl?.errors)
+                      .map((key: string) => this.formInputData.ErrorMessages[key])
+                      .filter((errorText: string) => errorText?.length)
+                      .join('. ');
+      if (message?.length) message += '.';
+      return message;
     } else {
       return '';
     }
