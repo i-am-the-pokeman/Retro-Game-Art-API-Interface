@@ -1,20 +1,16 @@
 import { TitleCasePipe } from "@angular/common";
 import { Injectable } from "@angular/core";
-import { Game, GameImage, Platform } from "src/app/APIs/TheGamesDB/TheGamesDBAPIEntities";
+import { Game, GameImage, GamesDictionary, GamesImagesDictionary, Platform, PlatformsDictionary } from "src/app/APIs/TheGamesDB/TheGamesDBAPIEntities";
+import { DictionaryUtils } from "src/app/shared/utils/dictionary-utils";
 import { DropdownOption } from "../../shared/forms/entities";
-
-// TODO: move this to a generic location
-export interface Dictionary {
-  [key: number]: any;
-}
 
 @Injectable()
 export class TheGamesDBAPIFormMapper {
     private static TitleCasePipe = new TitleCasePipe();
 
-    // TODO: add unit test
-    public static MapPlatformsDictionaryToPlatformDropdownOptions(platformsDictionary: Dictionary) {
-      let dictionaryValues: Platform[] = this.GetDictionaryValues(platformsDictionary);
+    // TODO: add tests
+    public static MapPlatformsDictionaryToPlatformDropdownOptions(platformsDictionary: PlatformsDictionary) {
+      let dictionaryValues: Platform[] = DictionaryUtils.GetDictionaryValues(platformsDictionary);
       let dropdownOptions = this.mapPlatformsToDropdownOptions(dictionaryValues);
       return dropdownOptions;
     }
@@ -22,9 +18,9 @@ export class TheGamesDBAPIFormMapper {
       return platforms.map(platform => ({Text: platform.name, Value: platform.id}));
     }
 
-    // TODO: add unit test
-    public static MapGamesDictionaryToGameDrodpownOptions(gamesDictionary: Dictionary) {
-      let dictionaryValues: Game[] = this.GetDictionaryValues(gamesDictionary);
+    // TODO: add tests
+    public static MapGamesDictionaryToGameDrodpownOptions(gamesDictionary: GamesDictionary) {
+      let dictionaryValues: Game[] = DictionaryUtils.GetDictionaryValues(gamesDictionary);
       let dropdownOptions = this.mapGamesToDropdownOptions(dictionaryValues);
       return dropdownOptions;
     }
@@ -33,9 +29,9 @@ export class TheGamesDBAPIFormMapper {
     }
 
     //#region Game Image Type Dropdown Functions
-    // TODO: add unit test
-    public static MapGameImagesDictionaryToImageTypeDropdownOptions(imagesDictionary: Dictionary) {
-      let dictionaryValueArray: GameImage[][] = this.GetDictionaryValues(imagesDictionary);
+    // TODO: add tests
+    public static MapGameImagesDictionaryToImageTypeDropdownOptions(imagesDictionary: GamesImagesDictionary) {
+      let dictionaryValueArray: GameImage[][] = DictionaryUtils.GetDictionaryValues(imagesDictionary);
       let dictionaryValues: GameImage[] = [];
       if (dictionaryValueArray.length) { // Since we only call for one game's image set at a time, we only need the first result
         dictionaryValues = dictionaryValueArray[0];
@@ -114,10 +110,4 @@ export class TheGamesDBAPIFormMapper {
       return (a.id > b.id) ? 1 : -1;
     }
     //#endregion
-
-    // TODO: move this somewhere generic...
-    public static GetDictionaryValues(dictionary: any): any[] {
-      return Object.keys(dictionary)
-                    .map(key => dictionary[key]);
-    }
 }
