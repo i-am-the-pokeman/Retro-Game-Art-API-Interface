@@ -17,7 +17,6 @@ export class ApiInterfaceScreenOneComponent implements OnInit {
 
   formGroup = ApiInterfaceScreenOneFormService.getNewFormGroup();
 
-  // TODO: emit game selection instead of number
   gameSelectionId: number;
   imageBaseUrls: ImageBaseUrlMeta;
 
@@ -30,7 +29,7 @@ export class ApiInterfaceScreenOneComponent implements OnInit {
                   .get(GameSelectionControlName.Game).valueChanges
       .subscribe((value: DropdownOption) => {
         if (!!value?.Value) {
-          this.gameSelectionId = value.Value;
+          this.gameSelectionId = value.Value?.id;
         }
       });
   }

@@ -1,7 +1,7 @@
 import { TitleCasePipe } from "@angular/common";
 import { Injectable } from "@angular/core";
 import { Game, GameImage, Platform } from "src/app/APIs/TheGamesDB/TheGamesDBAPIEntities";
-import { DropdownOption } from "./entities";
+import { DropdownOption } from "../../shared/forms/entities";
 
 // TODO: move this to a generic location
 export interface Dictionary {
@@ -30,7 +30,7 @@ export class TheGamesDBAPIFormMapper {
       return dropdownOptions;
     }
     private static mapGamesToDropdownOptions(games: Game[] = []): DropdownOption[] {
-      return games.map(game => ({Text: game.game_title, Value: game.id}));
+      return games.map(game => ({Text: game.game_title, Value: game}));
     }
 
     // TODO: add unit test

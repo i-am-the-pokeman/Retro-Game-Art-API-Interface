@@ -4,7 +4,7 @@ import { TheGamesDBAPIService } from 'src/app/APIs/TheGamesDB/TheGamesDBAPI.serv
 import { GETGameImagesByGameIdRequest, GETGameImagesByGameIdResponse, ImageBaseUrlMeta, ImageTypes } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIEntities';
 import { TheGamesDBAPIKey } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIKey';
 import { DropdownOption } from 'src/app/shared/forms/entities';
-import { TheGamesDBAPIFormMapper } from 'src/app/shared/forms/TheGamesDBAPIFormMapper';
+import { TheGamesDBAPIFormMapper } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIFormMapper';
 import { GameImageTypeSelectionControlName, GameImageTypeSelectionFormConfig } from '../services/form-data/image-selection-form-data';
 import { FormConfigUtils } from 'src/app/shared/forms/form-config.utils';
 import { FormGroup } from '@angular/forms';
