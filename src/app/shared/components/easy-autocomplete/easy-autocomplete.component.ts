@@ -49,7 +49,11 @@ export class EasyAutocompleteComponent implements OnInit, OnDestroy {
     this.stop$.complete();
   }
 
-  buildErrorMessage(): string {
+  resetFormControl() {
+    this.autocompleteFormControl.setValue(this.formInputData.DefaultValue);
+  }
+
+  private buildErrorMessage(): string {
     if (this.autocompleteFormControl.errors) {
       let message =  Object.keys(this.autocompleteFormControl?.errors)
                       .map((key: string) => this.formInputData.ErrorMessages[key])

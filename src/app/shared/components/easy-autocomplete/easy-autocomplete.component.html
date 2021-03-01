@@ -16,5 +16,9 @@
         {{option.Text}}
     </mat-option>
   </mat-autocomplete>
+  <!-- TODO: if disabled, make icon unclickable -->
+  <a matSuffix class="cursor-pointer" (click)="resetFormControl()">
+    <mat-icon>close</mat-icon>
+  </a>
   <mat-error *ngIf="autocompleteFormControl?.errors">{{errorMessage}}</mat-error>
 </mat-form-field>
