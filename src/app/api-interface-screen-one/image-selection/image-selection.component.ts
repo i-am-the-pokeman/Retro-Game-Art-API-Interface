@@ -79,30 +79,40 @@ export class ImageSelectionComponent implements OnInit {
       }
       this.theGamesDbAPIService.getGameImagesByGameIdRequest(request)
         .subscribe((response: GETGameImagesByGameIdResponse) => {
-          if (response?.data?.count) {
-            this.enableGameImageSelection();
-
-            // Disable download button until a selection is made
-            this.isDownloadButtonDisabled = true;
-
-            // Populate Dropdowns based on what's available for the game
-            this.gameImageTypeDropdownOptions
-              = TheGamesDBAPIFormMapper.MapGameImagesDictionaryToImageTypeDropdownOptions(response.data.images)
-                                       .filter((dropdownOption) => this.allowedImageTypes.includes(dropdownOption.Value.type));
-            // Handle no available valid images
-            if (!this.gameImageTypeDropdownOptions.length) {
-              this.handleNoImageTypesAvailable();
-            }
-
-            // store imageUrlBases
-            this.baseImageUrls = response.data?.base_url;
-            // TODO: is there a way to remove this emitter?
-            this.baseImageUrlsUpdated.emit(this.baseImageUrls);
-          } else {
-            this.handleNoImageTypesAvailable();
-          }
+          (response?.data?.count)
+            ? this.handleNewImageTypeData(response)
+            : this.handleNoImageTypesAvailable();
         });
+    } else {
+      this.disableGameImageSelection();
     }
+  }
+
+  private handleNewImageTypeData(response: GETGameImagesByGameIdResponse) {
+    this.enableGameImageSelection();
+
+    // Disable download button until a selection is made
+    this.isDownloadButtonDisabled = true;
+
+    // Populate Dropdowns based on what's available for the game
+    this.gameImageTypeDropdownOptions
+      = TheGamesDBAPIFormMapper.MapGameImagesDictionaryToImageTypeDropdownOptions(response.data.images)
+                               .filter((dropdownOption) => this.allowedImageTypes.includes(dropdownOption.Value.type));
+    // Handle no available valid images
+    if (!this.gameImageTypeDropdownOptions.length) {
+      this.handleNoImageTypesAvailable();
+    }
+
+    // store imageUrlBases
+    this.baseImageUrls = response.data?.base_url;
+    // TODO: is there a way to remove this emitter?
+    this.baseImageUrlsUpdated.emit(this.baseImageUrls);
+  }
+
+  private handleNoImageTypesAvailable() {
+    this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).disable();
+    this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).disable();
+    // TODO: display error dialog
   }
 
   private resetGameImageSelection() {
@@ -122,10 +132,9 @@ export class ImageSelectionComponent implements OnInit {
     this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).enable();
   }
 
-  private handleNoImageTypesAvailable() {
+  private disableGameImageSelection() {
     this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).disable();
     this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).disable();
-    // TODO: display error dialog
   }
 
   onDownloadClicked() {
