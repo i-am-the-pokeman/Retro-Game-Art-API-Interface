@@ -35,15 +35,25 @@ export class GameSelectionComponent implements OnInit {
     this.fetchPlatformsAndPopulateDropdown();
 
     // Form events
-    this.gameSelectionFormGroup.get(GameSelectionControlName.Platform).valueChanges
+    this.gameSelectionFormGroup.get(GameSelectionControlName.Platform)
+      .valueChanges
       .subscribe(() => {
         this.resetGameSelection();
         this.fetchGamesByPlatformIdAndPopulateDropdown();
       });
   }
 
-  // Note: Angular will throw a TypeError in the template if these aren't cast as a FormControl
+  /**
+   * Notes:
+   * - To be used exclusively in the template
+   * - Angular will throw a TypeError in the template if these aren't cast as a FormControl
+  */
   getPlatformFormControl(): FormControl { return this.gameSelectionFormGroup.get(GameSelectionControlName.Platform) as FormControl };
+  /**
+   * Notes:
+   * - To be used exclusively in the template
+   * - Angular will throw a TypeError in the template if these aren't cast as a FormControl
+  */
   getGameFormControl(): FormControl { return this.gameSelectionFormGroup.get(GameSelectionControlName.Game) as FormControl };
 
   // API Actions + Side Effects
@@ -82,17 +92,21 @@ export class GameSelectionComponent implements OnInit {
   }
 
   private resetGameSelection() {
-    if (!this.gameSelectionFormGroup.get(GameSelectionControlName.Game).pristine) {
+    if (!this.gameSelectionFormGroup.get(GameSelectionControlName.Game).pristine) { // Only reset if the controls have been touched
       this.gameSelectionFormGroup.get(GameSelectionControlName.Game).reset();
     }
   }
 
   private enableGameSelection() {
-    this.gameSelectionFormGroup.get(GameSelectionControlName.Game).enable();
+    if (this.gameSelectionFormGroup.get(GameSelectionControlName.Game).disabled) { // Avoid firing statusChanges unnecessarily
+      this.gameSelectionFormGroup.get(GameSelectionControlName.Game).enable();
+    }
   }
 
   private handleNoGamesAvailable() {
-    this.gameSelectionFormGroup.get(GameSelectionControlName.Game).disable();
+    if (this.gameSelectionFormGroup.get(GameSelectionControlName.Game).enabled) { // Avoid firing statusChanges unnecessarily
+      this.gameSelectionFormGroup.get(GameSelectionControlName.Game).disable();
+    }
   }
   // END API Actions + Side Effects
 }
