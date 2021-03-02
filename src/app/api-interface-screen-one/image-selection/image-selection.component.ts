@@ -8,6 +8,8 @@ import { TheGamesDBAPIFormMapper } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIFo
 import { GameImageTypeSelectionControlName, GameImageTypeSelectionFormConfig } from '../services/form-data/image-selection-form-data';
 import { FormConfigUtils } from 'src/app/shared/form-helpers/form-config.utils';
 import { FormGroup } from '@angular/forms';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertDialogComponent } from 'src/app/shared/components/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'image-selection',
@@ -47,7 +49,10 @@ export class ImageSelectionComponent implements OnInit {
   // TODO: use 'atLeastOneRequired' validator instead to disable button
   isDownloadButtonDisabled: boolean = true;
 
-  constructor(private theGamesDbAPIService: TheGamesDBAPIService) { }
+  constructor(
+    private dialog: MatDialog,
+    private theGamesDbAPIService: TheGamesDBAPIService
+  ) { }
 
   ngOnInit() {
     // Form events
@@ -83,10 +88,18 @@ export class ImageSelectionComponent implements OnInit {
           (response?.data?.count)
             ? this.handleNewImageTypeData(response)
             : this.handleNoImageTypesAvailable();
+        }, (error) => {
+          this.openAlertDialog(error);
         });
     } else {
       this.disableGameImageSelection();
     }
+  }
+
+  private openAlertDialog(message: string) {
+    this.dialog.open(AlertDialogComponent, {
+      data: {message: message}
+    });
   }
 
   private handleNewImageTypeData(response: GETGameImagesByGameIdResponse) {
@@ -112,7 +125,7 @@ export class ImageSelectionComponent implements OnInit {
   private handleNoImageTypesAvailable() {
     this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).disable();
     this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).disable();
-    // TODO: display error dialog
+    this.openAlertDialog('No Images Available for this Title');
   }
 
   private resetGameImageSelection() {

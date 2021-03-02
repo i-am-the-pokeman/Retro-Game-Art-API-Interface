@@ -1,6 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { Observable } from 'rxjs';
 import { TheGamesDBAPIService } from 'src/app/APIs/TheGamesDB/TheGamesDBAPI.service';
 import { GETGamesByPlatformIdRequest, GETGamesByPlatformIdResponse, GETPlatformsRequest, GETPlatformsResponse } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIEntities';
 import { TheGamesDBAPIKey } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIKey';
@@ -9,6 +8,8 @@ import { DropdownOption } from 'src/app/shared/form-helpers/entities';
 import { FormConfigUtils } from 'src/app/shared/form-helpers/form-config.utils';
 import { TheGamesDBAPIFormMapper } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIFormMapper';
 import { GameSelectionControlName, GameSelectionFormConfig } from '../services/form-data/game-selection-form-data';
+import { MatDialog } from '@angular/material/dialog';
+import { AlertDialogComponent } from 'src/app/shared/components/alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'game-selection',
@@ -27,6 +28,7 @@ export class GameSelectionComponent implements OnInit {
   readonly AngularMaterialAutocompleteUtils = AngularMaterialAutocompleteUtils;
 
   constructor(
+    private dialog: MatDialog,
     private theGamesDbAPIService: TheGamesDBAPIService
   ) { }
 
@@ -68,7 +70,7 @@ export class GameSelectionComponent implements OnInit {
           this.platformDropdownOptions = TheGamesDBAPIFormMapper.MapPlatformsDictionaryToPlatformDropdownOptions(response.data.platforms);
         }
       }, (error) => {
-        // TODO: add error dialog
+        this.openAlertDialog(error);
       });
   }
 
@@ -85,11 +87,17 @@ export class GameSelectionComponent implements OnInit {
             ? this.handleNewGameData(response)
             : this.handleNoGamesAvailable();
         }, (error) => {
-          // TODO: add error dialog
+          this.openAlertDialog(error);
         });
     } else {
-      this.handleNoGamesAvailable();
+      this.disableGameSelection();
     }
+  }
+
+  private openAlertDialog(message: string) {
+    this.dialog.open(AlertDialogComponent, {
+      data: {message: message}
+    });
   }
 
   private handleNewGameData(response: GETGamesByPlatformIdResponse) {
@@ -98,7 +106,7 @@ export class GameSelectionComponent implements OnInit {
   }
   private handleNoGamesAvailable() {
     this.disableGameSelection();
-    // TODO: add 'no games available' dialog
+    this.openAlertDialog('No Games Found')
   }
 
   private resetGameSelection() {

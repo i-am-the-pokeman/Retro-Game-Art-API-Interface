@@ -11,6 +11,7 @@ import { MatIconModule } from '@angular/material/icon';
 
 import { DisabledElementTooltipModule } from '../../shared/components/disabled-element-tooltip/disabled-element-tooltip.module';
 import { ImageSelectionComponent } from './image-selection.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { ImageSelectionComponent } from './image-selection.component';
     MatGridListModule,
     MatTooltipModule,
     MatIconModule,
+    MatDialogModule,
     DisabledElementTooltipModule
   ],
   declarations: [
