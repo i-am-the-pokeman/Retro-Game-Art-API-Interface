@@ -67,6 +67,8 @@ export class GameSelectionComponent implements OnInit {
         if (response?.data?.count) {
           this.platformDropdownOptions = TheGamesDBAPIFormMapper.MapPlatformsDictionaryToPlatformDropdownOptions(response.data.platforms);
         }
+      }, (error) => {
+        // TODO: add error dialog
       });
   }
 
@@ -79,16 +81,24 @@ export class GameSelectionComponent implements OnInit {
       }
       this.theGamesDbAPIService.getGamesByPlatformId(request)
         .subscribe((response: GETGamesByPlatformIdResponse) => {
-          if (response?.data?.count) {
-            this.enableGameSelection();
-            this.gamesDropdownOptions = TheGamesDBAPIFormMapper.MapGamesDictionaryToGameDrodpownOptions(response.data.games);
-          } else {
-            this.handleNoGamesAvailable();
-          }
+          (response?.data?.count)
+            ? this.handleNewGameData(response)
+            : this.handleNoGamesAvailable();
+        }, (error) => {
+          // TODO: add error dialog
         });
     } else {
       this.handleNoGamesAvailable();
     }
+  }
+
+  private handleNewGameData(response: GETGamesByPlatformIdResponse) {
+    this.enableGameSelection();
+    this.gamesDropdownOptions = TheGamesDBAPIFormMapper.MapGamesDictionaryToGameDrodpownOptions(response.data.games);
+  }
+  private handleNoGamesAvailable() {
+    this.disableGameSelection();
+    // TODO: add 'no games available' dialog
   }
 
   private resetGameSelection() {
@@ -96,14 +106,12 @@ export class GameSelectionComponent implements OnInit {
       this.gameSelectionFormGroup.get(GameSelectionControlName.Game).reset();
     }
   }
-
   private enableGameSelection() {
     if (this.gameSelectionFormGroup.get(GameSelectionControlName.Game).disabled) { // Avoid firing statusChanges unnecessarily
       this.gameSelectionFormGroup.get(GameSelectionControlName.Game).enable();
     }
   }
-
-  private handleNoGamesAvailable() {
+  private disableGameSelection() {
     if (this.gameSelectionFormGroup.get(GameSelectionControlName.Game).enabled) { // Avoid firing statusChanges unnecessarily
       this.gameSelectionFormGroup.get(GameSelectionControlName.Game).disable();
     }

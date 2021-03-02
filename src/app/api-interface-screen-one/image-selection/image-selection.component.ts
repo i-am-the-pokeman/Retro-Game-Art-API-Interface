@@ -44,6 +44,7 @@ export class ImageSelectionComponent implements OnInit {
   selectedIconUrl: string;
   selectedBannerUrl: string;
 
+  // TODO: use 'atLeastOneRequired' validator instead to disable button
   isDownloadButtonDisabled: boolean = true;
 
   constructor(private theGamesDbAPIService: TheGamesDBAPIService) { }
@@ -108,7 +109,6 @@ export class ImageSelectionComponent implements OnInit {
     // TODO: is there a way to remove this emitter?
     this.baseImageUrlsUpdated.emit(this.baseImageUrls);
   }
-
   private handleNoImageTypesAvailable() {
     this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).disable();
     this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).disable();
@@ -126,12 +126,10 @@ export class ImageSelectionComponent implements OnInit {
     this.selectedIconUrl = '';
     this.selectedBannerUrl = '';
   }
-
   private enableGameImageSelection() {
     this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).enable();
     this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).enable();
   }
-
   private disableGameImageSelection() {
     this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).disable();
     this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).disable();
