@@ -1,8 +1,11 @@
 import { TitleCasePipe } from "@angular/common";
 import { Injectable } from "@angular/core";
-import { Game, GameImage, GamesDictionary, GamesImagesDictionary, Platform, PlatformsDictionary } from "src/app/APIs/TheGamesDB/TheGamesDBAPIEntities";
+import { Game, GameImage, GamesDictionary, GamesImagesDictionary, ImageBaseUrlMeta, Platform, PlatformsDictionary } from "src/app/APIs/TheGamesDB/TheGamesDBAPIEntities";
+import { FileToDownload } from "src/app/shared/services/ipc-services/download-images-entities";
 import { DictionaryUtils } from "src/app/shared/utils/dictionary-utils";
 import { DropdownOption } from "../../shared/form-helpers/entities";
+import { APIUtils } from "../API-utils";
+import { GameImageFilenameUtils } from "./GameImageFilenameUtils";
 
 @Injectable()
 export class TheGamesDBAPIFormMapper {
@@ -110,4 +113,16 @@ export class TheGamesDBAPIFormMapper {
       return (a.id > b.id) ? 1 : -1;
     }
     //#endregion
+
+    public static MapGameImageToFileToDownload(imageBaseUrls: ImageBaseUrlMeta,
+                                              gameImage: GameImage,
+                                              imagePurpose: string)
+                                              : FileToDownload {
+      let url = APIUtils.buildFileUrl(imageBaseUrls.thumb, gameImage.filename)
+      let filename = GameImageFilenameUtils.buildNewFileName(imagePurpose, gameImage.filename, gameImage.side);
+      return {
+        url: url,
+        filename: filename
+      }
+    }
 }

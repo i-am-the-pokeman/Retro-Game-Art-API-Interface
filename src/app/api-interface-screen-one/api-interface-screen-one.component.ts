@@ -1,18 +1,20 @@
-import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { APIUtils } from '../APIs/API-utils';
-import { GameImageFilenameUtils } from '../APIs/TheGamesDB/GameImageFilenameUtils';
 import { GameImage, ImageBaseUrlMeta } from '../APIs/TheGamesDB/TheGamesDBAPIEntities';
+import { TheGamesDBAPIFormMapper } from '../APIs/TheGamesDB/TheGamesDBAPIFormMapper';
 import { DropdownOption } from '../shared/form-helpers/entities';
+import { DownloadImagesService } from '../shared/services/ipc-services/download-images.service';
 import { ApiInterfaceGroupName, ApiInterfaceScreenOneFormService } from './services/api-interface-screen-one-form.service';
 import { GameSelectionControlName } from './services/form-data/game-selection-form-data';
 import { GameImageTypeSelectionControlName } from './services/form-data/image-selection-form-data';
-const ipc = window.require('electron').ipcRenderer;
 
+// TODO: move API requests up to this orchestrator component
+// TODO: move download button to this orchestrator component
 @Component({
   selector: 'api-interface-screen-one',
   templateUrl: './api-interface-screen-one.component.html',
-  styleUrls: ['./api-interface-screen-one.component.sass']
+  styleUrls: ['./api-interface-screen-one.component.sass'],
+  providers: [DownloadImagesService]
 })
 export class ApiInterfaceScreenOneComponent implements OnInit {
 
@@ -23,7 +25,7 @@ export class ApiInterfaceScreenOneComponent implements OnInit {
 
   ApiInterfaceGroupName = ApiInterfaceGroupName;
 
-  constructor(private cdr: ChangeDetectorRef) { }
+  constructor(private downloadImagesService: DownloadImagesService) { }
 
   ngOnInit() {
     this.formGroup.get(ApiInterfaceGroupName.GameSelection)
@@ -44,7 +46,6 @@ export class ApiInterfaceScreenOneComponent implements OnInit {
   }
 
   downloadImages() {
-    // Tell main thread to download image
     let filesToDownload = [];
     let iconGameImage: GameImage = this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection)
                                                   .get(GameImageTypeSelectionControlName.Icon)
@@ -53,21 +54,13 @@ export class ApiInterfaceScreenOneComponent implements OnInit {
                                                     .get(GameImageTypeSelectionControlName.Banner)
                                                     ?.value?.Value;
     if (iconGameImage?.id) {
-      let url = APIUtils.buildFileUrl(this.imageBaseUrls.thumb, iconGameImage.filename)
-      let filename = GameImageFilenameUtils.buildNewFileName('icon', iconGameImage.filename, iconGameImage.side);
-      filesToDownload.push({url: url, filename: filename}) // TODO: type this you jackwagon
+      let fileToDownload = TheGamesDBAPIFormMapper.MapGameImageToFileToDownload(this.imageBaseUrls, iconGameImage, 'icon');
+      filesToDownload.push(fileToDownload);
     }
     if (bannerGameImage?.id) {
-      let url = APIUtils.buildFileUrl(this.imageBaseUrls.thumb, bannerGameImage.filename)
-      let filename = GameImageFilenameUtils.buildNewFileName('banner', bannerGameImage.filename, bannerGameImage.side);
-      filesToDownload.push({url: url, filename: filename})
+      let fileToDownload = TheGamesDBAPIFormMapper.MapGameImageToFileToDownload(this.imageBaseUrls, bannerGameImage, 'banner');
+      filesToDownload.push(fileToDownload);
     }
-    ipc.send('download-images', filesToDownload)
-
-    // Get status of download (success/failure)
-    ipc.on('download-image', (event: any, arg: any) => {
-      this.cdr.detectChanges();
-      console.log('Message received from main thread.')
-    });
+    this.downloadImagesService.DownloadImages(filesToDownload);
   }
 }
