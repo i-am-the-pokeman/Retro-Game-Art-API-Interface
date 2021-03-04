@@ -1,39 +1,23 @@
 <div [formGroup]="imageSelectionFormGroup">  
-  <mat-grid-list cols="2" rowHeight="300px" [gutterSize]="'10px'">
-    <mat-grid-tile>
-      <easy-dropdown class="dropdown-width"
-                      [dropdownFormControl]="getIconFormControl()"
+  <div class="row">
+    <div class="column margin-xs">
+      <easy-dropdown [dropdownFormControl]="getIconFormControl()"
                       [formInputData]="formConfigDataMap.get(GameImageTypeSelectionControlName.Icon)"
                       [dropdownOptions]="gameImageTypeDropdownOptions">
       </easy-dropdown>
-      <div *ngIf="!selectedIconUrl"
-            class="image-preview-placeholder">
-      </div>
-      <div class="image-preview-container">
-        <img *ngIf="selectedIconUrl"
-              src="{{selectedIconUrl}}"
-              alt="selected icon image"
-              class="image-preview">
-      </div>
-    </mat-grid-tile>
+      <easy-image-preview [url]="selectedIconUrl">
+      </easy-image-preview>
+    </div>
 
-    <mat-grid-tile>
-      <easy-dropdown class="dropdown-width"
-                      [dropdownFormControl]="getBannerFormControl()"
+    <div class="column margin-xs">
+      <easy-dropdown [dropdownFormControl]="getBannerFormControl()"
                       [formInputData]="formConfigDataMap.get(GameImageTypeSelectionControlName.Banner)"
                       [dropdownOptions]="gameImageTypeDropdownOptions">
       </easy-dropdown>
-      <div *ngIf="!selectedBannerUrl"
-            class="image-preview-placeholder">
-      </div>
-      <div class="image-preview-container">
-        <img *ngIf="selectedBannerUrl"
-              src="{{selectedBannerUrl}}"
-              alt="selected banner image"
-              class="image-preview">
-      </div>
-    </mat-grid-tile>
-  </mat-grid-list>
+      <easy-image-preview [url]="selectedBannerUrl">
+      </easy-image-preview>
+    </div>
+  </div>
 </div>
 
 <disabled-element-tooltip [text]="'Please select an image.'"

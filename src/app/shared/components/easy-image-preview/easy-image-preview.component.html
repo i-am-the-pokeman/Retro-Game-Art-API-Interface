@@ -1,0 +1,7 @@
+<div *ngIf="!url"
+      class="image-preview-placeholder">
+</div>
+<img *ngIf="url"
+      src="{{url}}"
+      alt="selected icon image"
+      class="image-preview center">

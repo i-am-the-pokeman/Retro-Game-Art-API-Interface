@@ -1,14 +1,17 @@
 <!-- TODO: add a form reset button (and don't forget to reset the disableByDefualt controls to be disabled) -->
 <div [formGroup]="gameSelectionFormGroup">
-    <div class="padding-sm-bottom">
+  <div class="row">
+    <div class="column margin-xs">
       <easy-autocomplete [autocompleteFormControl]="getPlatformFormControl()"
                           [formInputData]="formConfigDataMap.get(GameSelectionControlName.Platform)"
                           [dropdownOptions]="platformDropdownOptions">
       </easy-autocomplete>
     </div>
-
-    <easy-autocomplete [autocompleteFormControl]="getGameFormControl()"
-                        [formInputData]="formConfigDataMap.get(GameSelectionControlName.Game)"
-                        [dropdownOptions]="gamesDropdownOptions">
-    </easy-autocomplete>
+    <div class="column margin-xs">
+      <easy-autocomplete [autocompleteFormControl]="getGameFormControl()"
+                          [formInputData]="formConfigDataMap.get(GameSelectionControlName.Game)"
+                          [dropdownOptions]="gamesDropdownOptions">
+      </easy-autocomplete>
+    <div>
+  </div>
 </div>

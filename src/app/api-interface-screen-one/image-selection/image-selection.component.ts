@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { APIUtils } from 'src/app/APIs/API-utils';
 import { TheGamesDBAPIService } from 'src/app/APIs/TheGamesDB/TheGamesDBAPI.service';
 import { GETGameImagesByGameIdRequest, GETGameImagesByGameIdResponse, ImageBaseUrlMeta, ImageTypes } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIEntities';
@@ -14,8 +14,7 @@ import { AlertDialogComponent } from 'src/app/shared/components/alert-dialog/ale
 @Component({
   selector: 'image-selection',
   templateUrl: './image-selection.component.html',
-  styleUrls: ['./image-selection.component.sass'],
-  encapsulation: ViewEncapsulation.None
+  styleUrls: ['./image-selection.component.sass']
 })
 export class ImageSelectionComponent implements OnInit {
 
