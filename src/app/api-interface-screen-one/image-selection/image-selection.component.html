@@ -1,20 +1,11 @@
 <div [formGroup]="imageSelectionFormGroup">  
   <mat-grid-list cols="2" rowHeight="300px" [gutterSize]="'10px'">
-    <!-- Icon Form  + Image Preview -->
     <mat-grid-tile>
-      <!-- Form -->
-      <mat-form-field appearance="fill"
-                      color="accent"
-                      class="dropdown-width">
-        <mat-label>{{formConfigDataMap.get(GameImageTypeSelectionControlName.Icon)?.Label}}</mat-label>
-        <mat-select formControlName="{{GameImageTypeSelectionControlName.Icon}}">
-          <mat-option *ngFor="let option of gameImageTypeDropdownOptions"
-                      [value]="option">
-            {{option.Text}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <!-- Image Preview -->
+      <easy-dropdown class="dropdown-width"
+                      [dropdownFormControl]="getIconFormControl()"
+                      [formInputData]="formConfigDataMap.get(GameImageTypeSelectionControlName.Icon)"
+                      [dropdownOptions]="gameImageTypeDropdownOptions">
+      </easy-dropdown>
       <div *ngIf="!selectedIconUrl"
             class="image-preview-placeholder">
       </div>
@@ -26,21 +17,12 @@
       </div>
     </mat-grid-tile>
 
-    <!-- Banner Form + Image Preview-->
     <mat-grid-tile>
-      <!-- Form -->
-      <mat-form-field appearance="fill"
-                      color="accent"
-                      class="dropdown-width">
-        <mat-label>{{formConfigDataMap.get(GameImageTypeSelectionControlName.Banner)?.Label}}</mat-label>
-        <mat-select formControlName="{{GameImageTypeSelectionControlName.Banner}}">
-          <mat-option *ngFor="let option of gameImageTypeDropdownOptions"
-                      [value]="option">
-            {{option.Text}}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-      <!-- Image Preview -->
+      <easy-dropdown class="dropdown-width"
+                      [dropdownFormControl]="getBannerFormControl()"
+                      [formInputData]="formConfigDataMap.get(GameImageTypeSelectionControlName.Banner)"
+                      [dropdownOptions]="gameImageTypeDropdownOptions">
+      </easy-dropdown>
       <div *ngIf="!selectedBannerUrl"
             class="image-preview-placeholder">
       </div>

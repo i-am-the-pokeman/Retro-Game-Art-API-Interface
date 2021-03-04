@@ -12,6 +12,7 @@ import { MatIconModule } from '@angular/material/icon';
 import { DisabledElementTooltipModule } from '../../shared/components/disabled-element-tooltip/disabled-element-tooltip.module';
 import { ImageSelectionComponent } from './image-selection.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { EasyDropdownModule } from 'src/app/shared/components/easy-dropdown/easy-dropdown.module';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatTooltipModule,
     MatIconModule,
     MatDialogModule,
-    DisabledElementTooltipModule
+    DisabledElementTooltipModule,
+    EasyDropdownModule
   ],
   declarations: [
     ImageSelectionComponent,

@@ -7,7 +7,7 @@ import { DropdownOption } from 'src/app/shared/form-helpers/entities';
 import { TheGamesDBAPIFormMapper } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIFormMapper';
 import { GameImageTypeSelectionControlName, GameImageTypeSelectionFormConfig } from '../services/form-data/image-selection-form-data';
 import { FormConfigUtils } from 'src/app/shared/form-helpers/form-config.utils';
-import { FormGroup } from '@angular/forms';
+import { FormControl, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { AlertDialogComponent } from 'src/app/shared/components/alert-dialog/alert-dialog.component';
 
@@ -75,6 +75,19 @@ export class ImageSelectionComponent implements OnInit {
         }
       });
   }
+
+  /**
+   * Notes:
+   * - To be used exclusively in the template
+   * - Angular will throw a TypeError in the template if these aren't cast as a FormControl
+  */
+  getIconFormControl(): FormControl { return this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon) as FormControl; }
+  /**
+   * Notes:
+   * - To be used exclusively in the template
+   * - Angular will throw a TypeError in the template if these aren't cast as a FormControl
+  */
+  getBannerFormControl(): FormControl { return this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner) as FormControl; }
 
   // API Actions and Side Effects
   fetchGamesImagesAndPopulateDropdown() {

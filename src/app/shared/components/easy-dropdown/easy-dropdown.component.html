@@ -1,0 +1,11 @@
+ <mat-form-field appearance="fill"
+                  color="accent"
+                  class="dropdown-width">
+  <mat-label>{{formInputData?.Label}}</mat-label>
+  <mat-select [formControl]="dropdownFormControl">
+    <mat-option *ngFor="let option of dropdownOptions"
+                [value]="option">
+      {{option.Text}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
