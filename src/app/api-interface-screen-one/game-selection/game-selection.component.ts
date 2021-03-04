@@ -50,13 +50,13 @@ export class GameSelectionComponent implements OnInit {
    * - To be used exclusively in the template
    * - Angular will throw a TypeError in the template if these aren't cast as a FormControl
   */
-  getPlatformFormControl(): FormControl { return this.gameSelectionFormGroup.get(GameSelectionControlName.Platform) as FormControl };
+  getPlatformFormControl(): FormControl { return this.gameSelectionFormGroup.get(GameSelectionControlName.Platform) as FormControl; }
   /**
    * Notes:
    * - To be used exclusively in the template
    * - Angular will throw a TypeError in the template if these aren't cast as a FormControl
   */
-  getGameFormControl(): FormControl { return this.gameSelectionFormGroup.get(GameSelectionControlName.Game) as FormControl };
+  getGameFormControl(): FormControl { return this.gameSelectionFormGroup.get(GameSelectionControlName.Game) as FormControl; }
 
   // API Actions + Side Effects
   fetchPlatformsAndPopulateDropdown() {
