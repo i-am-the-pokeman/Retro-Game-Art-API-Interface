@@ -8,16 +8,22 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
 import { NextBackStepperButtonsModule } from '../shared/components/next-back-stepper-buttons/next-back-stepper-buttons.module';
+import { BrowserModule } from '@angular/platform-browser';
+import { DisabledElementTooltipModule } from '../shared/components/disabled-element-tooltip/disabled-element-tooltip.module';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   imports: [
+    BrowserModule,
     GameSelectionModule,
     ImageSelectionModule,
     NextBackStepperButtonsModule,
     MatStepperModule,
     MatButtonModule,
     MatCardModule,
-    MatDividerModule
+    MatDividerModule,
+    DisabledElementTooltipModule,
+    MatIconModule
   ],
   declarations: [
     ApiInterfaceScreenOneComponent,

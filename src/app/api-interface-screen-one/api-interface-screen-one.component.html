@@ -4,7 +4,7 @@
       <!--  -->
       <mat-step [stepControl]="getGameSelectionFormGroup()"
                 [label]="'Select a Game'">
-        <div class="padding-sm-top">
+        <div>
           <game-selection [gameSelectionFormGroup]="getGameSelectionFormGroup()">
           </game-selection>
           <next-back-stepper-buttons [showNext]="true"></next-back-stepper-buttons>
@@ -12,13 +12,32 @@
       </mat-step>
       <!--  -->
       <mat-step [label]="'Select & Download Images'">
-        <div class="padding-sm-top">
+        <div>
           <image-selection [imageSelectionFormGroup]="getImageTypeSelectionFormGroup()"
                             [gameSelectionId]="gameSelectionId"
-                            (baseImageUrlsUpdated)="setImageSelectionUrls($event)"
-                            (downloadButtonClicked)="downloadImages()">
+                            (baseImageUrlsUpdated)="setImageSelectionUrls($event)">
           </image-selection>
-          <next-back-stepper-buttons [showBack]="true"></next-back-stepper-buttons>
+          <!-- TODO: make this easier to read -->
+          <!-- TODO: fix styling -->
+          <!-- TODO: disable after download until the form changes -->
+          <div class="row">
+            <div class="column">
+              <next-back-stepper-buttons [showBack]="true"></next-back-stepper-buttons>
+            </div>
+            <div class="column">
+              <disabled-element-tooltip [text]="'Please select an image.'"
+                                        [isChildDisabled]="getImageTypeSelectionFormGroup().hasError('atLeastOneRequired')"
+                                        [tooltipPosition]="'right'">
+                <button mat-raised-button
+                        color="primary"
+                        [disabled]="getImageTypeSelectionFormGroup().hasError('atLeastOneRequired')"
+                        (click)="downloadImages()">
+                  <mat-icon>arrow_circle_down</mat-icon>
+                  Download Images
+                </button>
+              </disabled-element-tooltip>
+            </div>
+          </div>
         </div>
       </mat-step>
       <!--  -->

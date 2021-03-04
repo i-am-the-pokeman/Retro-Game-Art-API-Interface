@@ -38,15 +38,11 @@ export class ImageSelectionComponent implements OnInit {
   }
   private _gameSelectionId: number;
 
-  @Output() baseImageUrlsUpdated = new EventEmitter<ImageBaseUrlMeta>()
-  @Output() downloadButtonClicked = new EventEmitter<any>();
+  @Output() baseImageUrlsUpdated = new EventEmitter<ImageBaseUrlMeta>();
 
   private baseImageUrls: ImageBaseUrlMeta;
   selectedIconUrl: string;
   selectedBannerUrl: string;
-
-  // TODO: use 'atLeastOneRequired' validator instead to disable button
-  isDownloadButtonDisabled: boolean = true;
 
   constructor(
     private dialog: MatDialog,
@@ -58,8 +54,6 @@ export class ImageSelectionComponent implements OnInit {
     this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).valueChanges
       .subscribe((gameImageSelection: DropdownOption) => {
         if (gameImageSelection) {
-          // Update UI
-          this.isDownloadButtonDisabled = false;
           this.selectedIconUrl
             = APIUtils.buildFileUrl(this.baseImageUrls.thumb, gameImageSelection?.Value?.filename);
         }
@@ -67,8 +61,6 @@ export class ImageSelectionComponent implements OnInit {
     this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).valueChanges
       .subscribe((gameImageSelection: DropdownOption) => {
         if (gameImageSelection) {
-          // Update UI
-          this.isDownloadButtonDisabled = false;
           this.selectedBannerUrl
             = APIUtils.buildFileUrl(this.baseImageUrls.thumb, gameImageSelection?.Value?.filename);
         }
@@ -117,9 +109,6 @@ export class ImageSelectionComponent implements OnInit {
   private handleNewImageTypeData(response: GETGameImagesByGameIdResponse) {
     this.enableGameImageSelection();
 
-    // Disable download button until a selection is made
-    this.isDownloadButtonDisabled = true;
-
     // Populate Dropdowns based on what's available for the game
     this.gameImageTypeDropdownOptions
       = TheGamesDBAPIFormMapper.MapGameImagesDictionaryToImageTypeDropdownOptions(response.data.images)
@@ -158,10 +147,5 @@ export class ImageSelectionComponent implements OnInit {
   private disableGameImageSelection() {
     this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon).disable();
     this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner).disable();
-  }
-
-  onDownloadClicked() {
-    this.isDownloadButtonDisabled = true;
-    this.downloadButtonClicked.emit();
   }
 }

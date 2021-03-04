@@ -1,16 +1,14 @@
-<div class="padding-lg-top">
-  <button *ngIf="showBack"
-          mat-raised-button
-          matStepperPrevious
+<button *ngIf="showBack"
+        mat-raised-button
+        matStepperPrevious
+        [color]="'primary'">
+  Back
+</button>
+<span *ngIf="showNext"
+      [ngClass]="{'margin-sm-left': showBack}">
+  <button mat-raised-button
+          matStepperNext
           [color]="'primary'">
-    Back
+    Next
   </button>
-  <span *ngIf="showNext"
-        [ngClass]="{'margin-sm-left': showBack}">
-    <button mat-raised-button
-            matStepperNext
-            [color]="'primary'">
-      Next
-    </button>
-  </span>
-</div>
+</span>
