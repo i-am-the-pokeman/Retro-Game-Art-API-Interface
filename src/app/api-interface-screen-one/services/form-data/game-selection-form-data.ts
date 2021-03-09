@@ -14,7 +14,7 @@ export class GameSelectionFormConfig {
             {
                 ControlName: GameSelectionControlName.Platform,
                 DefaultValue: null,
-                Label: 'Find Platform',
+                Label: 'Platform',
                 Validators: [CustomFormValidators.autocompleteRequired as ValidatorFn],
                 ErrorMessages: { required: 'Please select a Platform' },
                 PlaceholderText: 'Start typing...'
@@ -22,7 +22,7 @@ export class GameSelectionFormConfig {
             {
                 ControlName: GameSelectionControlName.Game,
                 DefaultValue: null,
-                Label: 'Find Game',
+                Label: 'Game',
                 Validators: [CustomFormValidators.autocompleteRequired as ValidatorFn],
                 ErrorMessages: { required: 'Please select a Game' },
                 DisabledByDefault: true,

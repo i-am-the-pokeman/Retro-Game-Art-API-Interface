@@ -11,7 +11,7 @@ export class GameImageTypeSelectionFormConfig {
       {
           ControlName: GameImageTypeSelectionControlName.Icon,
           DefaultValue: null,
-          Label: 'Select Icon Image Type',
+          Label: 'Icon Image Type',
           ErrorMessages: {},
           DisabledByDefault: true,
           PlaceholderText: 'Select image type...'
@@ -19,7 +19,7 @@ export class GameImageTypeSelectionFormConfig {
       {
           ControlName: GameImageTypeSelectionControlName.Banner,
           DefaultValue: null,
-          Label: 'Select Banner Image Type',
+          Label: 'Banner Image Type',
           ErrorMessages: {},
           DisabledByDefault: true,
           PlaceholderText: 'Select image type...'
