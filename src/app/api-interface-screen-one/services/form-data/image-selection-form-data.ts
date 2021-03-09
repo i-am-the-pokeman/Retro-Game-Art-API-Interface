@@ -1,4 +1,4 @@
-import { FormInputData } from "src/app/shared/form-helpers/entities";
+import { InputConfig } from "src/app/shared/form-helpers/entities/input-config";
 
 export enum GameImageTypeSelectionControlName {
   Icon = 'icon',
@@ -6,7 +6,7 @@ export enum GameImageTypeSelectionControlName {
 }
 
 export class GameImageTypeSelectionFormConfig {
-  public static getFormConfigData(): FormInputData[] {
+  public static getFormConfigData(): InputConfig[] {
     return [
       {
           ControlName: GameImageTypeSelectionControlName.Icon,

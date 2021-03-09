@@ -1,8 +1,8 @@
 import { FormControl, FormGroup } from "@angular/forms";
-import { FormInputData } from "./entities";
+import { InputConfig } from "../entities/input-config";
 
 export class FormConfigUtils {
-  public static getNewFormGroup(formConfigData: FormInputData[], formGroupValidatorFn?: any): FormGroup {
+  public static getNewFormGroup(formConfigData: InputConfig[], formGroupValidatorFn?: any): FormGroup {
     let formGroup = new FormGroup({});
 
     if (formGroupValidatorFn) {
@@ -21,12 +21,12 @@ export class FormConfigUtils {
       if (formConfig.DisabledByDefault) {
         formGroup.get(formConfig.ControlName).disable();
       }
-    })
+    });
 
     return formGroup;
   }
 
-  public static getFormConfigDataMap(formConfigData: FormInputData[]): Map<string, FormInputData> {
+  public static getFormConfigDataMap(formConfigData: InputConfig[]): Map<string, InputConfig> {
       let formConfigDataMap = new Map();
       formConfigData.forEach((data) => {
           formConfigDataMap.set(data.ControlName, data);

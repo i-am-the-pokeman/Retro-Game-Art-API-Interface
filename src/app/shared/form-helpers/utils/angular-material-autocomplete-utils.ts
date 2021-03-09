@@ -1,7 +1,7 @@
 import { AbstractControl } from "@angular/forms";
 import { Observable } from "rxjs";
 import { map, startWith } from "rxjs/operators";
-import { DropdownOption } from "./entities";
+import { DropdownOption } from "../entities/dropdown-option";
 
 export class AngularMaterialAutocompleteUtils {
     /** Used to display the dropdownOption's Text property in the autocomplete input via the [displayWith] input */

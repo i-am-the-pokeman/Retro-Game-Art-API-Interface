@@ -1,0 +1,1 @@
+export const TheGamesDBAPIKey: string = 'fb1938f1103f7fd4c21f326a618183c3b928a2f3912082a432a706ef11b487c0';

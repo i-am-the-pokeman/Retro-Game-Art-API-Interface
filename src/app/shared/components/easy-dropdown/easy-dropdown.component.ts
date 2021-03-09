@@ -2,7 +2,8 @@ import { Component, Input, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { DropdownOption, FormInputData } from '../../form-helpers/entities';
+import { DropdownOption } from '../../form-helpers/entities/dropdown-option';
+import { InputConfig } from '../../form-helpers/entities/input-config';
 
 @Component({
   selector: 'easy-dropdown',
@@ -12,7 +13,7 @@ import { DropdownOption, FormInputData } from '../../form-helpers/entities';
 export class EasyDropdownComponent implements OnInit {
 
   @Input() dropdownFormControl: FormControl;
-  @Input() formInputData: FormInputData;
+  @Input() formInputData: InputConfig;
   @Input() dropdownOptions: DropdownOption[];
 
   errorMessage: string = '';

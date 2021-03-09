@@ -2,8 +2,9 @@ import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import { Observable, Subject } from 'rxjs';
 import { debounceTime, takeUntil } from 'rxjs/operators';
-import { AngularMaterialAutocompleteUtils } from '../../form-helpers/angular-material-autocomplete-utils';
-import { DropdownOption, FormInputData } from '../../form-helpers/entities';
+import { AngularMaterialAutocompleteUtils } from '../../form-helpers/utils/angular-material-autocomplete-utils';
+import { InputConfig } from '../../form-helpers/entities/input-config';
+import { DropdownOption } from '../../form-helpers/entities/dropdown-option';
 
 @Component({
   selector: 'easy-autocomplete',
@@ -13,7 +14,7 @@ import { DropdownOption, FormInputData } from '../../form-helpers/entities';
 export class EasyAutocompleteComponent implements OnInit, OnDestroy {
 
   @Input() autocompleteFormControl: FormControl;
-  @Input() formInputData: FormInputData;
+  @Input() formInputData: InputConfig;
   @Input()
     get dropdownOptions(): DropdownOption[] {
       return this._dropdownOptions;

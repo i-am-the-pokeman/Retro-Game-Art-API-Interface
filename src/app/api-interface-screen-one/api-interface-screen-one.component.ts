@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { GameImage, ImageBaseUrlMeta } from '../APIs/TheGamesDB/TheGamesDBAPIEntities';
 import { TheGamesDBAPIFormMapper } from '../APIs/TheGamesDB/TheGamesDBAPIFormMapper';
-import { DropdownOption } from '../shared/form-helpers/entities';
+import { DropdownOption } from '../shared/form-helpers/entities/dropdown-option';
 import { DownloadImagesService } from '../shared/services/ipc-services/download-images.service';
 import { ApiInterfaceGroupName, ApiInterfaceScreenOneFormService } from './services/api-interface-screen-one-form.service';
 import { GameSelectionControlName } from './services/form-data/game-selection-form-data';

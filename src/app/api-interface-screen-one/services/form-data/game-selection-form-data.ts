@@ -1,6 +1,6 @@
 import { ValidatorFn } from "@angular/forms";
-import { CustomFormValidators } from "src/app/shared/form-helpers/custom-form-validators";
-import { FormInputData } from "src/app/shared/form-helpers/entities";
+import { CustomFormValidators } from "src/app/shared/form-helpers/utils/custom-form-validators";
+import { InputConfig } from "src/app/shared/form-helpers/entities/input-config";
 
 export enum GameSelectionControlName {
     Platform = 'platform',
@@ -9,7 +9,7 @@ export enum GameSelectionControlName {
 
 export class GameSelectionFormConfig {
 
-    public static getFormConfigData(): FormInputData[] {
+    public static getFormConfigData(): InputConfig[] {
         return [
             {
                 ControlName: GameSelectionControlName.Platform,

@@ -3,7 +3,7 @@ import { Injectable } from "@angular/core";
 import { Game, GameImage, GamesDictionary, GamesImagesDictionary, ImageBaseUrlMeta, Platform, PlatformsDictionary } from "src/app/APIs/TheGamesDB/TheGamesDBAPIEntities";
 import { FileToDownload } from "src/app/shared/services/ipc-services/download-images-entities";
 import { DictionaryUtils } from "src/app/shared/utils/dictionary-utils";
-import { DropdownOption } from "../../shared/form-helpers/entities";
+import { DropdownOption } from "../../shared/form-helpers/entities/dropdown-option";
 import { APIUtils } from "../API-utils";
 import { GameImageFilenameUtils } from "./GameImageFilenameUtils";
 
