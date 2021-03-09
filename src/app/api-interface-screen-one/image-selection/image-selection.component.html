@@ -1,6 +1,6 @@
 <div [formGroup]="imageSelectionFormGroup">  
   <div class="row">
-    <div class="column margin-xs">
+    <div class="column margin-sm">
       <easy-dropdown [dropdownFormControl]="getIconFormControl()"
                       [formInputData]="formConfigDataMap.get(GameImageTypeSelectionControlName.Icon)"
                       [dropdownOptions]="gameImageTypeDropdownOptions">
@@ -9,7 +9,7 @@
       </easy-image-preview>
     </div>
 
-    <div class="column margin-xs">
+    <div class="column margin-sm">
       <easy-dropdown [dropdownFormControl]="getBannerFormControl()"
                       [formInputData]="formConfigDataMap.get(GameImageTypeSelectionControlName.Banner)"
                       [dropdownOptions]="gameImageTypeDropdownOptions">
