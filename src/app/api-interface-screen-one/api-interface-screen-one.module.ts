@@ -23,11 +23,7 @@ import { SummaryModule } from './summary/summary.module';
     SummaryModule,
     NextBackStepperButtonsModule,
     MatStepperModule,
-    MatButtonModule,
-    MatCardModule,
-    MatDividerModule,
-    DisabledElementTooltipModule,
-    MatIconModule
+    MatCardModule
   ],
   declarations: [
     ApiInterfaceScreenOneComponent,

@@ -7,7 +7,7 @@
         <mat-card class="mat-elevation-z8">
           <mat-card-title>Introduction</mat-card-title>
           <mat-card-content>
-            Introduction Goes Here
+            <introduction></introduction>
           </mat-card-content>
         </mat-card>
         <div class="margin-xs margin-lg-top">
@@ -57,15 +57,7 @@
         <mat-card class="mat-elevation-z8">
           <mat-card-title>Summary</mat-card-title>
           <mat-card-content>
-            <div>
-              Summary Goes Here
-            </div>
-            <button mat-raised-button
-                    color="accent"
-                    (click)="downloadImages()">
-              <mat-icon>arrow_circle_down</mat-icon>
-              Download Images
-            </button>
+            <summary (downloadButtonClick)="downloadImages()"></summary>
           </mat-card-content>
         </mat-card>
         <div class="margin-xs margin-lg-top">

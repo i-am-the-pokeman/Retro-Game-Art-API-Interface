@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'summary',
@@ -6,10 +6,14 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./summary.component.sass']
 })
 export class SummaryComponent implements OnInit {
+  @Output() downloadButtonClick = new EventEmitter<any>();
 
   constructor() { }
 
   ngOnInit(): void {
   }
 
+  onDownloadButtonClick() {
+    this.downloadButtonClick.emit();
+  }
 }
