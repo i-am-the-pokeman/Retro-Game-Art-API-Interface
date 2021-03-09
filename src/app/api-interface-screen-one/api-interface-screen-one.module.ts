@@ -11,12 +11,16 @@ import { NextBackStepperButtonsModule } from '../shared/components/next-back-ste
 import { BrowserModule } from '@angular/platform-browser';
 import { DisabledElementTooltipModule } from '../shared/components/disabled-element-tooltip/disabled-element-tooltip.module';
 import { MatIconModule } from '@angular/material/icon';
+import { IntroductionModule } from './introduction/introduction.module';
+import { SummaryModule } from './summary/summary.module';
 
 @NgModule({
   imports: [
     BrowserModule,
+    IntroductionModule,
     GameSelectionModule,
     ImageSelectionModule,
+    SummaryModule,
     NextBackStepperButtonsModule,
     MatStepperModule,
     MatButtonModule,
