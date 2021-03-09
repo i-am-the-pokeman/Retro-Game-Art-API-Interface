@@ -1,46 +1,100 @@
 <mat-card class="margin-lg">
   <mat-card-content>
-    <mat-vertical-stepper [linear]="true">
-      <!--  -->
-      <mat-step [stepControl]="getGameSelectionFormGroup()"
-                [label]="'Select a Game'">
-        <div>
-          <game-selection [gameSelectionFormGroup]="getGameSelectionFormGroup()">
-          </game-selection>
-          <next-back-stepper-buttons [showNext]="true"></next-back-stepper-buttons>
+    <mat-horizontal-stepper [linear]="true">
+
+      <!-- Introduction -->
+      <mat-step [label]="'Introduction'"
+                state="home">
+        <mat-card class="mat-elevation-z8">
+          <mat-card-title>Introduction</mat-card-title>
+          <mat-card-content>
+            Introduction Goes Here
+          </mat-card-content>
+        </mat-card>
+        <div class="margin-xs margin-lg-top">
+          <next-back-stepper-buttons [showNext]="true">
+          </next-back-stepper-buttons>
         </div>
       </mat-step>
-      <!--  -->
-      <mat-step [label]="'Select & Download Images'">
-        <div>
-          <image-selection [imageSelectionFormGroup]="getImageTypeSelectionFormGroup()"
-                            [gameSelectionId]="gameSelectionId"
-                            (baseImageUrlsUpdated)="setImageSelectionUrls($event)">
-          </image-selection>
-          <!-- TODO: make this easier to read -->
-          <!-- TODO: fix styling -->
-          <!-- TODO: disable after download until the form changes -->
-          <div class="row">
-            <div class="column">
-              <next-back-stepper-buttons [showBack]="true"></next-back-stepper-buttons>
-            </div>
-            <div class="column">
-              <disabled-element-tooltip [text]="'Please select an image.'"
-                                        [isChildDisabled]="getImageTypeSelectionFormGroup().hasError('atLeastOneRequired')"
-                                        [tooltipPosition]="'right'">
-                <button mat-raised-button
-                        color="primary"
-                        [disabled]="getImageTypeSelectionFormGroup().hasError('atLeastOneRequired')"
-                        (click)="downloadImages()">
-                  <mat-icon>arrow_circle_down</mat-icon>
-                  Download Images
-                </button>
-              </disabled-element-tooltip>
-            </div>
-          </div>
+
+      <!-- Game Selection -->
+      <mat-step [label]="'Select a Game'"
+                [stepControl]="getGameSelectionFormGroup()"
+                state="game">
+        <mat-card class="mat-elevation-z8">
+          <mat-card-title>Select a Game</mat-card-title>
+          <mat-card-content>
+            <game-selection [gameSelectionFormGroup]="getGameSelectionFormGroup()">
+            </game-selection>
+          </mat-card-content>
+        </mat-card>
+        <div class="margin-xs margin-lg-top">
+          <next-back-stepper-buttons [showBack]="true"
+                                      [showNext]="true">
+          </next-back-stepper-buttons>
         </div>
       </mat-step>
-      <!--  -->
-    </mat-vertical-stepper>
+
+      <!-- Image Selection -->
+      <mat-step [label]="'Select Images'"
+                [stepControl]="getImageTypeSelectionFormGroup()"
+                state="image">
+        <mat-card class="mat-elevation-z8">
+          <mat-card-title>Select Images</mat-card-title>
+          <mat-card-content>
+            <image-selection [imageSelectionFormGroup]="getImageTypeSelectionFormGroup()"
+                              [gameSelectionId]="gameSelectionId"
+                              (baseImageUrlsUpdated)="setImageSelectionUrls($event)">
+            </image-selection>
+          </mat-card-content>
+        </mat-card>
+        <div class="margin-xs margin-lg-top">
+          <next-back-stepper-buttons [showBack]="true"
+                                      [showNext]="true">
+          </next-back-stepper-buttons>
+        </div>
+      </mat-step>
+
+      <!-- Summary -->
+      <mat-step [label]="'Summary'"
+                state="summary">
+        <mat-card class="mat-elevation-z8">
+          <mat-card-title>Summary</mat-card-title>
+          <mat-card-content>
+            <div>
+              Summary Goes Here
+            </div>
+            <button mat-raised-button
+                    color="accent"
+                    (click)="downloadImages()">
+              <mat-icon>arrow_circle_down</mat-icon>
+              Download Images
+            </button>
+          </mat-card-content>
+        </mat-card>
+        <div class="margin-xs margin-lg-top">
+          <next-back-stepper-buttons [showBack]="true">
+          </next-back-stepper-buttons>
+        </div>
+      </mat-step>
+
+      <!-- Stepper Icon Overrides -->
+      <ng-template matStepperIcon="home">
+        <mat-icon>home</mat-icon>
+      </ng-template>
+
+      <ng-template matStepperIcon="game">
+        <mat-icon>videogame_asset</mat-icon>
+      </ng-template>
+
+      <ng-template matStepperIcon="image">
+        <mat-icon>image</mat-icon>
+      </ng-template>
+
+      <ng-template matStepperIcon="summary">
+        <mat-icon>download</mat-icon>
+      </ng-template>
+
+    </mat-horizontal-stepper>
   </mat-card-content>
 </mat-card>
