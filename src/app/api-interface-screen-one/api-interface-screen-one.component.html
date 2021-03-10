@@ -4,12 +4,9 @@
 
       <!-- Introduction -->
       <mat-step [label]="'Introduction'">
-        <mat-card class="mat-elevation-z8">
-          <mat-card-title>Introduction</mat-card-title>
-          <mat-card-content>
-            <introduction></introduction>
-          </mat-card-content>
-        </mat-card>
+        <h1 class="padding-sm-top">Introduction</h1>
+        <easy-divider></easy-divider>
+        <introduction></introduction>
         <div class="margin-xs margin-lg-top">
           <next-back-stepper-buttons [showNext]="true">
           </next-back-stepper-buttons>
@@ -19,13 +16,10 @@
       <!-- Game Selection -->
       <mat-step [label]="'Select a Game'"
                 [stepControl]="getGameSelectionFormGroup()">
-        <mat-card class="mat-elevation-z8">
-          <mat-card-title>Select a Game</mat-card-title>
-          <mat-card-content>
-            <game-selection [gameSelectionFormGroup]="getGameSelectionFormGroup()">
-            </game-selection>
-          </mat-card-content>
-        </mat-card>
+        <h1 class="padding-sm-top">Select a Game</h1>
+        <easy-divider></easy-divider>
+        <game-selection [gameSelectionFormGroup]="getGameSelectionFormGroup()">
+        </game-selection>
         <div class="margin-xs margin-lg-top">
           <next-back-stepper-buttons [showBack]="true"
                                       [showNext]="true">
@@ -36,15 +30,12 @@
       <!-- Image Selection -->
       <mat-step [label]="'Select Images'"
                 [stepControl]="getImageTypeSelectionFormGroup()">
-        <mat-card class="mat-elevation-z8">
-          <mat-card-title>Select Images</mat-card-title>
-          <mat-card-content>
-            <image-selection [imageSelectionFormGroup]="getImageTypeSelectionFormGroup()"
-                              [gameSelectionId]="gameSelectionId"
-                              (baseImageUrlsUpdated)="setImageSelectionUrls($event)">
-            </image-selection>
-          </mat-card-content>
-        </mat-card>
+        <h1 class="padding-sm-top">Select Images</h1>
+        <easy-divider></easy-divider>
+        <image-selection [imageSelectionFormGroup]="getImageTypeSelectionFormGroup()"
+                          [gameSelectionId]="gameSelectionId"
+                          (baseImageUrlsUpdated)="setImageSelectionUrls($event)">
+        </image-selection>
         <div class="margin-xs margin-lg-top">
           <next-back-stepper-buttons [showBack]="true"
                                       [showNext]="true">
@@ -54,12 +45,9 @@
 
       <!-- Summary -->
       <mat-step [label]="'Summary'">
-        <mat-card class="mat-elevation-z8">
-          <mat-card-title>Summary</mat-card-title>
-          <mat-card-content>
-            <summary (downloadButtonClick)="downloadImages()"></summary>
-          </mat-card-content>
-        </mat-card>
+        <h1 class="padding-sm-top">Sumary</h1>
+        <easy-divider></easy-divider>
+        <summary (downloadButtonClick)="downloadImages()"></summary>
         <div class="margin-xs margin-lg-top">
           <next-back-stepper-buttons [showBack]="true">
           </next-back-stepper-buttons>

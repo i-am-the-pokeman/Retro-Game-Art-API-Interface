@@ -9,6 +9,7 @@ import { NextBackStepperButtonsModule } from '../shared/components/next-back-ste
 import { BrowserModule } from '@angular/platform-browser';
 import { IntroductionModule } from './introduction/introduction.module';
 import { SummaryModule } from './summary/summary.module';
+import { EasyDividerModule } from '../shared/components/easy-divider/easy-divider.module';
 
 @NgModule({
   imports: [
@@ -19,7 +20,8 @@ import { SummaryModule } from './summary/summary.module';
     SummaryModule,
     NextBackStepperButtonsModule,
     MatStepperModule,
-    MatCardModule
+    MatCardModule,
+    EasyDividerModule
   ],
   declarations: [
     ApiInterfaceScreenOneComponent,
