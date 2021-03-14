@@ -18,7 +18,9 @@
                 [stepControl]="getGameSelectionFormGroup()">
         <h1 class="padding-sm-top">Select a Game</h1>
         <easy-divider></easy-divider>
-        <game-selection [gameSelectionFormGroup]="getGameSelectionFormGroup()">
+        <game-selection [gameSelectionFormGroup]="getGameSelectionFormGroup()"
+                        [platformsDictionary]="platformsDictionary"
+                        [gamesDictionary]="gamesDictionary">
         </game-selection>
         <div class="margin-xs margin-lg-top">
           <next-back-stepper-buttons [showBack]="true"
@@ -33,8 +35,8 @@
         <h1 class="padding-sm-top">Select Images</h1>
         <easy-divider></easy-divider>
         <image-selection [imageSelectionFormGroup]="getImageTypeSelectionFormGroup()"
-                          [gameSelectionId]="gameSelectionId"
-                          (baseImageUrlsUpdated)="setImageSelectionUrls($event)">
+                          [gamesImagesDictionary]="gamesImagesDictionary"
+                          [imageBaseUrls]="imageBaseUrls">
         </image-selection>
         <div class="margin-xs margin-lg-top">
           <next-back-stepper-buttons [showBack]="true"
@@ -47,7 +49,10 @@
       <mat-step [label]="'Summary'">
         <h1 class="padding-sm-top">Sumary</h1>
         <easy-divider></easy-divider>
-        <summary (downloadButtonClick)="downloadImages()"></summary>
+        <summary [platformSelection]="getGameSelectionFormGroup().get(GameSelectionControlName.Platform).value?.Value"
+                  [gameSelection]="getGameSelectionFormGroup().get(GameSelectionControlName.Game).value?.Value"
+                  (downloadButtonClick)="downloadImages()">
+        </summary>
         <div class="margin-xs margin-lg-top">
           <next-back-stepper-buttons [showBack]="true">
           </next-back-stepper-buttons>

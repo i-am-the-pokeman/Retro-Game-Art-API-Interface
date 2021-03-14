@@ -18,7 +18,7 @@ export class TheGamesDBAPIFormMapper {
       return dropdownOptions;
     }
     private static mapPlatformsToDropdownOptions(platforms: Platform[] = []): DropdownOption[] {
-      return platforms.map(platform => ({Text: platform.name, Value: platform.id}));
+      return platforms.map(platform => ({Text: platform.name, Value: platform}));
     }
 
     // TODO: add tests
