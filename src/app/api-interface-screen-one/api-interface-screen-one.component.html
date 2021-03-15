@@ -1,64 +1,38 @@
 <mat-card class="margin-lg">
   <mat-card-content>
-    <mat-horizontal-stepper [linear]="true">
+    <mat-card-title>Find Game Art</mat-card-title>
+    <introduction></introduction>
 
-      <!-- Introduction -->
-      <mat-step [label]="'Introduction'">
-        <h1 class="padding-sm-top">Introduction</h1>
-        <easy-divider></easy-divider>
-        <introduction></introduction>
-        <div class="margin-xs margin-lg-top">
-          <next-back-stepper-buttons [showNext]="true">
-          </next-back-stepper-buttons>
-        </div>
-      </mat-step>
+    <easy-divider></easy-divider>
 
-      <!-- Game Selection -->
-      <mat-step [label]="'Select a Game'"
-                [stepControl]="getGameSelectionFormGroup()">
-        <h1 class="padding-sm-top">Select a Game</h1>
-        <easy-divider></easy-divider>
-        <game-selection [gameSelectionFormGroup]="getGameSelectionFormGroup()"
-                        [platformsDictionary]="platformsDictionary"
-                        [gamesDictionary]="gamesDictionary">
-        </game-selection>
-        <div class="margin-xs margin-lg-top">
-          <next-back-stepper-buttons [showBack]="true"
-                                      [showNext]="true">
-          </next-back-stepper-buttons>
-        </div>
-      </mat-step>
+    <div class="padding-lg">
+      <h2>Find Game</h2>
+      <game-selection [gameSelectionFormGroup]="getGameSelectionFormGroup()"
+                      [platformsDictionary]="platformsDictionary"
+                      [gamesDictionary]="gamesDictionary">
+      </game-selection>
 
       <!-- Image Selection -->
-      <mat-step [label]="'Select Images'"
-                [stepControl]="getImageTypeSelectionFormGroup()">
-        <h1 class="padding-sm-top">Select Images</h1>
-        <easy-divider></easy-divider>
-        <image-selection [imageSelectionFormGroup]="getImageTypeSelectionFormGroup()"
-                          [gamesImagesDictionary]="gamesImagesDictionary"
-                          [imageBaseUrls]="imageBaseUrls">
-        </image-selection>
-        <div class="margin-xs margin-lg-top">
-          <next-back-stepper-buttons [showBack]="true"
-                                      [showNext]="true">
-          </next-back-stepper-buttons>
-        </div>
-      </mat-step>
+      <!-- TODO: develop a disabled state for titles -->
+      <h2>Select Images</h2> 
+      <image-selection [imageSelectionFormGroup]="getImageTypeSelectionFormGroup()"
+                        [gamesImagesDictionary]="gamesImagesDictionary"
+                        [selectedIconUrl]="selectedIconUrl"
+                        [selectedBannerUrl]="selectedBannerUrl">
+      </image-selection>
+    </div>
 
-      <!-- Summary -->
-      <mat-step [label]="'Summary'">
-        <h1 class="padding-sm-top">Sumary</h1>
-        <easy-divider></easy-divider>
-        <summary [platformSelection]="getGameSelectionFormGroup().get(GameSelectionControlName.Platform).value?.Value"
-                  [gameSelection]="getGameSelectionFormGroup().get(GameSelectionControlName.Game).value?.Value"
-                  (downloadButtonClick)="downloadImages()">
-        </summary>
-        <div class="margin-xs margin-lg-top">
-          <next-back-stepper-buttons [showBack]="true">
-          </next-back-stepper-buttons>
-        </div>
-      </mat-step>
+    <easy-divider></easy-divider>
 
-    </mat-horizontal-stepper>
+    <!-- Save -->
+    <button mat-raised-button
+            color="accent"
+            class="center giant-button mat-elevation-z8"
+            [ngClass]="{'download-button-gradient' : !isDownloadButtonDisabled}"
+            [disabled]="isDownloadButtonDisabled"
+            (click)="downloadImages()">
+      <mat-icon>arrow_circle_down</mat-icon>
+      Download Images
+    </button>
   </mat-card-content>
 </mat-card>

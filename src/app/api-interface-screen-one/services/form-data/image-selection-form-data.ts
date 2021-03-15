@@ -13,6 +13,7 @@ export class GameImageTypeSelectionFormConfig {
           DefaultValue: null,
           Label: 'Icon Image Type',
           ErrorMessages: {},
+          DisabledByDefault: true,
           PlaceholderText: 'Select image type...'
       },
       {
@@ -20,6 +21,7 @@ export class GameImageTypeSelectionFormConfig {
           DefaultValue: null,
           Label: 'Banner Image Type',
           ErrorMessages: {},
+          DisabledByDefault: true,
           PlaceholderText: 'Select image type...'
       }
     ]

@@ -8,8 +8,9 @@ import { MatCardModule } from '@angular/material/card';
 import { NextBackStepperButtonsModule } from '../shared/components/next-back-stepper-buttons/next-back-stepper-buttons.module';
 import { BrowserModule } from '@angular/platform-browser';
 import { IntroductionModule } from './introduction/introduction.module';
-import { SummaryModule } from './summary/summary.module';
 import { EasyDividerModule } from '../shared/components/easy-divider/easy-divider.module';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   imports: [
@@ -17,10 +18,11 @@ import { EasyDividerModule } from '../shared/components/easy-divider/easy-divide
     IntroductionModule,
     GameSelectionModule,
     ImageSelectionModule,
-    SummaryModule,
     NextBackStepperButtonsModule,
     MatStepperModule,
     MatCardModule,
+    MatButtonModule,
+    MatIconModule,
     EasyDividerModule
   ],
   declarations: [

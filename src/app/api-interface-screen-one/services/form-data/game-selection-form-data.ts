@@ -9,25 +9,25 @@ export enum GameSelectionControlName {
 
 export class GameSelectionFormConfig {
 
-    public static getFormConfigData(): InputConfig[] {
-        return [
-            {
-                ControlName: GameSelectionControlName.Platform,
-                DefaultValue: null,
-                Label: 'Platform',
-                Validators: [CustomFormValidators.autocompleteRequired as ValidatorFn],
-                ErrorMessages: { required: 'Please select a Platform' },
-                PlaceholderText: 'Start typing...'
-            },
-            {
-                ControlName: GameSelectionControlName.Game,
-                DefaultValue: null,
-                Label: 'Game',
-                Validators: [CustomFormValidators.autocompleteRequired as ValidatorFn],
-                ErrorMessages: { required: 'Please select a Game' },
-                DisabledByDefault: true,
-                PlaceholderText: 'Start typing...'
-            }
-        ]
-    }
+  public static getFormConfigData(): InputConfig[] {
+    return [
+      {
+        ControlName: GameSelectionControlName.Platform,
+        DefaultValue: null,
+        Label: 'Platform',
+        Validators: [CustomFormValidators.autocompleteRequired as ValidatorFn],
+        ErrorMessages: { required: 'Please select a Platform' },
+        PlaceholderText: 'Start typing...'
+      },
+      {
+        ControlName: GameSelectionControlName.Game,
+        DefaultValue: null,
+        Label: 'Game',
+        Validators: [CustomFormValidators.autocompleteRequired as ValidatorFn],
+        ErrorMessages: { required: 'Please select a Game' },
+        DisabledByDefault: true,
+        PlaceholderText: 'Start typing...'
+      }
+    ]
+  }
 }

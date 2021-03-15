@@ -32,7 +32,7 @@ export class EasyAutocompleteComponent implements OnInit, OnDestroy {
 
   errorMessage: string = '';
 
-  private stop$ = new Subject<any>();
+  private stop$ = new Subject<void>();
 
   readonly AngularMaterialAutocompleteUtils = AngularMaterialAutocompleteUtils;
 

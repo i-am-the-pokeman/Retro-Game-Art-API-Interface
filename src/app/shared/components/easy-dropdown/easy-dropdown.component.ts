@@ -18,7 +18,7 @@ export class EasyDropdownComponent implements OnInit {
 
   errorMessage: string = '';
 
-  private stop$ = new Subject<any>();
+  private stop$ = new Subject<void>();
 
   // TODO: this code is repeated every 'easy' formcontrol so far. Is it time to make an abstract class?
   ngOnInit() {
