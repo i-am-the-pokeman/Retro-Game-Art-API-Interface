@@ -9,7 +9,7 @@
       <h2>Find Game</h2>
       <game-selection [gameSelectionFormGroup]="getGameSelectionFormGroup()"
                       [platformsDictionary]="platformsDictionary"
-                      [gamesDictionary]="gamesDictionary">
+                      [games]="games">
       </game-selection>
 
       <!-- Image Selection -->
@@ -23,6 +23,11 @@
     </div>
 
     <easy-divider></easy-divider>
+
+    <div class="padding-lg">
+      <h2>Display Info</h2>
+      <pre>{{getGameSelectionFormGroup().get(GameSelectionControlName.Game).value | json}}</pre>
+    </div>
 
     <!-- Save -->
     <button mat-raised-button

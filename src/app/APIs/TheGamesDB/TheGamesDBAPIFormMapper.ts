@@ -22,12 +22,7 @@ export class TheGamesDBAPIFormMapper {
     }
 
     // TODO: add tests
-    public static MapGamesDictionaryToGameDrodpownOptions(gamesDictionary: GamesDictionary) {
-      let dictionaryValues: Game[] = DictionaryUtils.GetDictionaryValues(gamesDictionary);
-      let dropdownOptions = this.mapGamesToDropdownOptions(dictionaryValues);
-      return dropdownOptions;
-    }
-    private static mapGamesToDropdownOptions(games: Game[] = []): DropdownOption[] {
+    public static MapGamesToDropdownOptions(games: Game[] = []): DropdownOption[] {
       return games.map(game => ({Text: game.game_title, Value: game}));
     }
 

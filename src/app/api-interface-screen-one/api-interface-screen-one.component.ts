@@ -5,11 +5,10 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { APIUtils } from '../APIs/API-utils';
 import { TheGamesDBAPIService } from '../APIs/TheGamesDB/TheGamesDBAPI.service';
-import { GameImage, GamesDictionary, GamesImagesDictionary, GETGameImagesByGameIdRequest, GETGameImagesByGameIdResponse, GETGamesByPlatformIdRequest, GETGamesByPlatformIdResponse, GETPlatformsRequest, GETPlatformsResponse, ImageBaseUrlMeta, PlatformsDictionary } from '../APIs/TheGamesDB/TheGamesDBAPIEntities';
+import { Game, GameImage, GamesImagesDictionary, GETGameImagesByGameIdRequest, GETGameImagesByGameIdResponse, GETGamesByPlatformIdRequest, GETGamesByPlatformIdResponse, GETPlatformsRequest, GETPlatformsResponse, ImageBaseUrlMeta, PlatformsDictionary } from '../APIs/TheGamesDB/TheGamesDBAPIEntities';
 import { TheGamesDBAPIFormMapper } from '../APIs/TheGamesDB/TheGamesDBAPIFormMapper';
 import { TheGamesDBAPIKey } from '../APIs/TheGamesDB/TheGamesDBAPIKey';
 import { AlertDialogComponent } from '../shared/components/alert-dialog/alert-dialog.component';
-import { DropdownOption } from '../shared/form-helpers/entities/dropdown-option';
 import { DownloadImagesService } from '../shared/services/ipc-services/download-images.service';
 import { ApiInterfaceGroupName, ApiInterfaceScreenOneFormService } from './services/api-interface-screen-one-form.service';
 import { GameSelectionControlName } from './services/form-data/game-selection-form-data';
@@ -26,7 +25,7 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
   formGroup = ApiInterfaceScreenOneFormService.getNewFormGroup();
 
   platformsDictionary: PlatformsDictionary = {};
-  gamesDictionary: GamesDictionary = {};
+  games: Game[] = [];
   gamesImagesDictionary: GamesImagesDictionary = {};
 
   imageBaseUrls: ImageBaseUrlMeta;
@@ -133,13 +132,10 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
         apikey: TheGamesDBAPIKey,
         id: platformSelectionId.toString()
       }
-      this.theGamesDbAPIService.getGamesByPlatformId(request)
+      this.theGamesDbAPIService.getAllGamesByPlatformId(request)
         .pipe(takeUntil(this.stop$))
-        .subscribe((response: GETGamesByPlatformIdResponse) => {
-          // Store response data
-          if (response?.data?.count) {
-            this.gamesDictionary = response.data.games;
-          }
+        .subscribe((response: Game[]) => { 
+          this.games = response;
         }, (error) => {
           this.openAlertDialog(error);
         });

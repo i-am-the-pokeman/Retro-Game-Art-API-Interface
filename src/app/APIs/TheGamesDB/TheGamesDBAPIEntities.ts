@@ -5,6 +5,13 @@ export interface BaseApiResponse {
   status: string;
   remaining_monthly_allowance: number;
   extra_allowance: number;
+  pages: Pages;
+}
+
+export interface Pages {
+  previous: string;
+  current: string;
+  next: string;
 }
 
 // DTOs
@@ -32,7 +39,9 @@ export interface GETGamesByPlatformIdRequest {
   include?: string;
   page?: number;
 }
-export interface GETGamesByPlatformIdResponse extends GETGamesByGameIdResponse {}
+export interface GETGamesByPlatformIdResponse extends GETGamesByGameIdResponse {
+
+}
 
 // --
 

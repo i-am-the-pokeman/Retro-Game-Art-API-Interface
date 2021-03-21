@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { GamesDictionary, PlatformsDictionary } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIEntities';
+import { Game, PlatformsDictionary } from 'src/app/APIs/TheGamesDB/TheGamesDBAPIEntities';
 import { AngularMaterialAutocompleteUtils } from 'src/app/shared/form-helpers/utils/angular-material-autocomplete-utils';
 import { DropdownOption } from 'src/app/shared/form-helpers/entities/dropdown-option';
 import { FormConfigUtils } from 'src/app/shared/form-helpers/utils/form-config.utils';
@@ -22,9 +22,9 @@ export class GameSelectionComponent {
       = TheGamesDBAPIFormMapper.MapPlatformsDictionaryToPlatformDropdownOptions(platformsDictionary);
   };
   @Input()
-  set gamesDictionary(gamesDictionary: GamesDictionary) {
+  set games(games: Game[]) {
     this.gamesDropdownOptions
-      = TheGamesDBAPIFormMapper.MapGamesDictionaryToGameDrodpownOptions(gamesDictionary);
+      = TheGamesDBAPIFormMapper.MapGamesToDropdownOptions(games);
   };
 
   platformDropdownOptions: DropdownOption[] = [];
