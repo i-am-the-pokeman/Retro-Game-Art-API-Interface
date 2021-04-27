@@ -12,12 +12,7 @@ export class TheGamesDBAPIFormMapper {
     private static TitleCasePipe = new TitleCasePipe();
 
     // TODO: add tests
-    public static MapPlatformsDictionaryToPlatformDropdownOptions(platformsDictionary: PlatformsDictionary) {
-      let dictionaryValues: Platform[] = DictionaryUtils.GetDictionaryValues(platformsDictionary);
-      let dropdownOptions = this.mapPlatformsToDropdownOptions(dictionaryValues);
-      return dropdownOptions;
-    }
-    private static mapPlatformsToDropdownOptions(platforms: Platform[] = []): DropdownOption[] {
+    public static MapPlatformsToDropdownOptions(platforms: Platform[] = []): DropdownOption[] {
       return platforms.map(platform => ({Text: platform.name, Value: platform}));
     }
 
@@ -36,7 +31,6 @@ export class TheGamesDBAPIFormMapper {
       }
 
       let dropdownOptions = this.mapGameImagesToImageTypeDropdownOptions(dictionaryValues);
-      console.log(dropdownOptions);
       return dropdownOptions;
     }
     private static mapGameImagesToImageTypeDropdownOptions(gameImages: GameImage[] = []): DropdownOption[] {

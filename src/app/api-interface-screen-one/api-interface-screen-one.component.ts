@@ -5,11 +5,12 @@ import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { APIUtils } from '../APIs/API-utils';
 import { TheGamesDBAPIService } from '../APIs/TheGamesDB/TheGamesDBAPI.service';
-import { Game, GameImage, GamesImagesDictionary, GETGameImagesByGameIdRequest, GETGameImagesByGameIdResponse, GETGamesByPlatformIdRequest, GETGamesByPlatformIdResponse, GETPlatformsRequest, GETPlatformsResponse, ImageBaseUrlMeta, PlatformsDictionary } from '../APIs/TheGamesDB/TheGamesDBAPIEntities';
+import { Game, GameImage, GamesImagesDictionary, GETGameImagesByGameIdRequest, GETGameImagesByGameIdResponse, GETGamesByPlatformIdRequest, GETPlatformsRequest, GETPlatformsResponse, ImageBaseUrlMeta, Platform } from '../APIs/TheGamesDB/TheGamesDBAPIEntities';
 import { TheGamesDBAPIFormMapper } from '../APIs/TheGamesDB/TheGamesDBAPIFormMapper';
 import { TheGamesDBAPIKey } from '../APIs/TheGamesDB/TheGamesDBAPIKey';
 import { AlertDialogComponent } from '../shared/components/alert-dialog/alert-dialog.component';
 import { DownloadImagesService } from '../shared/services/ipc-services/download-images.service';
+import { DictionaryUtils } from '../shared/utils/dictionary-utils';
 import { ApiInterfaceGroupName, ApiInterfaceScreenOneFormService } from './services/api-interface-screen-one-form.service';
 import { GameSelectionControlName } from './services/form-data/game-selection-form-data';
 import { GameImageTypeSelectionControlName } from './services/form-data/image-selection-form-data';
@@ -24,7 +25,7 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
 
   formGroup = ApiInterfaceScreenOneFormService.getNewFormGroup();
 
-  platformsDictionary: PlatformsDictionary = {};
+  platforms: Platform[] = [];;
   games: Game[] = [];
   gamesImagesDictionary: GamesImagesDictionary = {};
 
@@ -57,16 +58,21 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.stop$))
       .subscribe((value) => {
         // Fetch domain data for next input
-        let platformId = this.formGroup.get(ApiInterfaceGroupName.GameSelection)
-                                        .get(GameSelectionControlName.Platform)
-                                        .value?.Value.id;
-        this.fetchGames(platformId);
+        if (value) {
+          let platformId = this.formGroup.get(ApiInterfaceGroupName.GameSelection)
+                                          .get(GameSelectionControlName.Platform)
+                                          .value?.Value?.id;
+          this.fetchGames(platformId);
+        }
 
         // Progressive Disclosure
         (!!value)
           ? this.formGroup.get(ApiInterfaceGroupName.GameSelection).get(GameSelectionControlName.Game).enable()
           : this.formGroup.get(ApiInterfaceGroupName.GameSelection).get(GameSelectionControlName.Game).disable();
-        if (!value) this.formGroup.get(ApiInterfaceGroupName.GameSelection).get(GameSelectionControlName.Game).reset();
+        if (!value) {
+          this.formGroup.get(ApiInterfaceGroupName.GameSelection).get(GameSelectionControlName.Game).reset();
+          this.games = [];
+        }
       });
 
     this.formGroup.get(ApiInterfaceGroupName.GameSelection)
@@ -77,14 +83,17 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
         // Fetch domain data for next input
         let gameId = this.formGroup.get(ApiInterfaceGroupName.GameSelection)
                                     .get(GameSelectionControlName.Game)
-                                    .value?.Value.id;
+                                    .value?.Value?.id;
         this.fetchGamesImages(gameId);
 
         // Progressive Disclosure
         (!!value)
           ? this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection).enable()
           : this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection).disable();
-        if (!value) this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection).reset();
+        if (!value) {
+          this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection).reset();
+          this.gamesImagesDictionary = {};
+        }
       });
 
     this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection)
@@ -92,7 +101,7 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.stop$))
       .subscribe(({icon, banner}) => {
         // Progressive Disclosure
-        this.isDownloadButtonDisabled = !(!!icon || !!banner); // TODO: there's a clearer way to do this check
+        this.isDownloadButtonDisabled = !icon || !banner; // TODO: there's a clearer way to do this check
 
         // Side Effects
         this.selectedIconUrl = (!!icon)
@@ -119,7 +128,7 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
       .subscribe((response: GETPlatformsResponse) => {
         // Store response data
         if (response?.data?.count) {
-          this.platformsDictionary = response.data.platforms;
+          this.platforms = DictionaryUtils.GetDictionaryValues(response.data.platforms);
         }
       }, (error) => {
         this.openAlertDialog(error);
