@@ -7,7 +7,7 @@ Store.initRenderer();
 const WindowService = require('./services/WindowServices/WindowService');
 
 // Initialize Listeners with MessageHandler Singletons
-const ImageDownloadMessagehandlers = require('./message-handlers/ImageDownloadMessageHandlers');
+const ImageDownloadMessageHandlers = require('./message-handlers/ImageDownloadMessageHandlers');
 
 // TODO: clean up below with new message handler class
 

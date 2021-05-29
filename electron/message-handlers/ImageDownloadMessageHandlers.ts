@@ -2,16 +2,16 @@ import { ipcMain } from "electron";
 import { ImageDownloadServices } from "../services/ImageDownloadServices/ImageDownloadServices";
 
 
-class ImageDownloadMessagehandlers {
+class ImageDownloadMessageHandlers {
   constructor() {
     ipcMain.on('download-image', async (event, url, filename) => {
-      ImageDownloadServices.downloadImage(url, filename);
+      await ImageDownloadServices.downloadImage(url, filename);
     });
   
     ipcMain.on('download-images', async (event, filesToDownload) => {
-      ImageDownloadServices.downloadImages(filesToDownload);
+      await ImageDownloadServices.downloadImages(filesToDownload);
     });
   }
 }
 
-module.exports = new ImageDownloadMessagehandlers();
+module.exports = new ImageDownloadMessageHandlers();
