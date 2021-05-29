@@ -9,6 +9,7 @@ import { Game, GameImage, GamesImagesDictionary, GETGameImagesByGameIdRequest, G
 import { TheGamesDBAPIFormMapper } from '../APIs/TheGamesDB/TheGamesDBAPIFormMapper';
 import { TheGamesDBAPIKey } from '../APIs/TheGamesDB/TheGamesDBAPIKey';
 import { AlertDialogComponent } from '../shared/components/alert-dialog/alert-dialog.component';
+import { BuildOverlayService } from '../shared/services/ipc-services/build-overlay.service';
 import { DownloadImagesService } from '../shared/services/ipc-services/download-images.service';
 import { DictionaryUtils } from '../shared/utils/dictionary-utils';
 import { ApiInterfaceGroupName, ApiInterfaceScreenOneFormService } from './services/api-interface-screen-one-form.service';
@@ -19,7 +20,7 @@ import { GameImageTypeSelectionControlName } from './services/form-data/image-se
   selector: 'api-interface-screen-one',
   templateUrl: './api-interface-screen-one.component.html',
   styleUrls: ['./api-interface-screen-one.component.sass'],
-  providers: [DownloadImagesService]
+  providers: [DownloadImagesService, BuildOverlayService]
 })
 export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
 
@@ -45,7 +46,8 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
   constructor(
     private dialog: MatDialog,
     private theGamesDbAPIService: TheGamesDBAPIService,
-    private downloadImagesService: DownloadImagesService
+    private downloadImagesService: DownloadImagesService,
+    private buildOverlayService: BuildOverlayService
   ) { }
 
   ngOnInit() {
@@ -190,6 +192,10 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
       filesToDownload.push(fileToDownload);
     }
     this.downloadImagesService.DownloadImages(filesToDownload);
+  }
+
+  buildOverlay() {
+    this.buildOverlayService.BuildOverlay();
   }
 
   // Note: Angular will throw a TypeError in the template if these aren't cast as a FormGroup

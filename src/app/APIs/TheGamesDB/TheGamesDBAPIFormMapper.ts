@@ -107,7 +107,7 @@ export class TheGamesDBAPIFormMapper {
                                               gameImage: GameImage,
                                               imagePurpose: string)
                                               : FileToDownload {
-      let url = APIUtils.buildFileUrl(imageBaseUrls.thumb, gameImage.filename)
+      let url = APIUtils.buildFileUrl(imageBaseUrls.large, gameImage.filename)
       let filename = GameImageFilenameUtils.buildNewFileName(imagePurpose, gameImage.filename, gameImage.side);
       return {
         url: url,

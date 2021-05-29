@@ -1,0 +1,3 @@
+// TODO: create a class that can...
+// - Log errors to an error file
+// - Log info to an info file

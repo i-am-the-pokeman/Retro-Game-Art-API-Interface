@@ -1,78 +1,20 @@
 import { app, BrowserWindow, ipcMain } from "electron";
-import * as path from "path";
-import * as url from "url";
-import * as fs from "fs";
-
-const { download } = require('electron-dl');
 
 const Store = require('electron-store');
 Store.initRenderer();
 
-let win: BrowserWindow;
-
-function createWindow() {
-  win = new BrowserWindow(
-    {
-      webPreferences: {
-        nodeIntegration: true,
-      },
-      width: 1020,
-      height: 720
-    });
-
-  win.loadURL(
-    url.format({ // TODO: Use function that isn't deprecated
-      pathname: path.join(__dirname, `/../../dist/retro-game-art-api-interface/index.html`),
-      protocol: "file:",
-      slashes: true
-    })
-  );
-  win.setMenuBarVisibility(false);
-
-  // uncomment this if you'd like the app to start with dev tools open 
-  win.webContents.openDevTools();
-}
+const WindowService = require('./services/WindowServices/WindowService');
+const ImageDownloadMessagehandlers = require('./message-handlers/ImageDownloadMessageHandlers');
 
 // APP EVENTS
-app.whenReady().then(createWindow);
 
-app.on("activate", () => {
-  if (BrowserWindow.getAllWindows().length === 0) {
-    createWindow();
-  }
-});
-
-// Quit when all windows are closed.
-app.on('window-all-closed', () => {
-  // On macOS it is common for applications and their menu bar
-  // to stay active until the user quits explicitly with Cmd + Q
-  if (process.platform !== 'darwin') {
-    app.quit()
-  }
-});
 // END APP EVENTS
 
 // IPC EVENTS
-ipcMain.on('download-image', async (event, url, filename) => {
-  console.log('Message from UI:');
- 
-  let options = {
-    openFolderWhenDone: true,
-    filename: filename
-  }
-  await download(win, url, options);
 
-  // TODO: send status of download back to UI
-  win.webContents.send('download-image', null);
+//#region build-overlay
+ipcMain.on('build-overlay', async (event) => {
+  console.log('build-overlay message received');
 });
-
-ipcMain.on('download-images', async (event, filesToDownload) => {
-  console.log(filesToDownload);
-  for (const file of filesToDownload) {
-    await download(win, file.url, {saveAs: false, showBadge: false, filename: file.filename})
-  }
-
-  // TODO: send status of download back to UI
-  win.webContents.send('download-image', null);
-});
+//#endregion
 // END IPC EVENTS

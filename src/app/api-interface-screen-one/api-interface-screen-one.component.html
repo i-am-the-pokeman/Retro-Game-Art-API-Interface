@@ -24,10 +24,11 @@
 
     <easy-divider></easy-divider>
 
-    <div class="padding-lg">
+    <!-- TODO: Uncomment when you want to test :-) -->
+    <!-- <div class="padding-lg">
       <h2>Display Info</h2>
       <pre>{{getGameSelectionFormGroup().get(GameSelectionControlName.Game).value | json}}</pre>
-    </div>
+    </div> -->
 
     <!-- Save -->
     <button mat-raised-button
@@ -38,6 +39,16 @@
             (click)="downloadImages()">
       <mat-icon>arrow_circle_down</mat-icon>
       Download Images
+    </button>
+
+    <button mat-raised-button
+            color="accent"
+            class="center giant-button mat-elevation-z8"
+            [ngClass]="{'download-button-gradient' : !isDownloadButtonDisabled}"
+            [disabled]="isDownloadButtonDisabled"
+            (click)="buildOverlay()">
+      <mat-icon>arrow_circle_down</mat-icon>
+      Build Overlay
     </button>
   </mat-card-content>
 </mat-card>
