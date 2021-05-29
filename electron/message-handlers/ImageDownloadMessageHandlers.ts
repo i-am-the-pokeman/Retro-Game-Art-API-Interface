@@ -1,6 +1,6 @@
 import { ipcMain } from "electron";
-import { ImageDownloadServices } from "../services/ImageDownloadServices/ImageDownloadServices";
 import { WindowServiceInterface } from "../services/WindowServices/WindowService";
+import { ImageDownloadServices } from "../services/ImageDownloadServices/ImageDownloadServices";
 
 const WindowService: WindowServiceInterface = require("../services/WindowServices/WindowService");
 
