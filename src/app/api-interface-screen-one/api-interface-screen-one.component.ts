@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
+import { DownloadImagesRequest } from 'electron/messages/DownloadImageRequests';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
 import { APIUtils } from '../APIs/API-utils';
@@ -176,7 +177,9 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
   }
 
   downloadImages() {
-    let filesToDownload = [];
+    let downloadImagesRequest: DownloadImagesRequest = {
+      FilesToDownload: []
+    };
     let iconGameImage: GameImage = this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection)
                                                   .get(GameImageTypeSelectionControlName.Icon)
                                                   ?.value?.Value;
@@ -185,13 +188,13 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
                                                     ?.value?.Value;
     if (iconGameImage?.id) {
       let fileToDownload = TheGamesDBAPIFormMapper.MapGameImageToFileToDownload(this.imageBaseUrls, iconGameImage, 'icon');
-      filesToDownload.push(fileToDownload);
+      downloadImagesRequest.FilesToDownload.push(fileToDownload);
     }
     if (bannerGameImage?.id) {
       let fileToDownload = TheGamesDBAPIFormMapper.MapGameImageToFileToDownload(this.imageBaseUrls, bannerGameImage, 'banner');
-      filesToDownload.push(fileToDownload);
+      downloadImagesRequest.FilesToDownload.push(fileToDownload);
     }
-    this.downloadImagesService.DownloadImages(filesToDownload);
+    this.downloadImagesService.DownloadImages(downloadImagesRequest);
   }
 
   buildOverlay() {
