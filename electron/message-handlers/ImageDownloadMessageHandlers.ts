@@ -20,7 +20,7 @@ class ImageDownloadMessageHandlers {
       await ImageDownloadServices.downloadImages(request);
       
       // Inform UI when finished
-      WindowService.BrowserWindow.webContents.send('download-image', null);
+      WindowService.BrowserWindow.webContents.send('download-images', null);
     });
   }
 }
