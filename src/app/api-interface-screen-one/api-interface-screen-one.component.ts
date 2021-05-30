@@ -7,10 +7,12 @@ import { takeUntil } from 'rxjs/operators';
 import { APIUtils } from '../APIs/API-utils';
 import { TheGamesDBAPIService } from '../APIs/TheGamesDB/TheGamesDBAPI.service';
 import { Game, GameImage, GamesImagesDictionary, GETGameImagesByGameIdRequest, GETGameImagesByGameIdResponse, GETGamesByPlatformIdRequest, GETPlatformsRequest, GETPlatformsResponse, ImageBaseUrlMeta, Platform } from '../APIs/TheGamesDB/TheGamesDBAPIEntities';
-import { TheGamesDBAPIFormMapper } from '../APIs/TheGamesDB/TheGamesDBAPIFormMapper';
 import { TheGamesDBAPIKey } from '../APIs/TheGamesDB/TheGamesDBAPIKey';
 import { AlertDialogComponent } from '../shared/components/alert-dialog/alert-dialog.component';
+import { CreateOverlayRequest } from '../shared/services/ipc-services/build-overlay-entities';
+import { BuildOverlaymapper as BuildOverlayMapper } from '../shared/services/ipc-services/build-overlay-mapper';
 import { BuildOverlayService } from '../shared/services/ipc-services/build-overlay.service';
+import { DownloadImagesMapper } from '../shared/services/ipc-services/download-images-mapper';
 import { DownloadImagesService } from '../shared/services/ipc-services/download-images.service';
 import { DictionaryUtils } from '../shared/utils/dictionary-utils';
 import { ApiInterfaceGroupName, ApiInterfaceScreenOneFormService } from './services/api-interface-screen-one-form.service';
@@ -187,18 +189,35 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
                                                     .get(GameImageTypeSelectionControlName.Banner)
                                                     ?.value?.Value;
     if (iconGameImage?.id) {
-      let fileToDownload = TheGamesDBAPIFormMapper.MapGameImageToFileToDownload(this.imageBaseUrls, iconGameImage, 'icon');
+      let fileToDownload = DownloadImagesMapper.MapGameImageToFileToDownload(this.imageBaseUrls, iconGameImage, 'icon');
       downloadImagesRequest.FilesToDownload.push(fileToDownload);
     }
     if (bannerGameImage?.id) {
-      let fileToDownload = TheGamesDBAPIFormMapper.MapGameImageToFileToDownload(this.imageBaseUrls, bannerGameImage, 'banner');
+      let fileToDownload = DownloadImagesMapper.MapGameImageToFileToDownload(this.imageBaseUrls, bannerGameImage, 'banner');
       downloadImagesRequest.FilesToDownload.push(fileToDownload);
     }
     this.downloadImagesService.DownloadImages(downloadImagesRequest);
   }
 
   buildOverlay() {
-    this.buildOverlayService.BuildOverlay();
+    let buildOverlayRequest: CreateOverlayRequest = {
+      OverlayPieces: []
+    };
+    let iconGameImage: GameImage = this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection)
+                                                  .get(GameImageTypeSelectionControlName.Icon)
+                                                  ?.value?.Value;
+    let bannerGameImage: GameImage = this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection)
+                                                    .get(GameImageTypeSelectionControlName.Banner)
+                                                    ?.value?.Value;
+    if (iconGameImage?.id) {
+      let overlayPiece = BuildOverlayMapper.MapGameImageToOverlayPiece(this.imageBaseUrls, iconGameImage);
+      buildOverlayRequest.OverlayPieces.push(overlayPiece);
+    }
+    if (bannerGameImage?.id) {
+      let overlayPiece = BuildOverlayMapper.MapGameImageToOverlayPiece(this.imageBaseUrls, bannerGameImage);
+      buildOverlayRequest.OverlayPieces.push(overlayPiece);
+    }
+    this.buildOverlayService.BuildOverlay(buildOverlayRequest);
   }
 
   // Note: Angular will throw a TypeError in the template if these aren't cast as a FormGroup
