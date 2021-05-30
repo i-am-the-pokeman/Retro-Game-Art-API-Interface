@@ -102,16 +102,4 @@ export class TheGamesDBAPIFormMapper {
       return (a.id > b.id) ? 1 : -1;
     }
     //#endregion
-
-    public static MapGameImageToFileToDownload(imageBaseUrls: ImageBaseUrlMeta,
-                                              gameImage: GameImage,
-                                              imagePurpose: string)
-                                              : FileToDownload {
-      let url = APIUtils.buildFileUrl(imageBaseUrls.large, gameImage.filename)
-      let filename = GameImageFilenameUtils.buildNewFileName(imagePurpose, gameImage.filename, gameImage.side);
-      return {
-        url: url,
-        filename: filename
-      }
-    }
 }
