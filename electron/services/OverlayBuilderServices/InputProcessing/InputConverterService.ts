@@ -1,1 +1,0 @@
-// TODO: create utility class that makes input easier to use for our purposes

@@ -1,5 +1,3 @@
-import { app, BrowserWindow, ipcMain } from "electron";
-
 const Store = require('electron-store');
 Store.initRenderer();
 

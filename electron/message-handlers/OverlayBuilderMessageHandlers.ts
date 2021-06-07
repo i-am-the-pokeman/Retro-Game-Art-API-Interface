@@ -9,7 +9,7 @@ class OverlayBuilderMessageHandlers {
   constructor() {
     ipcMain.on('build-overlay', async (event, request: CreateOverlayRequest) => {
       // Handle Message
-      OverlayBuilderService.BuildOverlay(request) 
+      await OverlayBuilderService.BuildOverlay(request) 
 
       // Inform UI when finished
       WindowService.BrowserWindow.webContents.send('build-overlay', null);
