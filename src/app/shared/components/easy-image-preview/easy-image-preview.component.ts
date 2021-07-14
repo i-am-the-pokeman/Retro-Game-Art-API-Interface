@@ -6,5 +6,5 @@ import { Component, Input } from '@angular/core';
   styleUrls: ['./easy-image-preview.component.sass']
 })
 export class EasyImagePreviewComponent {
-  @Input() url: string;
+  @Input() src: string;
 }

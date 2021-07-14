@@ -1,6 +1,6 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnDestroy, OnInit } from '@angular/core';
 import { FormGroup } from '@angular/forms';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogConfig } from '@angular/material/dialog';
 import { DownloadImagesRequest } from 'electron/messages/DownloadImageRequests';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
@@ -18,6 +18,7 @@ import { DictionaryUtils } from '../shared/utils/dictionary-utils';
 import { ApiInterfaceGroupName, ApiInterfaceScreenOneFormService } from './services/api-interface-screen-one-form.service';
 import { GameSelectionControlName } from './services/form-data/game-selection-form-data';
 import { GameImageTypeSelectionControlName } from './services/form-data/image-selection-form-data';
+const ipc = window.require('electron').ipcRenderer;
 
 @Component({
   selector: 'api-interface-screen-one',
@@ -36,6 +37,9 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
   imageBaseUrls: ImageBaseUrlMeta;
   selectedIconUrl: string;
   selectedBannerUrl: string;
+  selectedClearlogoUrl: string;
+
+  overlayBuffer: string;
 
   isDownloadButtonDisabled: boolean = true; // TODO: this component may not be the right place for this...
 
@@ -50,13 +54,16 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
     private dialog: MatDialog,
     private theGamesDbAPIService: TheGamesDBAPIService,
     private downloadImagesService: DownloadImagesService,
-    private buildOverlayService: BuildOverlayService
+    private buildOverlayService: BuildOverlayService,
+    private ngZone: NgZone,
+    private cdr: ChangeDetectorRef
   ) { }
 
   ngOnInit() {
-    // Form Pipeline
+    // Grab initial set of domain data
     this.fetchPlatforms();
 
+    // Listen for form changes
     this.formGroup.get(ApiInterfaceGroupName.GameSelection)
                   .get(GameSelectionControlName.Platform)
                   .valueChanges
@@ -104,9 +111,9 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
     this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection)
                   .valueChanges
       .pipe(takeUntil(this.stop$))
-      .subscribe(({icon, banner}) => {
+      .subscribe(({icon, banner, clearlogo}) => {
         // Progressive Disclosure
-        this.isDownloadButtonDisabled = !icon || !banner; // TODO: there's a clearer way to do this check
+        this.isDownloadButtonDisabled = !icon && !banner; // TODO: there's a clearer way to do this check
 
         // Side Effects
         this.selectedIconUrl = (!!icon)
@@ -115,7 +122,18 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
         this.selectedBannerUrl = (!!banner) 
           ? APIUtils.buildFileUrl(this.imageBaseUrls?.thumb, banner?.Value?.filename)
           : '';
+        this.selectedClearlogoUrl = (!!clearlogo) 
+          ? APIUtils.buildFileUrl(this.imageBaseUrls?.thumb, clearlogo?.Value?.filename)
+          : '';
       });
+    
+    ipc.on('build-overlay', (event: string, args: any) => {
+      this.ngZone.run(() => {
+        this.overlayBuffer = args;
+        this.openAlertDialog('hello world');
+      });
+    })
+
   }
 
   ngOnDestroy() {
@@ -188,6 +206,9 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
     let bannerGameImage: GameImage = this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection)
                                                     .get(GameImageTypeSelectionControlName.Banner)
                                                     ?.value?.Value;
+    let clearlogoGameImage: GameImage = this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection)
+                                                        .get(GameImageTypeSelectionControlName.Clearlogo)
+                                                        ?.value?.Value;
     if (iconGameImage?.id) {
       let fileToDownload = DownloadImagesMapper.MapGameImageToFileToDownload(this.imageBaseUrls, iconGameImage, 'icon');
       downloadImagesRequest.FilesToDownload.push(fileToDownload);
@@ -196,10 +217,14 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
       let fileToDownload = DownloadImagesMapper.MapGameImageToFileToDownload(this.imageBaseUrls, bannerGameImage, 'banner');
       downloadImagesRequest.FilesToDownload.push(fileToDownload);
     }
+    if (clearlogoGameImage?.id) {
+      let fileToDownload = DownloadImagesMapper.MapGameImageToFileToDownload(this.imageBaseUrls, clearlogoGameImage, 'clearlogo');
+      downloadImagesRequest.FilesToDownload.push(fileToDownload);
+    }
     this.downloadImagesService.DownloadImages(downloadImagesRequest);
   }
 
-  buildOverlay() {
+  buildOverlayPreview() {
     let buildOverlayRequest: CreateOverlayRequest = {
       OverlayPieces: []
     };
@@ -209,6 +234,10 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
     let bannerGameImage: GameImage = this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection)
                                                     .get(GameImageTypeSelectionControlName.Banner)
                                                     ?.value?.Value;
+    let clearlogoGameImage: GameImage = this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection)
+                                                    .get(GameImageTypeSelectionControlName.Clearlogo)
+                                                    ?.value?.Value;
+    
     if (iconGameImage?.id) {
       let overlayPiece = BuildOverlayMapper.MapGameImageToOverlayPiece(this.imageBaseUrls, iconGameImage);
       buildOverlayRequest.OverlayPieces.push(overlayPiece);
@@ -217,7 +246,12 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
       let overlayPiece = BuildOverlayMapper.MapGameImageToOverlayPiece(this.imageBaseUrls, bannerGameImage);
       buildOverlayRequest.OverlayPieces.push(overlayPiece);
     }
-    this.buildOverlayService.BuildOverlay(buildOverlayRequest);
+    if (clearlogoGameImage?.id) {
+      let overlayPiece = BuildOverlayMapper.MapGameImageToOverlayPiece(this.imageBaseUrls, clearlogoGameImage);
+      buildOverlayRequest.OverlayPieces.push(overlayPiece);
+    }
+
+    this.buildOverlayService.BuildOverlayPreview(buildOverlayRequest);
   }
 
   // Note: Angular will throw a TypeError in the template if these aren't cast as a FormGroup
@@ -225,8 +259,16 @@ export class ApiInterfaceScreenOneComponent implements OnInit, OnDestroy {
   getImageTypeSelectionFormGroup(): FormGroup { return this.formGroup.get(ApiInterfaceGroupName.ImageTypeSelection) as FormGroup; }
   
   private openAlertDialog(message: string) {
-    this.dialog.open(AlertDialogComponent, {
-      data: {message: message}
-    });
+    console.log('openAlertDialog');
+    const dialogConfig = new MatDialogConfig();
+    dialogConfig.disableClose = true;
+    dialogConfig.autoFocus = true;
+    dialogConfig.data = {message: message};
+
+    this.dialog.open(AlertDialogComponent, dialogConfig);
+
+    this.dialog.afterAllClosed.subscribe(
+      () => console.log('well it closed I guess')
+    )
   }
 }

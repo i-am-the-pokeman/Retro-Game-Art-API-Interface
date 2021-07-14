@@ -24,6 +24,7 @@ export class ImageSelectionComponent {
 
   @Input() selectedIconUrl: string;
   @Input() selectedBannerUrl: string;
+  @Input() selectedClearlogoUrl: string;
 
   readonly allowedImageTypes: string[] = [ImageTypes.banner, ImageTypes.boxart, ImageTypes.clearlogo, ImageTypes.screenshot, ImageTypes.titlescreen];
   gameImageTypeDropdownOptions: DropdownOption[];
@@ -34,4 +35,5 @@ export class ImageSelectionComponent {
   // Note: Angular will throw a TypeError in the template if these aren't cast as a FormGroup
   getIconFormControl(): FormControl { return this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Icon) as FormControl; }
   getBannerFormControl(): FormControl { return this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Banner) as FormControl; }
+  getClearlogoFormControl(): FormControl { return this.imageSelectionFormGroup.get(GameImageTypeSelectionControlName.Clearlogo) as FormControl; }
 }

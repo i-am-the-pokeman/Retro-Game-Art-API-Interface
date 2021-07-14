@@ -18,11 +18,10 @@
       <image-selection [imageSelectionFormGroup]="getImageTypeSelectionFormGroup()"
                         [gamesImagesDictionary]="gamesImagesDictionary"
                         [selectedIconUrl]="selectedIconUrl"
-                        [selectedBannerUrl]="selectedBannerUrl">
+                        [selectedBannerUrl]="selectedBannerUrl"
+                        [selectedClearlogoUrl]="selectedClearlogoUrl">
       </image-selection>
     </div>
-
-    <easy-divider></easy-divider>
 
     <!-- TODO: Uncomment when you want to test :-) -->
     <!-- <div class="padding-lg">
@@ -36,19 +35,20 @@
             class="center giant-button mat-elevation-z8"
             [ngClass]="{'download-button-gradient' : !isDownloadButtonDisabled}"
             [disabled]="isDownloadButtonDisabled"
-            (click)="downloadImages()">
+            (click)="buildOverlayPreview()">
       <mat-icon>arrow_circle_down</mat-icon>
-      Download Images
+      Build Overlay Preview
     </button>
 
-    <button mat-raised-button
-            color="accent"
-            class="center giant-button mat-elevation-z8"
-            [ngClass]="{'download-button-gradient' : !isDownloadButtonDisabled}"
-            [disabled]="isDownloadButtonDisabled"
-            (click)="buildOverlay()">
-      <mat-icon>arrow_circle_down</mat-icon>
-      Build Overlay
-    </button>
+    <easy-divider></easy-divider>
+
+    <div *ngIf="overlayBuffer" class="padding-lg">
+      <h2>Overlay Preview</h2>
+      <div class="margin-sm">
+        <easy-image-preview [src]="overlayBuffer">
+        </easy-image-preview>
+      </div>
+    </div>
+
   </mat-card-content>
 </mat-card>

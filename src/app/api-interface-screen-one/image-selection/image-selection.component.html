@@ -5,7 +5,7 @@
                       [formInputData]="formConfigDataMap.get(GameImageTypeSelectionControlName.Icon)"
                       [dropdownOptions]="gameImageTypeDropdownOptions">
       </easy-dropdown>
-      <easy-image-preview [url]="selectedIconUrl">
+      <easy-image-preview [src]="selectedIconUrl">
       </easy-image-preview>
     </div>
 
@@ -14,7 +14,16 @@
                       [formInputData]="formConfigDataMap.get(GameImageTypeSelectionControlName.Banner)"
                       [dropdownOptions]="gameImageTypeDropdownOptions">
       </easy-dropdown>
-      <easy-image-preview [url]="selectedBannerUrl">
+      <easy-image-preview [src]="selectedBannerUrl">
+      </easy-image-preview>
+    </div>
+
+    <div class="column margin-sm">
+      <easy-dropdown [dropdownFormControl]="getClearlogoFormControl()"
+                      [formInputData]="formConfigDataMap.get(GameImageTypeSelectionControlName.Clearlogo)"
+                      [dropdownOptions]="gameImageTypeDropdownOptions">
+      </easy-dropdown>
+      <easy-image-preview [src]="selectedClearlogoUrl">
       </easy-image-preview>
     </div>
   </div>

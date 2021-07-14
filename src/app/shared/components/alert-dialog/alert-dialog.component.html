@@ -1,10 +1,11 @@
 <h2 mat-dialog-title>{{data?.title}}</h2>
-<mat-dialog-content class="mat-typography">
+<div mat-dialog-content class="mat-typography">
   <p>{{data?.message || 'ALERT!'}}</p>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <button mat-stroked-button
-          mat-dialog-close>
+  <ng-content>
+  </ng-content>
+</div>
+<div mat-dialog-actions>
+  <button (click)="closeClicked()" mat-button mat-dialog-close>
     CLOSE
   </button>
-</mat-dialog-actions>
+</div>

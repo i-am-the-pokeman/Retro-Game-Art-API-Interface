@@ -11,6 +11,7 @@ import { IntroductionModule } from './introduction/introduction.module';
 import { EasyDividerModule } from '../shared/components/easy-divider/easy-divider.module';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { EasyImagePreviewModule } from '../shared/components/easy-image-preview/easy-image-preview.module';
 
 @NgModule({
   imports: [
@@ -23,6 +24,7 @@ import { MatIconModule } from '@angular/material/icon';
     MatCardModule,
     MatButtonModule,
     MatIconModule,
+    EasyImagePreviewModule,
     EasyDividerModule
   ],
   declarations: [
